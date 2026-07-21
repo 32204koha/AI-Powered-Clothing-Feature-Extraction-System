@@ -2,8 +2,7 @@ import torch
 import json
 import google.generativeai as genai
 from transformers import VisionEncoderDecoderModel, ViTImageProcessor, AutoTokenizer
-# 名前をconfigと完全に合わせました
-from config import VLM_MODEL_NAME, LLM_MODEL_NAME, LLM_PROMPT_TEMPLATE
+from config import VLM_MODEL_NAME, LLM_MODEL_NAME, LLM_PROMPT_TEMPLATE, DIAGNOSIS_PROMPT_TEMPLATE
 
 class FashionAI:
     def __init__(self, api_key):
@@ -29,4 +28,18 @@ class FashionAI:
         # 2. Geminiに「プロンプト(テキスト)」と「画像データ」を両方セットで渡す
         response = self.llm.generate_content([prompt, image])
         
+        return response.text
+    
+    def diagnosis_with_gemini(self, closet_db):
+        """
+        蓄積された服のリスト全体をGeminiに送り、診断アドバイスを受け取る
+        """
+        # リストを整形されたJSON文字列に変換
+        closet_json_str = json.dumps(closet_db, ensure_ascii=False, indent=2)
+        
+        # プロンプトにデータを埋め込む
+        prompt = DIAGNOSIS_PROMPT_TEMPLATE.format(closet_data=closet_json_str)
+        
+        # テキストのみをGeminiに送信
+        response = self.llm.generate_content(prompt)
         return response.text

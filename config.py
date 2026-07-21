@@ -1,0 +1,34 @@
+import os
+
+DATASET_ROOT = 'fashion-dataset' 
+STYLES_CSV = os.path.join(DATASET_ROOT, 'styles.csv')
+IMAGES_DIR = os.path.join(DATASET_ROOT, 'images')
+
+VLM_MODEL_NAME = "nlpconnect/vit-gpt2-image-captioning"
+LLM_MODEL_NAME = 'models/gemini-3.5-flash'
+# config.py
+LLM_PROMPT_TEMPLATE = """
+あなたはプロのファッションスタイリストAIです。
+添付された画像と、以下のメタデータをもとに、属性を抽出し、必ず以下のJSON形式のみで出力してください。
+
+【メタデータ】
+{meta}
+
+【出力形式】
+{{
+  "category": "トップス/ボトムス/ワンピース/冠婚葬祭",
+  "color": "画像から正確に判断した色",
+  "style_taste": "シンプル/ストリート/カジュアル/など",
+  "season": "夏/冬/オールシーズン/など",
+  "pattern": "無地/ボーダー/チェック/プリント/など",
+  "scene": "仕事/休日/部屋着/スポーツ/学校/など",
+  "brand": "画像から読み取れるロゴやタグのブランド名。判別できない場合は「不明」"
+}}
+
+【厳守ルール】
+1. Markdownの ```json ... ``` などの装飾は一切つけず、波括弧 {{ }} から始まる純粋なJSON文字列のみを出力すること。
+2. 項目を省略せず、必ず全て埋めること。
+3. 色は光の加減に注意し、画像の実際の色を正確に判定すること。
+4. 判断できない場合は不明と回答すること。
+5. ブランド名(brand)について、服のデザインや生地から勝手に推測してはいけません。ロゴやタグが明確に確認できない場合は必ず「不明」としてください。
+"""

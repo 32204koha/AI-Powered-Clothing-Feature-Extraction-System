@@ -1,9 +1,12 @@
 from fastapi import FastAPI, UploadFile, File, Form
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from PIL import Image
 import io
 import json
 from model_utils import FashionAI
 import os
+import uuid
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -28,6 +31,10 @@ print("AIのスタンバイが完了しました！リクエストを受け付�
 # ==========================================
 # 1. データ保存用の準備
 # ==========================================
+
+IMAGE_DIR = "saved_images"
+os.makedirs(IMAGE_DIR, exist_ok=True)
+app.mount("/images", StaticFiles(directory=IMAGE_DIR), name="images")
 
 # 全体診断用：サーバーが起動している間だけ記憶するリスト
 closet_db = []
@@ -61,6 +68,15 @@ async def analyze_clothing(
     
     image_bytes = await file.read()
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+
+    # ランダムなファイル名(UUID)を生成して拡張子.jpgで保存
+    unique_filename = f"{uuid.uuid4()}.jpg"
+    image_save_path = os.path.join(IMAGE_DIR, unique_filename)
+    image.save(image_save_path, "JPEG")
+    # フロントエンドからアクセスする時のURL
+    image_url = f"/images/{unique_filename}"
+    print(f"-> 画像を保存しました: {image_save_path}")
+    # ---------------------------------------------
     
     print("2. Geminiで画像とデータを解析しています...")
     meta_data = {"survey_result": survey_result}
@@ -78,6 +94,10 @@ async def analyze_clothing(
     
     print("3. 個別スコアを計算しています...")
     final_score = calculate_score(extracted_attributes, survey_result)
+
+    # 解析結果のデータの中に image_url を追加する
+    extracted_attributes["image_url"] = image_url
+    extracted_attributes["survey_result"] = survey_result
     
     result_data = {
         "status": "success",
@@ -146,3 +166,7 @@ async def diagnose_closet():
 async def get_closet():
     # 登録されている全データのリストを返す
     return {"closet_items": closet_db, "total_count": len(closet_db)}
+
+@app.get("/gallery")
+async def render_gallery():
+    return FileResponse("gallery.html")

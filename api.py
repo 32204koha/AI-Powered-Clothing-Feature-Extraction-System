@@ -140,3 +140,9 @@ async def diagnose_closet():
         "score": mock_score,
         "diagnosis": diagnosis_text
     }
+
+# --- 4. 登録された服の一覧を取得するエンドポイント ---
+@app.get("/closet")
+async def get_closet():
+    # 登録されている全データのリストを返す
+    return {"closet_items": closet_db, "total_count": len(closet_db)}

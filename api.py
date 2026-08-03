@@ -5,6 +5,7 @@ from PIL import Image
 import io
 import json
 from model_utils import FashionAI
+from scoring import calculate_item_score, calculate_total_score
 import os
 import uuid
 from dotenv import load_dotenv
@@ -43,20 +44,6 @@ closet_db = []
 # 2. 画像アップロードと個別解析処理 (/analyze)
 # ==========================================
 
-# （既存の）1着ごとのスコア計算関数
-def calculate_score(attributes: dict, survey_data: str) -> int:
-    score = 50 
-    
-    if isinstance(attributes, dict):
-        if attributes.get("gender") == "Men":
-            score += 10
-            
-    if survey_data == "好き":
-        score += 30
-    elif survey_data == "普通":
-        score += 10
-        
-    return score
 
 @app.post("/analyze")
 async def analyze_clothing(
@@ -93,7 +80,7 @@ async def analyze_clothing(
         extracted_attributes = {"raw_text": extracted_text}
     
     print("3. 個別スコアを計算しています...")
-    final_score = calculate_score(extracted_attributes, survey_result)
+    final_score = calculate_item_score(extracted_attributes, survey_result)
 
     # 解析結果のデータの中に image_url を追加する
     extracted_attributes["image_url"] = image_url
@@ -123,25 +110,6 @@ async def analyze_clothing(
 # 3. 全体診断と断捨離アドバイス処理 (/diagnose)
 # ==========================================
 
-# 後のルールベースAIに置き換えるための「仮の全体スコア計算関数」
-def calculate_mock_total_score(closet_data):
-    total_items = len(closet_data)
-    if total_items == 0:
-        return 100
-        
-    score = 100
-    for item in closet_data:
-        # アンケートによる減点
-        if item.get("survey_result") == "嫌い":
-            score -= 20
-        elif item.get("survey_result") == "保留":
-            score -= 10
-            
-        # 状態による減点
-        if item.get("condition") == "使用感あり":
-            score -= 5
-            
-    return max(0, min(100, score))
 
 @app.get("/diagnose")
 async def diagnose_closet():
@@ -150,7 +118,7 @@ async def diagnose_closet():
         return {"diagnosis": "まだ服が登録されていません。まずは画像をアップロードしてください。", "score": 0}
     
     print("1. 仮のルールベースで全体スコアを計算しています...")
-    mock_score = calculate_mock_total_score(closet_db)
+    mock_score = mock_score = calculate_total_score(closet_db)
     
     print("2. Geminiに全体アドバイスを依頼しています...")
     diagnosis_text = ai.diagnosis_with_gemini(closet_db)

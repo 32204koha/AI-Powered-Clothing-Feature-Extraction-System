@@ -70,28 +70,57 @@ async def analyze_clothing(
     
     extracted_text = ai.analyze_with_gemini(image, meta_data)
     
-    extracted_attributes = {}
+    # 複数アイテムが入るように空のリストを準備
+    extracted_items = []
     try:
         # Markdownのゴミを取ってから変換
         clean_text = extracted_text.strip().removeprefix("```json").removesuffix("```").strip()
-        extracted_attributes = json.loads(clean_text)
+        parsed_data = json.loads(clean_text)
+        
+        # AIが1着だけ（ {} ）で返してきた場合は、強制的にリスト（ [{}] ）に包む保険
+        if isinstance(parsed_data, dict):
+            extracted_items = [parsed_data]
+        elif isinstance(parsed_data, list):
+            extracted_items = parsed_data
+            
     except Exception as e:
         print(f"JSONの変換に失敗しましたが続行します: {e}")
-        extracted_attributes = {"raw_text": extracted_text}
+        extracted_items = [{"raw_text": extracted_text}]
     
-    print("3. 個別スコアを計算しています...")
-    final_score = calculate_item_score(extracted_attributes, survey_result)
+    print("3. 各アイテムのスコアを計算し、登録します...")
+    processed_items = []
+    
+    # AIが見つけた服の数だけループして、1着ずつスコア計算と登録を行う
+    for item in extracted_items:
+        # 1着ごとのスコアを計算
+        final_score = calculate_item_score(item, survey_result)
+        
+        # データの中に共通の情報を追加
+        item["image_url"] = image_url
+        item["survey_result"] = survey_result
+        item["score"] = final_score
+        
+        # 1着ずつクローゼットDBに追加（トップス、パンツなどが別々のデータとして入る）
+        closet_db.append(item)
+        processed_items.append(item)
 
-    # 解析結果のデータの中に image_url を追加する
-    extracted_attributes["image_url"] = image_url
-    extracted_attributes["survey_result"] = survey_result
+    # DBに追加された最新のリストを history.json に上書き保存する
+    try:
+        with open("history.json", "w", encoding="utf-8") as f:
+            json.dump(closet_db, f, ensure_ascii=False, indent=4)
+        print("履歴を history.json に保存しました。")
+    except Exception as e:
+        print(f"履歴の保存に失敗しました: {e}")
     
+    # 最終的なレスポンスデータを作成
     result_data = {
         "status": "success",
-        "extracted_attributes": extracted_attributes,
-        "calculated_score": final_score,
-        "survey_received": survey_result
+        "message": f"{len(processed_items)}着のアイテムを認識・登録しました",
+        "extracted_items": processed_items,
+        "image_url": image_url
     }
+
+    return result_data
     
     print("4. 結果を history.json と メモリ(closet_db) に保存しています...")
     # ファイルへのバックアップ保存
@@ -101,7 +130,6 @@ async def analyze_clothing(
     # 全体診断(diagnose)のために、メモリにも追加
     # アンケート結果も属性データに混ぜておく
     extracted_attributes["survey_result"] = survey_result
-    closet_db.append(extracted_attributes)
     
     print("5. 結果をフロントエンドに返却します！")
     return result_data

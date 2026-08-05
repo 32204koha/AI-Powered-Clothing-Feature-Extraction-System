@@ -177,7 +177,22 @@
                 });
                 
                 const data = await response.json();
-                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                
+                // 成功時
+                if (data.status === "success" && data.extracted_items) {
+                    // 複数アイテムが返ってきた場合、見やすく表示する
+                    let resultText = `✅ ${data.message}\n\n`;
+                    data.extracted_items.forEach((item, index) => {
+                        resultText += `【アイテム ${index + 1}】\n`;
+                        resultText += `種類: ${item.category || '不明'}\n`;
+                        resultText += `色: ${item.color || '不明'}\n`;
+                        resultText += `スコア: ${item.score}点\n\n`;
+                    });
+                    document.getElementById('result').textContent = resultText;
+                } else {
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                }
+                
                 
             } catch (error) {
                 document.getElementById('result').textContent = "エラーが発生しました。\n" + error.message;

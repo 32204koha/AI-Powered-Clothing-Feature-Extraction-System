@@ -10,6 +10,7 @@ import os
 import uuid
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime
 
 # ご自身のAPIキーを設定してください
 load_dotenv()
@@ -48,7 +49,9 @@ closet_db = []
 @app.post("/analyze")
 async def analyze_clothing(
     file: UploadFile = File(...),      
-    survey_result: str = Form(...)     
+    survey_result: str = Form(...),  
+    entry_type: str = Form(...),           # "worn_today"(今日着る) or "inventory"(持っている服)
+    days_since_last_worn: str = Form(default="不明") # 何日ぶりか（持っている服の登録時は空っぽ）   
 ):
     print(f"\n--- 新しいリクエスト ---")
     print(f"1. 画像({file.filename})とアンケート({survey_result})を受信しました！")
@@ -89,6 +92,8 @@ async def analyze_clothing(
     
     print("3. 各アイテムのスコアを計算し、登録します...")
     processed_items = []
+
+    current_date = datetime.now().strftime("%Y-%m-%d")
     
     # AIが見つけた服の数だけループして、1着ずつスコア計算と登録を行う
     for item in extracted_items:
@@ -99,6 +104,10 @@ async def analyze_clothing(
         item["image_url"] = image_url
         item["survey_result"] = survey_result
         item["score"] = final_score
+
+        item["registered_date"] = current_date
+        item["entry_type"] = entry_type
+        item["days_since_last_worn"] = days_since_last_worn or "不明"
         
         # 1着ずつクローゼットDBに追加（トップス、パンツなどが別々のデータとして入る）
         closet_db.append(item)
@@ -166,3 +175,29 @@ async def get_closet():
 @app.get("/gallery")
 async def render_gallery():
     return FileResponse("gallery.html")
+
+# -- 検索機能
+@app.get("/search")
+def search_closet(q: str = None):
+    """キーワードでクローゼット内のアイテムを検索する"""
+    # 検索キーワードが空の場合は、すべてのアイテムを返す
+    if not q:
+        return {"status": "success", "results": closet_db, "count": len(closet_db)}
+    
+    search_results = []
+    # キーワードを小文字にしておく（大文字・小文字の区別をなくすため）
+    keyword = q.lower()
+    
+    for item in closet_db:
+        # アイテムが持っている全ての情報（色、カテゴリ、状態など）を一つの文字列にまとめる
+        item_text = " ".join([str(val) for val in item.values()]).lower()
+        
+        # 検索キーワードが含まれていれば結果リストに追加
+        if keyword in item_text:
+            search_results.append(item)
+            
+    return {
+        "status": "success",
+        "results": search_results,
+        "count": len(search_results)
+    }

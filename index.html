@@ -40,6 +40,28 @@
             </select>
         </div>
 
+        <!-- 登録方法と何日ぶりかの選択 -->
+        <div style="margin-bottom: 15px; text-align: center; background: #eee; padding: 10px; border-radius: 5px;">
+            <label style="font-weight: bold; margin-right: 15px; cursor: pointer;">
+                <input type="radio" name="entryType" value="worn_today" checked> 今日着る服として記録
+            </label>
+            <label style="font-weight: bold; cursor: pointer;">
+                <input type="radio" name="entryType" value="inventory"> 持っている服として登録
+            </label>
+            
+            <div id="wornOptions" style="margin-top: 10px;">
+                <label for="daysWornSelect">何日ぶりに着る？：</label>
+                <select id="daysWornSelect" style="padding: 5px; border-radius: 4px;">
+                    <option value="数日ぶり">数日ぶり</option>
+                    <option value="1週間ぶり">1週間ぶり</option>
+                    <option value="1ヶ月以上ぶり">1ヶ月以上ぶり</option>
+                    <option value="覚えていない">覚えていない</option>
+                    <option value="初めて（新品）">初めて（新品）</option>
+                </select>
+            </div>
+        </div>
+        <!-- 🌟 ここまで追加 -->
+
         <button id="sendButton" class="btn-blue">AIで解析してリストに保存</button>
         <div id="loading" class="loading">画像を解析中...</div>
         
@@ -72,6 +94,28 @@
             <p style="color: #777; font-size: 14px;">まだ読み込まれていません。</p>
         </div>
     </div>
+
+    <!-- 🌟 カレンダーセクション -->
+    <div class="card">
+        <h3>📅 着用カレンダー</h3>
+        <p style="font-size: 14px; color: #555;">「今日着る服」として記録したコーデを日ごとに確認できます。</p>
+        <button id="loadCalendarButton" class="btn-green">カレンダーを見る</button>
+        
+        <div id="calendarContainer" style="margin-top: 15px;">
+            <p style="color: #777; font-size: 14px;">ボタンを押して読み込んでください。</p>
+        </div>
+    </div>
+
+    <hr>
+    <h2>🔍 クローゼットを検索</h2>
+    <div>
+        <input type="text" id="searchInput" placeholder="例: Tシャツ, 白, 使用感あり" size="30">
+        <button id="searchButton" style="background-color: #08b12d;">検索する</button>
+    </div>
+        <div id="searchResults" style="color: #000000;margin-top: 20px; display: flex; flex-wrap: wrap; gap: 15px;">
+    <!-- ここに検索結果が表示されます -->
+    </div>
+<hr>
 
     <script>
         // 画像プレビュー
@@ -171,6 +215,10 @@
                 formData.append('file', compressedFile);
                 formData.append('survey_result', document.getElementById('surveySelect').value); 
 
+                const selectedEntryType = document.querySelector('input[name="entryType"]:checked').value;
+                formData.append('entry_type', selectedEntryType);
+                formData.append('days_since_last_worn', document.getElementById('daysWornSelect').value);
+
                 const response = await fetch('http://localhost:8000/analyze', {
                     method: 'POST',
                     body: formData
@@ -269,6 +317,121 @@
             } catch (error) {
                 container.innerHTML = "<p style='color: red;'>一覧の取得に失敗しました。</p>";
                 console.error(error);
+            }
+        });
+
+        // ----------------------------------------------------
+        // クローゼット検索機能 (GET /search)
+        // ----------------------------------------------------
+        document.getElementById('searchButton').addEventListener('click', async () => {
+            const keyword = document.getElementById('searchInput').value;
+            const resultsDiv = document.getElementById('searchResults');
+            
+            resultsDiv.innerHTML = "検索中...";
+
+            try {
+                // キーワードをURLパラメータにして送信
+                const response = await fetch(`http://localhost:8000/search?q=${encodeURIComponent(keyword)}`);
+                const data = await response.json();
+                
+                resultsDiv.innerHTML = ""; // 検索中の文字を消す
+
+                if (data.results.length === 0) {
+                    resultsDiv.innerHTML = "<p>一致するアイテムが見つかりませんでした。</p>";
+                    return;
+                }
+
+                // 見つかったアイテムをカード状に表示する
+                const countText = document.createElement('p');
+                countText.textContent = `${data.count}件ヒットしました！`;
+                countText.style.width = '100%';
+                resultsDiv.appendChild(countText);
+
+                data.results.forEach(item => {
+                    const card = document.createElement('div');
+                    card.style.border = "1px solid #ccc";
+                    card.style.padding = "10px";
+                    card.style.borderRadius = "8px";
+                    card.style.width = "200px";
+
+                    // 画像がある場合は表示する
+                    let imgHtml = "";
+                    if (item.image_url) {
+                        imgHtml = `<img src="http://localhost:8000${item.image_url}" alt="服の画像" style="width: 100%; height: 150px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;">`;
+                    }
+
+                    card.innerHTML = `
+                        ${imgHtml}
+                        <p><strong>種類:</strong> ${item.category || '不明'}</p>
+                        <p><strong>色:</strong> ${item.color || '不明'}</p>
+                    `;
+                    resultsDiv.appendChild(card);
+                });
+
+            } catch (error) {
+                resultsDiv.innerHTML = `<p style="color: red;">エラーが発生しました: ${error.message}</p>`;
+            }
+        });
+
+        // ----------------------------------------------------
+        // 着用カレンダーの読み込みと表示
+        // ----------------------------------------------------
+        document.getElementById('loadCalendarButton').addEventListener('click', async () => {
+            const container = document.getElementById('calendarContainer');
+            container.innerHTML = "<p>読み込み中...</p>";
+
+            try {
+                const response = await fetch('http://localhost:8000/closet');
+                const data = await response.json();
+                
+                // 「今日着る服 (worn_today)」として登録されたものだけを抽出
+                const wornItems = data.closet_items.filter(item => item.entry_type === 'worn_today');
+                
+                if (wornItems.length === 0) {
+                    container.innerHTML = "<p style='color: #777;'>まだ着用記録がありません。</p>";
+                    return;
+                }
+
+                // 日付（registered_date）ごとにグループ分けする
+                const groupedByDate = {};
+                wornItems.forEach(item => {
+                    const date = item.registered_date || "日付不明";
+                    if (!groupedByDate[date]) groupedByDate[date] = [];
+                    groupedByDate[date].push(item);
+                });
+
+                // 日付ごとにHTMLを生成して表示
+                let htmlContent = "";
+                // 日付を新しい順（降順）に並べ替えて表示する
+                Object.keys(groupedByDate).sort().reverse().forEach(date => {
+                    htmlContent += `
+                        <div style="margin-bottom: 20px; border-left: 4px solid #007BFF; padding-left: 10px;">
+                            <h4 style="margin: 0 0 10px 0; color: #333;">🗓 ${date} のコーデ</h4>
+                            <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;">
+                    `;
+                    
+                    // その日に着た服を横並びに表示
+                    groupedByDate[date].forEach(item => {
+                        const imgHtml = item.image_url 
+                            ? `<img src="http://localhost:8000${item.image_url}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px;">` 
+                            : `<div style="width: 100px; height: 100px; background: #eee; display: flex; align-items: center; justify-content: center; border-radius: 4px;">No Image</div>`;
+
+                        htmlContent += `
+                            <div style="font-size: 12px; min-width: 100px; background: #f9f9f9; border: 1px solid #ddd; padding: 5px; border-radius: 4px;">
+                                ${imgHtml}
+                                <p style="margin: 5px 0 0 0; font-weight: bold;">${item.category || '不明'}</p>
+                                <p style="margin: 0; color: #666;">⌛ ${item.days_since_last_worn}</p>
+                            </div>
+                        `;
+                    });
+
+                    htmlContent += `</div></div>`;
+                });
+
+                container.innerHTML = htmlContent;
+
+            } catch (error) {
+                container.innerHTML = "<p style='color: red;'>カレンダーの取得に失敗しました。</p>";
             }
         });
     </script>

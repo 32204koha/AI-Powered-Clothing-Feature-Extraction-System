@@ -5,11 +5,11 @@ STYLES_CSV = os.path.join(DATASET_ROOT, 'styles.csv')
 IMAGES_DIR = os.path.join(DATASET_ROOT, 'images')
 
 VLM_MODEL_NAME = "nlpconnect/vit-gpt2-image-captioning"
-LLM_MODEL_NAME = 'models/gemini-3.5-flash'
+LLM_MODEL_NAME = 'models/gemini-3.6-flash'
 # config.py
 LLM_PROMPT_TEMPLATE = """
 あなたはプロのファッションスタイリストAIです。
-添付された画像と、以下のメタデータをもとに、属性を抽出し、必ず以下のJSON形式のみで出力してください。
+添付された画像と、以下のメタデータをもとに、属性、その服の画像内での位置（バウンディングボックス [ymin, xmin, ymax, xmax] 0-1000の正規化座標）を抽出し、必ず以下のJSON形式のみで出力してください。
 
 【重要】
 画像が全身写真で、トップスやパンツなど複数の服が写っている場合は、
@@ -22,13 +22,14 @@ LLM_PROMPT_TEMPLATE = """
 【出力形式】
 [
   {{
-  "category": "トップス/ワンピース/冠婚葬祭",
+  "category": "トップス/ワンピース/制服/スーツ/冠婚葬祭",
   "color": "画像から正確に判断した色",
   "style_taste": "シンプル/ストリート/カジュアル/など",
   "season": "夏/冬/オールシーズン/など",
   "pattern": "無地/ボーダー/チェック/プリント/など",
   "scene": "仕事/休日/部屋着/スポーツ/学校/など",
-  "brand": "画像から読み取れるロゴやタグのブランド名。判別できない場合は「不明」"
+  "brand": "画像から読み取れるロゴやタグのブランド名。判別できない場合は「不明」,
+  "box_2d": [100, 200, 500, 800]"
   }},
   {{
   "category": "ボトムス/スカート/ジーンズ/",
@@ -37,7 +38,8 @@ LLM_PROMPT_TEMPLATE = """
   "season": "夏/冬/オールシーズン/など",
   "pattern": "無地/ボーダー/チェック/ダメージ/など",
   "scene": "仕事/休日/部屋着/スポーツ/学校/など",
-  "brand": "画像から読み取れるロゴやタグのブランド名。判別できない場合は「不明」"
+  "brand": "画像から読み取れるロゴやタグのブランド名。判別できない場合は「不明」,
+  "box_2d": [480, 220, 950, 780]"
   }}
 ]
 

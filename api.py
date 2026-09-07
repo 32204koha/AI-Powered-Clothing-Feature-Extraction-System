@@ -89,19 +89,64 @@ async def analyze_clothing(
     except Exception as e:
         print(f"JSONの変換に失敗しましたが続行します: {e}")
         extracted_items = [{"raw_text": extracted_text}]
+
+    # 画像をPIL形式で開く
+    original_img = Image.open(io.BytesIO(image_bytes))
+    img_width, img_height = original_img.size
     
     print("3. 各アイテムのスコアを計算し、登録します...")
     processed_items = []
 
     current_date = datetime.now().strftime("%Y-%m-%d")
+
     
     # AIが見つけた服の数だけループして、1着ずつスコア計算と登録を行う
     for item in extracted_items:
         # 1着ごとのスコアを計算
         final_score = calculate_item_score(item, survey_result)
+
+        # --- 切り抜き（ズーム）処理 ---
+        item_image_url = image_url  # デフォルトは全身写真のURL
+        
+        box = item.get("box_2d")
+        if box and len(box) == 4:
+            try:
+                # 0~1000の座標をピクセル単位に変換
+                ymin, xmin, ymax, xmax = box
+                left = int(xmin / 1000 * img_width)
+                top = int(ymin / 1000 * img_height)
+                right = int(xmax / 1000 * img_width)
+                bottom = int(ymax / 1000 * img_height)
+
+                # 服がぴったりギリギリにならないよう、少し余白（5%）を持たせる
+                pad_w = int((right - left) * 0.05)
+                pad_h = int((bottom - top) * 0.05)
+                left = max(0, left - pad_w)
+                top = max(0, top - pad_h)
+                right = min(img_width, right + pad_w)
+                bottom = min(img_height, bottom + pad_h)
+
+                # 画像を切り抜く
+                cropped_img = original_img.crop((left, top, right, bottom))
+
+                # 切り抜いた画像を新しいファイルとして保存
+                cropped_filename = f"crop_{uuid.uuid4()}.jpg"
+                cropped_path = os.path.join(IMAGE_DIR, cropped_filename)
+                
+                # RGB変換してJPEGで保存
+                if cropped_img.mode != 'RGB':
+                    cropped_img = cropped_img.convert('RGB')
+                cropped_img.save(cropped_path, "JPEG")
+
+                # 個別アイテム用画像URLに差し替え
+                item_image_url = f"/images/{cropped_filename}"
+                print(f"  -> {item.get('category', 'アイテム')} の切り抜き画像を保存しました: {cropped_filename}")
+            except Exception as e:
+                print(f"切り抜き処理に失敗しました (全体画像を使用します): {e}")
         
         # データの中に共通の情報を追加
-        item["image_url"] = image_url
+        item["image_url"] = item_image_url
+        item["original_image_url"] = image_url
         item["survey_result"] = survey_result
         item["score"] = final_score
 

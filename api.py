@@ -11,6 +11,7 @@ import uuid
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
+from fastapi.responses import FileResponse
 
 # ご自身のAPIキーを設定してください
 load_dotenv()
@@ -29,6 +30,10 @@ print("サーバー起動中... AIモデルを読み込んでいます（少し�
 # サーバー起動時に1回だけAIをスタンバイさせておく
 ai = FashionAI(API_KEY)
 print("AIのスタンバイが完了しました！リクエストを受け付けられます。")
+
+@app.get("/")
+async def read_index():
+    return FileResponse("index.html")
 
 # ==========================================
 # 1. データ保存用の準備

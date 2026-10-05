@@ -1,0 +1,21 @@
+﻿id,gt_category,ai_category,is_not_clothes,cat_match,gt_color,ai_color,col_match,processing_time_sec
+12532,jackets,,False,False,black,,False,4.3
+3469,headband,,False,False,black,,False,2.05
+24742,handbags,,False,False,green,,False,2.06
+28477,kurtas,,False,False,purple,,False,2.04
+9966,tshirts,,False,False,white,,False,2.04
+58208,belts,,False,False,brown,,False,2.05
+30591,caps,,False,False,blue,,False,2.04
+45627,briefs,,False,False,grey,,False,2.02
+50468,trunk,,False,False,grey melange,,False,2.08
+51797,nightdress,,False,False,turquoise blue,,False,2.03
+31221,capris,,False,False,black,,False,2.04
+46949,perfume and body mist,,False,False,peach,,False,2.06
+26608,sports shoes,,False,False,black,,False,2.0
+14859,wallets,,False,False,black,,False,2.02
+26384,trousers,,False,False,black,,False,2.03
+44958,deodorant,,False,False,red,,False,2.02
+43065,tshirts,,False,False,grey,,False,2.07
+48981,ring,,False,False,silver,,False,2.03
+42002,capris,,False,False,pink,,False,2.04
+45768,deodorant,,False,False,blue,,False,2.04

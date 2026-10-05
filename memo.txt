@@ -28,3 +28,131 @@ LLM_PROMPT_TEMPLATE = """
 画像が全身写真で、トップスやパンツなど複数の服が写っている場合は、
 それぞれの服を独立したアイテムとして認識し、**リスト（配列）形式**で返してください。
 1着しか写っていない場合でも、要素が1つのリストとして返してください。
+
+利用可能なモデル一覧:
+名前: models/gemini-2.5-flash
+名前: models/gemini-2.5-pro
+名前: models/gemini-2.5-flash-preview-tts
+名前: models/gemini-2.5-pro-preview-tts
+名前: models/gemma-4-26b-a4b-it
+名前: models/gemma-4-31b-it
+名前: models/gemini-flash-latest
+名前: models/gemini-flash-lite-latest
+名前: models/gemini-pro-latest
+名前: models/gemini-2.5-flash-lite
+名前: models/gemini-2.5-flash-image
+名前: models/gemini-3-flash-preview
+名前: models/gemini-3.1-pro-preview
+名前: models/gemini-3.1-pro-preview-customtools
+名前: models/gemini-3.1-flash-lite-preview
+名前: models/gemini-3.1-flash-lite
+名前: models/gemini-3-pro-image-preview
+名前: models/gemini-3-pro-image
+名前: models/nano-banana-pro-preview
+名前: models/gemini-3.1-flash-image-preview
+名前: models/gemini-3.1-flash-image
+名前: models/gemini-3.1-flash-lite-image
+名前: models/gemini-3.5-flash
+名前: models/gemini-3.5-flash-lite
+名前: models/gemini-omni-flash-preview
+名前: models/gemini-omni-1.1-flash
+名前: models/gemini-3.5-transcribe
+名前: models/gemini-3.6-flash
+名前: models/gemini-3.7-flash
+名前: models/gemini-3.8-flash
+名前: models/lyria-3-clip-preview
+名前: models/lyria-3-pro-preview
+名前: models/lyria-3.5
+名前: models/gemini-3.1-flash-tts-preview
+名前: models/gemini-robotics-er-2-preview
+名前: models/gemini-2.5-computer-use-preview-10-2025
+名前: models/antigravity-preview-05-2026
+名前: models/deep-research-max-preview-04-2026
+名前: models/deep-research-preview-04-2026
+名前: models/deep-research-pro-preview-12-2025
+
+
+検証メモ------------------------------------------------------------------------------------------------------------
+
+結果ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+id,gt_category,ai_category,cat_match,gt_color,ai_color,col_match,processing_time_sec
+12532,jackets,tops,False,black,black,True,6.68
+3469,headband,tops,False,black,grey,False,9.26
+24742,handbags,bags,True,green,multicolor,False,5.98
+28477,kurtas,dress,False,purple,purple,True,8.18
+9966,tshirts,tops,False,white,white,True,5.34
+58208,belts,accessories,False,brown,brown,True,8.79
+30591,caps,hat,False,blue,blue,True,7.86
+45627,briefs,underwear,False,grey,grey,True,5.57
+50468,trunk,bottoms,False,grey melange,grey,True,6.41
+51797,nightdress,dress,True,turquoise blue,mint green,False,4.45
+31221,capris,tops,False,black,white,False,7.38
+46949,perfume and body mist,,True,peach,,True,3.09
+26608,sports shoes,shoes,True,black,black,True,5.26
+14859,wallets,bags,False,black,black,True,6.27
+26384,trousers,tops,False,black,grey,False,7.56
+44958,deodorant,,True,red,,True,6.05
+43065,tshirts,tops,False,grey,grey,True,8.61
+48981,ring,accessories,False,silver,gold,False,5.0
+42002,capris,bottoms,False,pink,pink,True,9.08
+45768,deodorant,,True,blue,,True,3.2
+
+AI考察ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+出力結果のデータから、AIの挙動や現在の評価手法における3つの重要な傾向と課題が浮き彫りになっています。中間発表に向けた非常に良い検証データが取れましたね。
+
+以下にデータから読み取れる考察と、次に取るべき対策をまとめました。
+
+1. カテゴリ分類における「粒度のズレ」（AIは実は間違っていないケースが多い）
+データの cat_match（カテゴリ一致判定）で False が多く出ていますが、これはAIの認識ミスというよりも正解データ（GT）とAIの出力の「細かさ（粒度）」が食い違っていることが最大の原因です。
+
+事例:
+
+GT jackets / tshirts ➔ AI tops (結果: False)
+
+GT trunk / capris ➔ AI bottoms (結果: False)
+
+考察: AIはプロンプトで指示された「Tops/Bottoms/Accessories」といった大分類に忠実に従おうとしていますが、データセット側の正解ラベルは「Tシャツ」「トランクス」など非常に細かいアイテム名になっています。実質的にAIの認識は合っていても、単語が一致しないため不正解扱いになっています。
+
+対策: 評価スクリプト側で、jackets, tshirts, kurtas などは全て tops に変換してから比較する「辞書（マッピング）」を挟むか、プロンプトで出力させるカテゴリの選択肢をデータセットのラベル名に合わせて細かく指定する必要があります。
+
+2. 色抽出の高さと、微妙なニュアンスの差異
+色の判定（col_match）については、全体的に高い精度（見たところ実質70〜80%以上）を出せています。
+
+成功例: black や white、blue などの基本色は問題なく抽出できています。また、GTが grey melange（霜降りグレー）に対して、AIが grey と答えて True（部分一致）になっているのは、期待通りの挙動です。
+
+不一致の事例:
+
+GT turquoise blue ➔ AI mint green (結果: False)
+
+GT silver ➔ AI gold (結果: False) ※おそらく光の反射による誤認
+
+考察: 「ターコイズブルーかミントグリーンか」といった人間の目でも意見が分かれるような微妙な色合いで不一致が起きています。断捨離アプリとしての実用上は「ユーザーがその服をどう認識しているか」が重要になるため、厳密な一致でなくても許容できる範囲と言えます。
+
+3. 評価スクリプトのバグ（空文字の部分一致問題）
+結果データの中に、評価スクリプトの判定ロジックに関する重大なバグが1点見つかっています。
+
+事例:
+
+GT perfume and body mist ➔ AI (空欄) (結果: True)
+
+GT deodorant ➔ AI (空欄) (結果: True)
+
+考察: 元のデータセットには香水や消臭剤といった「服飾以外のアイテム」が混ざっています。AIは服ではないと判断して空欄を返したと思われますが、Pythonの "" in "deodorant" という判定式は True になってしまうため、正解としてカウントされてしまっています。
+
+対策: 評価スクリプトの一致判定部分を if ai_category and ... のように、AIの出力が空文字ではないことを条件に加えるよう修正する必要があります。また、服飾以外のデータは検証対象から除外（フィルタリング）すべきです。
+
+4. 処理時間（約3秒〜9秒）の実用性
+最短: 3.09秒 / 最長: 9.26秒 / 平均: 約6.5秒
+
+考察: 画像をGemini APIに送信して解析させる時間としては一般的な水準です。しかし、ユーザーがスマホで写真を撮ってから結果が出るまで毎回6〜9秒待たされると、少し長く感じる可能性があります。
+
+対策: 実際のアプリ画面では、画像を送信した瞬間に「AIが服の情報を読み取っています…」というローディングアニメーション（くるくる回るアイコンなど）を出して、体感の待ち時間を減らすUIの工夫が必須になります。
+
+次のアクション（中間発表に向けて）
+この考察をもとに、中間発表の検証データとして説得力を持たせるため、以下の手直しを行うことをお勧めします。
+
+データセットのクリーニング: 香水（perfume）や財布（wallets）など、衣類ではないカテゴリの行を styles.csv から除外するか、AIに「服以外は 'Not Clothing' と出力せよ」と指示します。
+
+スクリプトの修正: カテゴリの粒度を合わせる（Tshirts -> tops とみなす処理を入れる）のと、前述の「空文字のバグ」を修正して、もう一度100件程度でテストを回します。
+
+この「最初は粒度のズレや対象外アイテムによって精度が低く出たが、評価ロジックとプロンプトを改善することで〇〇%まで向上した」というプロセス自体が、中間発表において非常に価値のある「研究の進捗・考察」になります。

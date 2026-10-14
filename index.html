@@ -8,14 +8,15 @@
         body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; }
         .card { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .upload-area { border: 2px dashed #ccc; padding: 20px; text-align: center; margin-bottom: 20px; border-radius: 8px; }
-        img#preview { max-width: 100%; max-height: 300px; margin-top: 10px; display: none; border-radius: 4px; }
+        img#preview { max-width: 100%; max-height: 300px; margin-top: 10px; display: none; border-radius: 4px; margin-left: auto; margin-right: auto; }
         button { padding: 10px 20px; color: white; border: none; cursor: pointer; font-size: 16px; border-radius: 4px; width: 100%; margin-bottom: 10px; }
         .btn-blue { background-color: #007BFF; }
         .btn-blue:hover { background-color: #0056b3; }
         .btn-green { background-color: #28a745; }
         .btn-green:hover { background-color: #1e7e34; }
         .result-box { background-color: #f4f4f4; padding: 15px; white-space: pre-wrap; word-wrap: break-word; border-radius: 5px; font-size: 14px; }
-        .loading { display: none; color: #007BFF; font-weight: bold; text-align: center; margin-bottom: 10px; }
+        /* 🌟 進捗・ダウンロード状況を見せるためのスタイル */
+        .status-badge { background: #e8f0fe; color: #1967d2; padding: 8px 12px; border-radius: 6px; font-weight: bold; margin-bottom: 10px; display: none; text-align: center; }
     </style>
 </head>
 <body>
@@ -40,7 +41,6 @@
             </select>
         </div>
 
-        <!-- 登録方法と何日ぶりかの選択 -->
         <div style="margin-bottom: 15px; text-align: center; background: #eee; padding: 10px; border-radius: 5px;">
             <label style="font-weight: bold; margin-right: 15px; cursor: pointer;">
                 <input type="radio" name="entryType" value="worn_today" checked> 今日着る服として記録
@@ -60,10 +60,11 @@
                 </select>
             </div>
         </div>
-        <!-- 🌟 ここまで追加 -->
+
+        <!-- 🌟 ウェブ上にリアルタイムの処理状況を表示するバッジ -->
+        <div id="statusBadge" class="status-badge">🔄 処理中...</div>
 
         <button id="sendButton" class="btn-blue">AIで解析してリストに保存</button>
-        <div id="loading" class="loading">画像を解析中...</div>
         
         <div style="margin-top: 15px;">
             <strong>最新の解析結果:</strong>
@@ -74,10 +75,7 @@
     <!-- 全体診断セクション -->
     <div class="card">
         <h3>2. クローゼットを診断する</h3>
-        <p style="font-size: 14px; color: #555;">登録した服のデータをもとに、断捨離スコアとアドバイスを出力します。</p>
         <button id="diagnoseButton" class="btn-green">全体を診断する</button>
-        <div id="diagnoseLoading" class="loading">クローゼットを分析中...</div>
-        
         <div style="margin-top: 15px;">
             <strong>診断結果:</strong>
             <pre id="diagnosisResult" class="result-box">ここに診断結果が表示されます。</pre>
@@ -88,39 +86,21 @@
     <div class="card">
         <h3>3. クローゼットの登録一覧</h3>
         <button id="loadClosetButton" class="btn-blue" style="background-color: #6c757d;">一覧を更新・表示する</button>
-        
-        <!-- 服のカードが並ぶエリア -->
         <div id="closetListContainer" style="margin-top: 15px; display: grid; gap: 10px;">
             <p style="color: #777; font-size: 14px;">まだ読み込まれていません。</p>
         </div>
     </div>
 
-    <!-- 🌟 カレンダーセクション -->
-    <div class="card">
-        <h3>📅 着用カレンダー</h3>
-        <p style="font-size: 14px; color: #555;">「今日着る服」として記録したコーデを日ごとに確認できます。</p>
-        <button id="loadCalendarButton" class="btn-green">カレンダーを見る</button>
-        
-        <div id="calendarContainer" style="margin-top: 15px;">
-            <p style="color: #777; font-size: 14px;">ボタンを押して読み込んでください。</p>
-        </div>
-    </div>
-
-    <hr>
-    <h2>🔍 クローゼットを検索</h2>
-    <div>
-        <input type="text" id="searchInput" placeholder="例: Tシャツ, 白, 使用感あり" size="30">
-        <button id="searchButton" style="background-color: #08b12d;">検索する</button>
-    </div>
-        <div id="searchResults" style="color: #000000;margin-top: 20px; display: flex; flex-wrap: wrap; gap: 15px;">
-    <!-- ここに検索結果が表示されます -->
-    </div>
-<hr>
-
     <script>
-        // 画像プレビュー
         const imageInput = document.getElementById('imageInput');
         const preview = document.getElementById('preview');
+        const statusBadge = document.getElementById('statusBadge');
+
+        // ステータス表示を切り替えるヘルパー関数
+        function setStatus(text, isVisible = true) {
+            statusBadge.textContent = text;
+            statusBadge.style.display = isVisible ? 'block' : 'none';
+        }
 
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -134,9 +114,6 @@
             }
         });
 
-        // ----------------------------------------------------
-        // 画像を自動で縮小・圧縮する関数
-        // ----------------------------------------------------
         function compressImage(file, maxWidth, maxHeight, quality) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -147,8 +124,6 @@
                     img.onload = () => {
                         let width = img.width;
                         let height = img.height;
-
-                        // 縦横比を保ちながら、指定した最大サイズに収まるように計算
                         if (width > height) {
                             if (width > maxWidth) {
                                 height = Math.round(height * (maxWidth / width));
@@ -160,26 +135,18 @@
                                 height = maxHeight;
                             }
                         }
-
-                        // Canvasを使って画像を描画し直す（ここでリサイズされる）
                         const canvas = document.createElement('canvas');
                         canvas.width = width;
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-
-                        // JPEG形式で圧縮してBlob（ファイルデータ）に変換
                         canvas.toBlob((blob) => {
                             if (blob) {
-                                // 元のファイル名を引き継いで新しいFileオブジェクトを作成
-                                resolve(new File([blob], file.name, {
-                                    type: 'image/jpeg',
-                                    lastModified: Date.now()
-                                }));
+                                resolve(new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() }));
                             } else {
                                 reject(new Error('画像の圧縮に失敗しました'));
                             }
-                        }, 'image/jpeg', quality); // qualityは0.0〜1.0で画質を指定
+                        }, 'image/jpeg', quality);
                     };
                     img.onerror = (error) => reject(error);
                 };
@@ -187,9 +154,7 @@
             });
         }
 
-        // ----------------------------------------------------
-        // 解析して保存 (POST /analyze) ※圧縮処理を組み込み済み
-        // ----------------------------------------------------
+        // 解析ボタン押下時の処理
         document.getElementById('sendButton').addEventListener('click', async () => {
             const originalFile = imageInput.files[0];
             if (!originalFile) {
@@ -197,26 +162,23 @@
                 return;
             }
 
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('result').textContent = "画像を圧縮中...";
+            const sendButton = document.getElementById('sendButton');
+            sendButton.disabled = true;
 
             try {
-                // ここで画像を圧縮（長辺最大800px、画質70%）
-                const compressedFile = await compressImage(originalFile, 800, 800, 0.7);
-                
-                // 確認用（F12の開発者ツールで、どれくらい軽くなったか見れます）
-                console.log(`圧縮前: ${(originalFile.size / 1024).toFixed(1)} KB`);
-                console.log(`圧縮後: ${(compressedFile.size / 1024).toFixed(1)} KB`);
+                // 1. クライアント側での圧縮中
+                setStatus("📥 ステータス: 画像をブラウザで圧縮中...");
+                document.getElementById('result').textContent = "前処理を進行中...";
 
-                document.getElementById('result').textContent = "通信中...";
+                const compressedFile = await compressImage(originalFile, 800, 800, 0.7);
+
+                // 2. サーバーへ通信・背景削除中
+                setStatus("🧠 ステータス: ローカルサーバーで背景削除＆AI解析中...");
 
                 const formData = new FormData();
-                // 圧縮した方のファイルをサーバーに送る
                 formData.append('file', compressedFile);
                 formData.append('survey_result', document.getElementById('surveySelect').value); 
-
-                const selectedEntryType = document.querySelector('input[name="entryType"]:checked').value;
-                formData.append('entry_type', selectedEntryType);
+                formData.append('entry_type', document.querySelector('input[name="entryType"]:checked').value);
                 formData.append('days_since_last_worn', document.getElementById('daysWornSelect').value);
 
                 const response = await fetch('http://localhost:8000/analyze', {
@@ -226,9 +188,10 @@
                 
                 const data = await response.json();
                 
-                // 成功時
                 if (data.status === "success" && data.extracted_items) {
-                    // 複数アイテムが返ってきた場合、見やすく表示する
+                    setStatus("✨ ステータス: 解析・保存が完了しました！", true);
+                    setTimeout(() => setStatus("", false), 4000); // 4秒後にステータスを隠す
+
                     let resultText = `✅ ${data.message}\n\n`;
                     data.extracted_items.forEach((item, index) => {
                         resultText += `【アイテム ${index + 1}】\n`;
@@ -238,200 +201,52 @@
                     });
                     document.getElementById('result').textContent = resultText;
                 } else {
+                    setStatus("⚠️ エラーが発生しました", true);
                     document.getElementById('result').textContent = JSON.stringify(data, null, 2);
                 }
-                
-                
             } catch (error) {
+                setStatus("❌ 通信エラー", true);
                 document.getElementById('result').textContent = "エラーが発生しました。\n" + error.message;
             } finally {
-                document.getElementById('loading').style.display = 'none';
+                sendButton.disabled = false;
             }
         });
 
-        // 全体診断 (GET /diagnose)
+        // 診断ボタン
         document.getElementById('diagnoseButton').addEventListener('click', async () => {
-            document.getElementById('diagnoseLoading').style.display = 'block';
-            document.getElementById('diagnosisResult').textContent = "分析中...";
-
             try {
                 const response = await fetch('http://localhost:8000/diagnose');
                 const data = await response.json();
-                
-                const resultText = `【現在のクローゼット健康度】: ${data.score} 点\n\n${data.diagnosis}`;
-                document.getElementById('diagnosisResult').textContent = resultText;
+                document.getElementById('diagnosisResult').textContent = `【クローゼット健康度】: ${data.score}点\n\n${data.diagnosis}`;
             } catch (error) {
-                document.getElementById('diagnosisResult').textContent = "エラーが発生しました。\n" + error.message;
-            } finally {
-                document.getElementById('diagnoseLoading').style.display = 'none';
+                document.getElementById('diagnosisResult').textContent = "エラー: " + error.message;
             }
         });
 
-        // 登録一覧を取得して画面に表示する処理
+        // 一覧表示ボタン
         document.getElementById('loadClosetButton').addEventListener('click', async () => {
             const container = document.getElementById('closetListContainer');
             container.innerHTML = "<p>読み込み中...</p>";
-
             try {
-                // APIから一覧データを取得
                 const response = await fetch('http://localhost:8000/closet');
                 const data = await response.json();
-                
                 const items = data.closet_items;
-                if (items.length === 0) {
-                    container.innerHTML = "<p style='color: #777;'>登録されている服はありません。</p>";
+                if (!items || items.length === 0) {
+                    container.innerHTML = "<p>登録されている服はありません。</p>";
                     return;
                 }
-
-                // 登録総数を表示
-                let htmlContent = `<p><strong>登録総数: ${data.total_count} 着</strong></p>`;
-                
-                // アイテムが横に並ぶようにグリッドレイアウトを適用した枠を追加
-                htmlContent += `<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px;">`;
-
-                // リストの中身をループしてHTMLカードを作る
+                let html = `<p><strong>登録総数: ${data.total_count} 着</strong></p><div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px;">`;
                 items.forEach((item, index) => {
-                    
-                    // 画像のURLがある場合は <img> タグを生成、なければ「No Image」の文字を出す
-                    const imgTag = item.image_url 
-                        ? `<img src="http://localhost:8000${item.image_url}" alt="服の画像" style="width: 100%; height: 150px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;">` 
-                        : `<div style="width: 100%; height: 150px; background-color: #eee; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-bottom: 8px; color: #999;">No Image</div>`;
-
-                    // 1着分のカード（画像＋テキスト）
-                    htmlContent += `
-                        <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                            ${imgTag}
-                            <p style="margin: 0 0 5px 0; font-weight: bold; font-size: 14px;">#${index + 1} ${item.category || 'アイテム'}</p>
-                            <p style="margin: 0; font-size: 12px; color: #555;">
-                                色: ${item.color || '不明'}<br>
-                                好み: ${item.survey_result || '-'}<br>
-                                状態: ${item.condition || '-'}
-                            </p>
-                        </div>
-                    `;
+                    html += `
+                        <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; background: #fff;">
+                            <img src="http://localhost:8000${item.image_url}" style="width: 100%; height: 130px; object-fit: cover; border-radius: 4px; margin-bottom: 5px;">
+                            <p style="margin: 0; font-size: 13px; font-weight: bold;">#${index+1} ${item.category}</p>
+                            <p style="margin: 0; font-size: 11px; color: #555;">好み: ${item.survey_result}</p>
+                        </div>`;
                 });
-
-                htmlContent += `</div>`; // グリッドの枠を閉じる
-                container.innerHTML = htmlContent;
-
+                container.innerHTML = html + "</div>";
             } catch (error) {
                 container.innerHTML = "<p style='color: red;'>一覧の取得に失敗しました。</p>";
-                console.error(error);
-            }
-        });
-
-        // ----------------------------------------------------
-        // クローゼット検索機能 (GET /search)
-        // ----------------------------------------------------
-        document.getElementById('searchButton').addEventListener('click', async () => {
-            const keyword = document.getElementById('searchInput').value;
-            const resultsDiv = document.getElementById('searchResults');
-            
-            resultsDiv.innerHTML = "検索中...";
-
-            try {
-                // キーワードをURLパラメータにして送信
-                const response = await fetch(`http://localhost:8000/search?q=${encodeURIComponent(keyword)}`);
-                const data = await response.json();
-                
-                resultsDiv.innerHTML = ""; // 検索中の文字を消す
-
-                if (data.results.length === 0) {
-                    resultsDiv.innerHTML = "<p>一致するアイテムが見つかりませんでした。</p>";
-                    return;
-                }
-
-                // 見つかったアイテムをカード状に表示する
-                const countText = document.createElement('p');
-                countText.textContent = `${data.count}件ヒットしました！`;
-                countText.style.width = '100%';
-                resultsDiv.appendChild(countText);
-
-                data.results.forEach(item => {
-                    const card = document.createElement('div');
-                    card.style.border = "1px solid #ccc";
-                    card.style.padding = "10px";
-                    card.style.borderRadius = "8px";
-                    card.style.width = "200px";
-
-                    // 画像がある場合は表示する
-                    let imgHtml = "";
-                    if (item.image_url) {
-                        imgHtml = `<img src="http://localhost:8000${item.image_url}" alt="服の画像" style="width: 100%; height: 150px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;">`;
-                    }
-
-                    card.innerHTML = `
-                        ${imgHtml}
-                        <p><strong>種類:</strong> ${item.category || '不明'}</p>
-                        <p><strong>色:</strong> ${item.color || '不明'}</p>
-                    `;
-                    resultsDiv.appendChild(card);
-                });
-
-            } catch (error) {
-                resultsDiv.innerHTML = `<p style="color: red;">エラーが発生しました: ${error.message}</p>`;
-            }
-        });
-
-        // ----------------------------------------------------
-        // 着用カレンダーの読み込みと表示
-        // ----------------------------------------------------
-        document.getElementById('loadCalendarButton').addEventListener('click', async () => {
-            const container = document.getElementById('calendarContainer');
-            container.innerHTML = "<p>読み込み中...</p>";
-
-            try {
-                const response = await fetch('http://localhost:8000/closet');
-                const data = await response.json();
-                
-                // 「今日着る服 (worn_today)」として登録されたものだけを抽出
-                const wornItems = data.closet_items.filter(item => item.entry_type === 'worn_today');
-                
-                if (wornItems.length === 0) {
-                    container.innerHTML = "<p style='color: #777;'>まだ着用記録がありません。</p>";
-                    return;
-                }
-
-                // 日付（registered_date）ごとにグループ分けする
-                const groupedByDate = {};
-                wornItems.forEach(item => {
-                    const date = item.registered_date || "日付不明";
-                    if (!groupedByDate[date]) groupedByDate[date] = [];
-                    groupedByDate[date].push(item);
-                });
-
-                // 日付ごとにHTMLを生成して表示
-                let htmlContent = "";
-                // 日付を新しい順（降順）に並べ替えて表示する
-                Object.keys(groupedByDate).sort().reverse().forEach(date => {
-                    htmlContent += `
-                        <div style="margin-bottom: 20px; border-left: 4px solid #007BFF; padding-left: 10px;">
-                            <h4 style="margin: 0 0 10px 0; color: #333;">🗓 ${date} のコーデ</h4>
-                            <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;">
-                    `;
-                    
-                    // その日に着た服を横並びに表示
-                    groupedByDate[date].forEach(item => {
-                        const imgHtml = item.image_url 
-                            ? `<img src="http://localhost:8000${item.image_url}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px;">` 
-                            : `<div style="width: 100px; height: 100px; background: #eee; display: flex; align-items: center; justify-content: center; border-radius: 4px;">No Image</div>`;
-
-                        htmlContent += `
-                            <div style="font-size: 12px; min-width: 100px; background: #f9f9f9; border: 1px solid #ddd; padding: 5px; border-radius: 4px;">
-                                ${imgHtml}
-                                <p style="margin: 5px 0 0 0; font-weight: bold;">${item.category || '不明'}</p>
-                                <p style="margin: 0; color: #666;">⌛ ${item.days_since_last_worn}</p>
-                            </div>
-                        `;
-                    });
-
-                    htmlContent += `</div></div>`;
-                });
-
-                container.innerHTML = htmlContent;
-
-            } catch (error) {
-                container.innerHTML = "<p style='color: red;'>カレンダーの取得に失敗しました。</p>";
             }
         });
     </script>

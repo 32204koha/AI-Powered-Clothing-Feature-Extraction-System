@@ -1,0 +1,4 @@
+﻿id,gt_article_type,ai_article_type,cat_match,gt_color,ai_color,col_match,ai_category,sub_category,secondary_color,gender_target,style_taste,season,pattern,scene_usage,material_texture,brand,processing_time_sec
+12532,jackets,jackets,True,black,black,True,apparel,Topwear,White,Women,Sporty,Autumn,Solid,Sports,Synthetic,Puma,28.76
+3469,headband,headbands,True,black,black,True,accessories,Headwear,White,Unisex,Sporty,Fall,Solid,Sports,Knit,Adidas,109.96
+24742,handbags,handbags,True,green,green,True,accessories,Bags,Blue,Women,Casual,Winter,Colourblocked,Casual,Synthetic,Unknown,18.8

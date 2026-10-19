@@ -1,0 +1,1811 @@
+{
+    "Navy Blue": {
+        "bgr": [
+            120,
+            50,
+            20
+        ],
+        "label_jp": "Navy Blue",
+        "dataset_count": 1791
+    },
+    "Blue": {
+        "bgr": [
+            200,
+            100,
+            40
+        ],
+        "label_jp": "Blue",
+        "dataset_count": 4922
+    },
+    "Silver": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Silver",
+        "dataset_count": 1090
+    },
+    "Black": {
+        "bgr": [
+            20,
+            20,
+            20
+        ],
+        "label_jp": "Black",
+        "dataset_count": 9732
+    },
+    "Grey": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Grey",
+        "dataset_count": 2741
+    },
+    "Green": {
+        "bgr": [
+            40,
+            160,
+            60
+        ],
+        "label_jp": "Green",
+        "dataset_count": 2116
+    },
+    "Purple": {
+        "bgr": [
+            150,
+            50,
+            100
+        ],
+        "label_jp": "Purple",
+        "dataset_count": 1643
+    },
+    "White": {
+        "bgr": [
+            245,
+            245,
+            245
+        ],
+        "label_jp": "White",
+        "dataset_count": 5540
+    },
+    "Beige": {
+        "bgr": [
+            180,
+            210,
+            230
+        ],
+        "label_jp": "Beige",
+        "dataset_count": 749
+    },
+    "Brown": {
+        "bgr": [
+            35,
+            65,
+            115
+        ],
+        "label_jp": "Brown",
+        "dataset_count": 3494
+    },
+    "Bronze": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Bronze",
+        "dataset_count": 95
+    },
+    "Teal": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Teal",
+        "dataset_count": 120
+    },
+    "Copper": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Copper",
+        "dataset_count": 86
+    },
+    "Pink": {
+        "bgr": [
+            180,
+            150,
+            220
+        ],
+        "label_jp": "Pink",
+        "dataset_count": 1861
+    },
+    "Off White": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Off White",
+        "dataset_count": 182
+    },
+    "Maroon": {
+        "bgr": [
+            30,
+            20,
+            120
+        ],
+        "label_jp": "Maroon",
+        "dataset_count": 581
+    },
+    "Red": {
+        "bgr": [
+            40,
+            40,
+            200
+        ],
+        "label_jp": "Red",
+        "dataset_count": 2458
+    },
+    "Khaki": {
+        "bgr": [
+            45,
+            95,
+            95
+        ],
+        "label_jp": "Khaki",
+        "dataset_count": 139
+    },
+    "Orange": {
+        "bgr": [
+            30,
+            120,
+            240
+        ],
+        "label_jp": "Orange",
+        "dataset_count": 530
+    },
+    "Coffee Brown": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Coffee Brown",
+        "dataset_count": 31
+    },
+    "Yellow": {
+        "bgr": [
+            40,
+            220,
+            240
+        ],
+        "label_jp": "Yellow",
+        "dataset_count": 779
+    },
+    "Charcoal": {
+        "bgr": [
+            50,
+            50,
+            50
+        ],
+        "label_jp": "Charcoal",
+        "dataset_count": 228
+    },
+    "Gold": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Gold",
+        "dataset_count": 629
+    },
+    "Steel": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Steel",
+        "dataset_count": 315
+    },
+    "Tan": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Tan",
+        "dataset_count": 114
+    },
+    "Multi": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Multi",
+        "dataset_count": 394
+    },
+    "Magenta": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Magenta",
+        "dataset_count": 129
+    },
+    "Lavender": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Lavender",
+        "dataset_count": 162
+    },
+    "Sea Green": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Sea Green",
+        "dataset_count": 22
+    },
+    "Cream": {
+        "bgr": [
+            200,
+            235,
+            245
+        ],
+        "label_jp": "Cream",
+        "dataset_count": 390
+    },
+    "Peach": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Peach",
+        "dataset_count": 195
+    },
+    "Olive": {
+        "bgr": [
+            45,
+            95,
+            95
+        ],
+        "label_jp": "Olive",
+        "dataset_count": 410
+    },
+    "Skin": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Skin",
+        "dataset_count": 179
+    },
+    "Burgundy": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Burgundy",
+        "dataset_count": 45
+    },
+    "Grey Melange": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Grey Melange",
+        "dataset_count": 146
+    },
+    "Rust": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Rust",
+        "dataset_count": 66
+    },
+    "Rose": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Rose",
+        "dataset_count": 28
+    },
+    "Lime Green": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Lime Green",
+        "dataset_count": 6
+    },
+    "Mauve": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Mauve",
+        "dataset_count": 29
+    },
+    "Turquoise Blue": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Turquoise Blue",
+        "dataset_count": 69
+    },
+    "Metallic": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Metallic",
+        "dataset_count": 43
+    },
+    "Mustard": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Mustard",
+        "dataset_count": 97
+    },
+    "Taupe": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Taupe",
+        "dataset_count": 11
+    },
+    "Nude": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Nude",
+        "dataset_count": 23
+    },
+    "Mushroom Brown": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Mushroom Brown",
+        "dataset_count": 16
+    },
+    "NA": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "NA",
+        "dataset_count": 15
+    },
+    "Fluorescent Green": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Fluorescent Green",
+        "dataset_count": 5
+    },
+    "Aliceblue": {
+        "bgr": [
+            255,
+            248,
+            240
+        ],
+        "label_jp": "Aliceblue",
+        "en": "aliceblue",
+        "hex": "#f0f8ff",
+        "dataset_count": 0
+    },
+    "Antiquewhite": {
+        "bgr": [
+            215,
+            235,
+            250
+        ],
+        "label_jp": "Antiquewhite",
+        "en": "antiquewhite",
+        "hex": "#faebd7",
+        "dataset_count": 0
+    },
+    "Aqua": {
+        "bgr": [
+            255,
+            255,
+            0
+        ],
+        "label_jp": "Aqua",
+        "en": "aqua",
+        "hex": "#00ffff",
+        "dataset_count": 0
+    },
+    "Aquamarine": {
+        "bgr": [
+            212,
+            255,
+            127
+        ],
+        "label_jp": "Aquamarine",
+        "en": "aquamarine",
+        "hex": "#7fffd4",
+        "dataset_count": 0
+    },
+    "Azure": {
+        "bgr": [
+            255,
+            255,
+            240
+        ],
+        "label_jp": "Azure",
+        "en": "azure",
+        "hex": "#f0ffff",
+        "dataset_count": 0
+    },
+    "Bisque": {
+        "bgr": [
+            196,
+            228,
+            255
+        ],
+        "label_jp": "Bisque",
+        "en": "bisque",
+        "hex": "#ffe4c4",
+        "dataset_count": 0
+    },
+    "Blanchedalmond": {
+        "bgr": [
+            205,
+            235,
+            255
+        ],
+        "label_jp": "Blanchedalmond",
+        "en": "blanchedalmond",
+        "hex": "#ffebcd",
+        "dataset_count": 0
+    },
+    "Blueviolet": {
+        "bgr": [
+            226,
+            43,
+            138
+        ],
+        "label_jp": "Blueviolet",
+        "en": "blueviolet",
+        "hex": "#8a2be2",
+        "dataset_count": 0
+    },
+    "Burlywood": {
+        "bgr": [
+            135,
+            184,
+            222
+        ],
+        "label_jp": "Burlywood",
+        "en": "burlywood",
+        "hex": "#deb887",
+        "dataset_count": 0
+    },
+    "Cadetblue": {
+        "bgr": [
+            160,
+            158,
+            95
+        ],
+        "label_jp": "Cadetblue",
+        "en": "cadetblue",
+        "hex": "#5f9ea0",
+        "dataset_count": 0
+    },
+    "Chartreuse": {
+        "bgr": [
+            0,
+            255,
+            127
+        ],
+        "label_jp": "Chartreuse",
+        "en": "chartreuse",
+        "hex": "#7fff00",
+        "dataset_count": 0
+    },
+    "Chocolate": {
+        "bgr": [
+            30,
+            105,
+            210
+        ],
+        "label_jp": "Chocolate",
+        "en": "chocolate",
+        "hex": "#d2691e",
+        "dataset_count": 0
+    },
+    "Coral": {
+        "bgr": [
+            80,
+            127,
+            255
+        ],
+        "label_jp": "Coral",
+        "en": "coral",
+        "hex": "#ff7f50",
+        "dataset_count": 0
+    },
+    "Cornflowerblue": {
+        "bgr": [
+            237,
+            149,
+            100
+        ],
+        "label_jp": "Cornflowerblue",
+        "en": "cornflowerblue",
+        "hex": "#6495ed",
+        "dataset_count": 0
+    },
+    "Cornsilk": {
+        "bgr": [
+            220,
+            248,
+            255
+        ],
+        "label_jp": "Cornsilk",
+        "en": "cornsilk",
+        "hex": "#fff8dc",
+        "dataset_count": 0
+    },
+    "Crimson": {
+        "bgr": [
+            60,
+            20,
+            220
+        ],
+        "label_jp": "Crimson",
+        "en": "crimson",
+        "hex": "#dc143c",
+        "dataset_count": 0
+    },
+    "Cyan": {
+        "bgr": [
+            255,
+            255,
+            0
+        ],
+        "label_jp": "Cyan",
+        "en": "cyan",
+        "hex": "#00ffff",
+        "dataset_count": 0
+    },
+    "Darkblue": {
+        "bgr": [
+            139,
+            0,
+            0
+        ],
+        "label_jp": "Darkblue",
+        "en": "darkblue",
+        "hex": "#00008b",
+        "dataset_count": 0
+    },
+    "Darkcyan": {
+        "bgr": [
+            139,
+            139,
+            0
+        ],
+        "label_jp": "Darkcyan",
+        "en": "darkcyan",
+        "hex": "#008b8b",
+        "dataset_count": 0
+    },
+    "Darkgoldenrod": {
+        "bgr": [
+            11,
+            134,
+            184
+        ],
+        "label_jp": "Darkgoldenrod",
+        "en": "darkgoldenrod",
+        "hex": "#b8860b",
+        "dataset_count": 0
+    },
+    "Darkgray": {
+        "bgr": [
+            169,
+            169,
+            169
+        ],
+        "label_jp": "Darkgray",
+        "en": "darkgray",
+        "hex": "#a9a9a9",
+        "dataset_count": 0
+    },
+    "Darkgreen": {
+        "bgr": [
+            0,
+            100,
+            0
+        ],
+        "label_jp": "Darkgreen",
+        "en": "darkgreen",
+        "hex": "#006400",
+        "dataset_count": 0
+    },
+    "Darkgrey": {
+        "bgr": [
+            169,
+            169,
+            169
+        ],
+        "label_jp": "Darkgrey",
+        "en": "darkgrey",
+        "hex": "#a9a9a9",
+        "dataset_count": 0
+    },
+    "Darkkhaki": {
+        "bgr": [
+            107,
+            183,
+            189
+        ],
+        "label_jp": "Darkkhaki",
+        "en": "darkkhaki",
+        "hex": "#bdb76b",
+        "dataset_count": 0
+    },
+    "Darkmagenta": {
+        "bgr": [
+            139,
+            0,
+            139
+        ],
+        "label_jp": "Darkmagenta",
+        "en": "darkmagenta",
+        "hex": "#8b008b",
+        "dataset_count": 0
+    },
+    "Darkolivegreen": {
+        "bgr": [
+            47,
+            107,
+            85
+        ],
+        "label_jp": "Darkolivegreen",
+        "en": "darkolivegreen",
+        "hex": "#556b2f",
+        "dataset_count": 0
+    },
+    "Darkorange": {
+        "bgr": [
+            0,
+            140,
+            255
+        ],
+        "label_jp": "Darkorange",
+        "en": "darkorange",
+        "hex": "#ff8c00",
+        "dataset_count": 0
+    },
+    "Darkorchid": {
+        "bgr": [
+            204,
+            50,
+            153
+        ],
+        "label_jp": "Darkorchid",
+        "en": "darkorchid",
+        "hex": "#9932cc",
+        "dataset_count": 0
+    },
+    "Darkred": {
+        "bgr": [
+            0,
+            0,
+            139
+        ],
+        "label_jp": "Darkred",
+        "en": "darkred",
+        "hex": "#8b0000",
+        "dataset_count": 0
+    },
+    "Darksalmon": {
+        "bgr": [
+            122,
+            150,
+            233
+        ],
+        "label_jp": "Darksalmon",
+        "en": "darksalmon",
+        "hex": "#e9967a",
+        "dataset_count": 0
+    },
+    "Darkseagreen": {
+        "bgr": [
+            143,
+            188,
+            143
+        ],
+        "label_jp": "Darkseagreen",
+        "en": "darkseagreen",
+        "hex": "#8fbc8f",
+        "dataset_count": 0
+    },
+    "Darkslateblue": {
+        "bgr": [
+            139,
+            61,
+            72
+        ],
+        "label_jp": "Darkslateblue",
+        "en": "darkslateblue",
+        "hex": "#483d8b",
+        "dataset_count": 0
+    },
+    "Darkslategray": {
+        "bgr": [
+            79,
+            79,
+            47
+        ],
+        "label_jp": "Darkslategray",
+        "en": "darkslategray",
+        "hex": "#2f4f4f",
+        "dataset_count": 0
+    },
+    "Darkslategrey": {
+        "bgr": [
+            79,
+            79,
+            47
+        ],
+        "label_jp": "Darkslategrey",
+        "en": "darkslategrey",
+        "hex": "#2f4f4f",
+        "dataset_count": 0
+    },
+    "Darkturquoise": {
+        "bgr": [
+            209,
+            206,
+            0
+        ],
+        "label_jp": "Darkturquoise",
+        "en": "darkturquoise",
+        "hex": "#00ced1",
+        "dataset_count": 0
+    },
+    "Darkviolet": {
+        "bgr": [
+            211,
+            0,
+            148
+        ],
+        "label_jp": "Darkviolet",
+        "en": "darkviolet",
+        "hex": "#9400d3",
+        "dataset_count": 0
+    },
+    "Deeppink": {
+        "bgr": [
+            147,
+            20,
+            255
+        ],
+        "label_jp": "Deeppink",
+        "en": "deeppink",
+        "hex": "#ff1493",
+        "dataset_count": 0
+    },
+    "Deepskyblue": {
+        "bgr": [
+            255,
+            191,
+            0
+        ],
+        "label_jp": "Deepskyblue",
+        "en": "deepskyblue",
+        "hex": "#00bfff",
+        "dataset_count": 0
+    },
+    "Dimgray": {
+        "bgr": [
+            105,
+            105,
+            105
+        ],
+        "label_jp": "Dimgray",
+        "en": "dimgray",
+        "hex": "#696969",
+        "dataset_count": 0
+    },
+    "Dimgrey": {
+        "bgr": [
+            105,
+            105,
+            105
+        ],
+        "label_jp": "Dimgrey",
+        "en": "dimgrey",
+        "hex": "#696969",
+        "dataset_count": 0
+    },
+    "Dodgerblue": {
+        "bgr": [
+            255,
+            144,
+            30
+        ],
+        "label_jp": "Dodgerblue",
+        "en": "dodgerblue",
+        "hex": "#1e90ff",
+        "dataset_count": 0
+    },
+    "Firebrick": {
+        "bgr": [
+            34,
+            34,
+            178
+        ],
+        "label_jp": "Firebrick",
+        "en": "firebrick",
+        "hex": "#b22222",
+        "dataset_count": 0
+    },
+    "Floralwhite": {
+        "bgr": [
+            240,
+            250,
+            255
+        ],
+        "label_jp": "Floralwhite",
+        "en": "floralwhite",
+        "hex": "#fffaf0",
+        "dataset_count": 0
+    },
+    "Forestgreen": {
+        "bgr": [
+            34,
+            139,
+            34
+        ],
+        "label_jp": "Forestgreen",
+        "en": "forestgreen",
+        "hex": "#228b22",
+        "dataset_count": 0
+    },
+    "Fuchsia": {
+        "bgr": [
+            255,
+            0,
+            255
+        ],
+        "label_jp": "Fuchsia",
+        "en": "fuchsia",
+        "hex": "#ff00ff",
+        "dataset_count": 0
+    },
+    "Gainsboro": {
+        "bgr": [
+            220,
+            220,
+            220
+        ],
+        "label_jp": "Gainsboro",
+        "en": "gainsboro",
+        "hex": "#dcdcdc",
+        "dataset_count": 0
+    },
+    "Ghostwhite": {
+        "bgr": [
+            255,
+            248,
+            248
+        ],
+        "label_jp": "Ghostwhite",
+        "en": "ghostwhite",
+        "hex": "#f8f8ff",
+        "dataset_count": 0
+    },
+    "Goldenrod": {
+        "bgr": [
+            32,
+            165,
+            218
+        ],
+        "label_jp": "Goldenrod",
+        "en": "goldenrod",
+        "hex": "#daa520",
+        "dataset_count": 0
+    },
+    "Gray": {
+        "bgr": [
+            128,
+            128,
+            128
+        ],
+        "label_jp": "Gray",
+        "en": "gray",
+        "hex": "#808080",
+        "dataset_count": 0
+    },
+    "Greenyellow": {
+        "bgr": [
+            47,
+            255,
+            173
+        ],
+        "label_jp": "Greenyellow",
+        "en": "greenyellow",
+        "hex": "#adff2f",
+        "dataset_count": 0
+    },
+    "Honeydew": {
+        "bgr": [
+            240,
+            255,
+            240
+        ],
+        "label_jp": "Honeydew",
+        "en": "honeydew",
+        "hex": "#f0fff0",
+        "dataset_count": 0
+    },
+    "Hotpink": {
+        "bgr": [
+            180,
+            105,
+            255
+        ],
+        "label_jp": "Hotpink",
+        "en": "hotpink",
+        "hex": "#ff69b4",
+        "dataset_count": 0
+    },
+    "Indianred": {
+        "bgr": [
+            92,
+            92,
+            205
+        ],
+        "label_jp": "Indianred",
+        "en": "indianred",
+        "hex": "#cd5c5c",
+        "dataset_count": 0
+    },
+    "Indigo": {
+        "bgr": [
+            130,
+            0,
+            75
+        ],
+        "label_jp": "Indigo",
+        "en": "indigo",
+        "hex": "#4b0082",
+        "dataset_count": 0
+    },
+    "Ivory": {
+        "bgr": [
+            240,
+            255,
+            255
+        ],
+        "label_jp": "Ivory",
+        "en": "ivory",
+        "hex": "#fffff0",
+        "dataset_count": 0
+    },
+    "Lavenderblush": {
+        "bgr": [
+            245,
+            240,
+            255
+        ],
+        "label_jp": "Lavenderblush",
+        "en": "lavenderblush",
+        "hex": "#fff0f5",
+        "dataset_count": 0
+    },
+    "Lawngreen": {
+        "bgr": [
+            0,
+            252,
+            124
+        ],
+        "label_jp": "Lawngreen",
+        "en": "lawngreen",
+        "hex": "#7cfc00",
+        "dataset_count": 0
+    },
+    "Lemonchiffon": {
+        "bgr": [
+            205,
+            250,
+            255
+        ],
+        "label_jp": "Lemonchiffon",
+        "en": "lemonchiffon",
+        "hex": "#fffacd",
+        "dataset_count": 0
+    },
+    "Lightblue": {
+        "bgr": [
+            230,
+            216,
+            173
+        ],
+        "label_jp": "Lightblue",
+        "en": "lightblue",
+        "hex": "#add8e6",
+        "dataset_count": 0
+    },
+    "Lightcoral": {
+        "bgr": [
+            128,
+            128,
+            240
+        ],
+        "label_jp": "Lightcoral",
+        "en": "lightcoral",
+        "hex": "#f08080",
+        "dataset_count": 0
+    },
+    "Lightcyan": {
+        "bgr": [
+            255,
+            255,
+            224
+        ],
+        "label_jp": "Lightcyan",
+        "en": "lightcyan",
+        "hex": "#e0ffff",
+        "dataset_count": 0
+    },
+    "Lightgoldenrodyellow": {
+        "bgr": [
+            210,
+            250,
+            250
+        ],
+        "label_jp": "Lightgoldenrodyellow",
+        "en": "lightgoldenrodyellow",
+        "hex": "#fafad2",
+        "dataset_count": 0
+    },
+    "Lightgray": {
+        "bgr": [
+            211,
+            211,
+            211
+        ],
+        "label_jp": "Lightgray",
+        "en": "lightgray",
+        "hex": "#d3d3d3",
+        "dataset_count": 0
+    },
+    "Lightgreen": {
+        "bgr": [
+            144,
+            238,
+            144
+        ],
+        "label_jp": "Lightgreen",
+        "en": "lightgreen",
+        "hex": "#90ee90",
+        "dataset_count": 0
+    },
+    "Lightgrey": {
+        "bgr": [
+            211,
+            211,
+            211
+        ],
+        "label_jp": "Lightgrey",
+        "en": "lightgrey",
+        "hex": "#d3d3d3",
+        "dataset_count": 0
+    },
+    "Lightpink": {
+        "bgr": [
+            193,
+            182,
+            255
+        ],
+        "label_jp": "Lightpink",
+        "en": "lightpink",
+        "hex": "#ffb6c1",
+        "dataset_count": 0
+    },
+    "Lightsalmon": {
+        "bgr": [
+            122,
+            160,
+            255
+        ],
+        "label_jp": "Lightsalmon",
+        "en": "lightsalmon",
+        "hex": "#ffa07a",
+        "dataset_count": 0
+    },
+    "Lightseagreen": {
+        "bgr": [
+            170,
+            178,
+            32
+        ],
+        "label_jp": "Lightseagreen",
+        "en": "lightseagreen",
+        "hex": "#20b2aa",
+        "dataset_count": 0
+    },
+    "Lightskyblue": {
+        "bgr": [
+            250,
+            206,
+            135
+        ],
+        "label_jp": "Lightskyblue",
+        "en": "lightskyblue",
+        "hex": "#87cefa",
+        "dataset_count": 0
+    },
+    "Lightslategray": {
+        "bgr": [
+            153,
+            136,
+            119
+        ],
+        "label_jp": "Lightslategray",
+        "en": "lightslategray",
+        "hex": "#778899",
+        "dataset_count": 0
+    },
+    "Lightslategrey": {
+        "bgr": [
+            153,
+            136,
+            119
+        ],
+        "label_jp": "Lightslategrey",
+        "en": "lightslategrey",
+        "hex": "#778899",
+        "dataset_count": 0
+    },
+    "Lightsteelblue": {
+        "bgr": [
+            222,
+            196,
+            176
+        ],
+        "label_jp": "Lightsteelblue",
+        "en": "lightsteelblue",
+        "hex": "#b0c4de",
+        "dataset_count": 0
+    },
+    "Lightyellow": {
+        "bgr": [
+            224,
+            255,
+            255
+        ],
+        "label_jp": "Lightyellow",
+        "en": "lightyellow",
+        "hex": "#ffffe0",
+        "dataset_count": 0
+    },
+    "Lime": {
+        "bgr": [
+            0,
+            255,
+            0
+        ],
+        "label_jp": "Lime",
+        "en": "lime",
+        "hex": "#00ff00",
+        "dataset_count": 0
+    },
+    "Limegreen": {
+        "bgr": [
+            50,
+            205,
+            50
+        ],
+        "label_jp": "Limegreen",
+        "en": "limegreen",
+        "hex": "#32cd32",
+        "dataset_count": 0
+    },
+    "Linen": {
+        "bgr": [
+            230,
+            240,
+            250
+        ],
+        "label_jp": "Linen",
+        "en": "linen",
+        "hex": "#faf0e6",
+        "dataset_count": 0
+    },
+    "Mediumaquamarine": {
+        "bgr": [
+            170,
+            205,
+            102
+        ],
+        "label_jp": "Mediumaquamarine",
+        "en": "mediumaquamarine",
+        "hex": "#66cdaa",
+        "dataset_count": 0
+    },
+    "Mediumblue": {
+        "bgr": [
+            205,
+            0,
+            0
+        ],
+        "label_jp": "Mediumblue",
+        "en": "mediumblue",
+        "hex": "#0000cd",
+        "dataset_count": 0
+    },
+    "Mediumorchid": {
+        "bgr": [
+            211,
+            85,
+            186
+        ],
+        "label_jp": "Mediumorchid",
+        "en": "mediumorchid",
+        "hex": "#ba55d3",
+        "dataset_count": 0
+    },
+    "Mediumpurple": {
+        "bgr": [
+            219,
+            112,
+            147
+        ],
+        "label_jp": "Mediumpurple",
+        "en": "mediumpurple",
+        "hex": "#9370db",
+        "dataset_count": 0
+    },
+    "Mediumseagreen": {
+        "bgr": [
+            113,
+            179,
+            60
+        ],
+        "label_jp": "Mediumseagreen",
+        "en": "mediumseagreen",
+        "hex": "#3cb371",
+        "dataset_count": 0
+    },
+    "Mediumslateblue": {
+        "bgr": [
+            238,
+            104,
+            123
+        ],
+        "label_jp": "Mediumslateblue",
+        "en": "mediumslateblue",
+        "hex": "#7b68ee",
+        "dataset_count": 0
+    },
+    "Mediumspringgreen": {
+        "bgr": [
+            154,
+            250,
+            0
+        ],
+        "label_jp": "Mediumspringgreen",
+        "en": "mediumspringgreen",
+        "hex": "#00fa9a",
+        "dataset_count": 0
+    },
+    "Mediumturquoise": {
+        "bgr": [
+            204,
+            209,
+            72
+        ],
+        "label_jp": "Mediumturquoise",
+        "en": "mediumturquoise",
+        "hex": "#48d1cc",
+        "dataset_count": 0
+    },
+    "Mediumvioletred": {
+        "bgr": [
+            133,
+            21,
+            199
+        ],
+        "label_jp": "Mediumvioletred",
+        "en": "mediumvioletred",
+        "hex": "#c71585",
+        "dataset_count": 0
+    },
+    "Midnightblue": {
+        "bgr": [
+            112,
+            25,
+            25
+        ],
+        "label_jp": "Midnightblue",
+        "en": "midnightblue",
+        "hex": "#191970",
+        "dataset_count": 0
+    },
+    "Mintcream": {
+        "bgr": [
+            250,
+            255,
+            245
+        ],
+        "label_jp": "Mintcream",
+        "en": "mintcream",
+        "hex": "#f5fffa",
+        "dataset_count": 0
+    },
+    "Mistyrose": {
+        "bgr": [
+            225,
+            228,
+            255
+        ],
+        "label_jp": "Mistyrose",
+        "en": "mistyrose",
+        "hex": "#ffe4e1",
+        "dataset_count": 0
+    },
+    "Moccasin": {
+        "bgr": [
+            181,
+            228,
+            255
+        ],
+        "label_jp": "Moccasin",
+        "en": "moccasin",
+        "hex": "#ffe4b5",
+        "dataset_count": 0
+    },
+    "Navajowhite": {
+        "bgr": [
+            173,
+            222,
+            255
+        ],
+        "label_jp": "Navajowhite",
+        "en": "navajowhite",
+        "hex": "#ffdead",
+        "dataset_count": 0
+    },
+    "Navy": {
+        "bgr": [
+            128,
+            0,
+            0
+        ],
+        "label_jp": "Navy",
+        "en": "navy",
+        "hex": "#000080",
+        "dataset_count": 0
+    },
+    "Oldlace": {
+        "bgr": [
+            230,
+            245,
+            253
+        ],
+        "label_jp": "Oldlace",
+        "en": "oldlace",
+        "hex": "#fdf5e6",
+        "dataset_count": 0
+    },
+    "Olivedrab": {
+        "bgr": [
+            35,
+            142,
+            107
+        ],
+        "label_jp": "Olivedrab",
+        "en": "olivedrab",
+        "hex": "#6b8e23",
+        "dataset_count": 0
+    },
+    "Orangered": {
+        "bgr": [
+            0,
+            69,
+            255
+        ],
+        "label_jp": "Orangered",
+        "en": "orangered",
+        "hex": "#ff4500",
+        "dataset_count": 0
+    },
+    "Orchid": {
+        "bgr": [
+            214,
+            112,
+            218
+        ],
+        "label_jp": "Orchid",
+        "en": "orchid",
+        "hex": "#da70d6",
+        "dataset_count": 0
+    },
+    "Palegoldenrod": {
+        "bgr": [
+            170,
+            232,
+            238
+        ],
+        "label_jp": "Palegoldenrod",
+        "en": "palegoldenrod",
+        "hex": "#eee8aa",
+        "dataset_count": 0
+    },
+    "Palegreen": {
+        "bgr": [
+            152,
+            251,
+            152
+        ],
+        "label_jp": "Palegreen",
+        "en": "palegreen",
+        "hex": "#98fb98",
+        "dataset_count": 0
+    },
+    "Paleturquoise": {
+        "bgr": [
+            238,
+            238,
+            175
+        ],
+        "label_jp": "Paleturquoise",
+        "en": "paleturquoise",
+        "hex": "#afeeee",
+        "dataset_count": 0
+    },
+    "Palevioletred": {
+        "bgr": [
+            147,
+            112,
+            219
+        ],
+        "label_jp": "Palevioletred",
+        "en": "palevioletred",
+        "hex": "#db7093",
+        "dataset_count": 0
+    },
+    "Papayawhip": {
+        "bgr": [
+            213,
+            239,
+            255
+        ],
+        "label_jp": "Papayawhip",
+        "en": "papayawhip",
+        "hex": "#ffefd5",
+        "dataset_count": 0
+    },
+    "Peachpuff": {
+        "bgr": [
+            185,
+            218,
+            255
+        ],
+        "label_jp": "Peachpuff",
+        "en": "peachpuff",
+        "hex": "#ffdab9",
+        "dataset_count": 0
+    },
+    "Peru": {
+        "bgr": [
+            63,
+            133,
+            205
+        ],
+        "label_jp": "Peru",
+        "en": "peru",
+        "hex": "#cd853f",
+        "dataset_count": 0
+    },
+    "Plum": {
+        "bgr": [
+            221,
+            160,
+            221
+        ],
+        "label_jp": "Plum",
+        "en": "plum",
+        "hex": "#dda0dd",
+        "dataset_count": 0
+    },
+    "Powderblue": {
+        "bgr": [
+            230,
+            224,
+            176
+        ],
+        "label_jp": "Powderblue",
+        "en": "powderblue",
+        "hex": "#b0e0e6",
+        "dataset_count": 0
+    },
+    "Rosybrown": {
+        "bgr": [
+            143,
+            143,
+            188
+        ],
+        "label_jp": "Rosybrown",
+        "en": "rosybrown",
+        "hex": "#bc8f8f",
+        "dataset_count": 0
+    },
+    "Royalblue": {
+        "bgr": [
+            225,
+            105,
+            65
+        ],
+        "label_jp": "Royalblue",
+        "en": "royalblue",
+        "hex": "#4169e1",
+        "dataset_count": 0
+    },
+    "Saddlebrown": {
+        "bgr": [
+            19,
+            69,
+            139
+        ],
+        "label_jp": "Saddlebrown",
+        "en": "saddlebrown",
+        "hex": "#8b4513",
+        "dataset_count": 0
+    },
+    "Salmon": {
+        "bgr": [
+            114,
+            128,
+            250
+        ],
+        "label_jp": "Salmon",
+        "en": "salmon",
+        "hex": "#fa8072",
+        "dataset_count": 0
+    },
+    "Sandybrown": {
+        "bgr": [
+            96,
+            164,
+            244
+        ],
+        "label_jp": "Sandybrown",
+        "en": "sandybrown",
+        "hex": "#f4a460",
+        "dataset_count": 0
+    },
+    "Seagreen": {
+        "bgr": [
+            87,
+            139,
+            46
+        ],
+        "label_jp": "Seagreen",
+        "en": "seagreen",
+        "hex": "#2e8b57",
+        "dataset_count": 0
+    },
+    "Seashell": {
+        "bgr": [
+            238,
+            245,
+            255
+        ],
+        "label_jp": "Seashell",
+        "en": "seashell",
+        "hex": "#fff5ee",
+        "dataset_count": 0
+    },
+    "Sienna": {
+        "bgr": [
+            45,
+            82,
+            160
+        ],
+        "label_jp": "Sienna",
+        "en": "sienna",
+        "hex": "#a0522d",
+        "dataset_count": 0
+    },
+    "Skyblue": {
+        "bgr": [
+            235,
+            206,
+            135
+        ],
+        "label_jp": "Skyblue",
+        "en": "skyblue",
+        "hex": "#87ceeb",
+        "dataset_count": 0
+    },
+    "Slateblue": {
+        "bgr": [
+            205,
+            90,
+            106
+        ],
+        "label_jp": "Slateblue",
+        "en": "slateblue",
+        "hex": "#6a5acd",
+        "dataset_count": 0
+    },
+    "Slategray": {
+        "bgr": [
+            144,
+            128,
+            112
+        ],
+        "label_jp": "Slategray",
+        "en": "slategray",
+        "hex": "#708090",
+        "dataset_count": 0
+    },
+    "Slategrey": {
+        "bgr": [
+            144,
+            128,
+            112
+        ],
+        "label_jp": "Slategrey",
+        "en": "slategrey",
+        "hex": "#708090",
+        "dataset_count": 0
+    },
+    "Snow": {
+        "bgr": [
+            250,
+            250,
+            255
+        ],
+        "label_jp": "Snow",
+        "en": "snow",
+        "hex": "#fffafa",
+        "dataset_count": 0
+    },
+    "Springgreen": {
+        "bgr": [
+            127,
+            255,
+            0
+        ],
+        "label_jp": "Springgreen",
+        "en": "springgreen",
+        "hex": "#00ff7f",
+        "dataset_count": 0
+    },
+    "Steelblue": {
+        "bgr": [
+            180,
+            130,
+            70
+        ],
+        "label_jp": "Steelblue",
+        "en": "steelblue",
+        "hex": "#4682b4",
+        "dataset_count": 0
+    },
+    "Thistle": {
+        "bgr": [
+            216,
+            191,
+            216
+        ],
+        "label_jp": "Thistle",
+        "en": "thistle",
+        "hex": "#d8bfd8",
+        "dataset_count": 0
+    },
+    "Tomato": {
+        "bgr": [
+            71,
+            99,
+            255
+        ],
+        "label_jp": "Tomato",
+        "en": "tomato",
+        "hex": "#ff6347",
+        "dataset_count": 0
+    },
+    "Turquoise": {
+        "bgr": [
+            208,
+            224,
+            64
+        ],
+        "label_jp": "Turquoise",
+        "en": "turquoise",
+        "hex": "#40e0d0",
+        "dataset_count": 0
+    },
+    "Violet": {
+        "bgr": [
+            238,
+            130,
+            238
+        ],
+        "label_jp": "Violet",
+        "en": "violet",
+        "hex": "#ee82ee",
+        "dataset_count": 0
+    },
+    "Wheat": {
+        "bgr": [
+            179,
+            222,
+            245
+        ],
+        "label_jp": "Wheat",
+        "en": "wheat",
+        "hex": "#f5deb3",
+        "dataset_count": 0
+    },
+    "Whitesmoke": {
+        "bgr": [
+            245,
+            245,
+            245
+        ],
+        "label_jp": "Whitesmoke",
+        "en": "whitesmoke",
+        "hex": "#f5f5f5",
+        "dataset_count": 0
+    },
+    "Yellowgreen": {
+        "bgr": [
+            50,
+            205,
+            154
+        ],
+        "label_jp": "Yellowgreen",
+        "en": "yellowgreen",
+        "hex": "#9acd32",
+        "dataset_count": 0
+    }
+}

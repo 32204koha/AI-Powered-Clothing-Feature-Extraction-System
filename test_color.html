@@ -11,6 +11,7 @@
         button:disabled { background: #ccc; cursor: not-allowed; }
         img { max-width: 100%; border-radius: 5px; margin-top: 10px; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         #statusBox { background: #e8f0fe; color: #1967d2; padding: 12px; border-radius: 6px; font-weight: bold; margin-bottom: 15px; text-align: center; display: none; }
+        .color-result-box { background: #f1f3f5; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 15px; text-align: left; }
     </style>
 </head>
 <body>
@@ -31,8 +32,13 @@
 
     <div id="statusBox">準備中...</div>
 
-    <!-- 結果表示部分に色を追加 -->
-    <h3>結果（<span id="currentModelName">u2net</span>） - 判定カラー: <span id="colorResult" style="color: #007BFF;">-</span></h3>
+    <!-- 🌟 1位と2位の色を表示するセクション -->
+    <div class="color-result-box">
+        <h3>結果（<span id="currentModelName">u2net</span>）</h3>
+        <p style="margin: 5px 0;">🎨 <b>第1位（メインカラー）:</b> <span id="colorResult" style="color: #007BFF; font-weight: bold;">-</span></p>
+        <p style="margin: 5px 0;">🥈 <b>第2位（サブカラー）:</b> <span id="secondColorResult" style="color: #495057; font-weight: bold;">-</span></p>
+    </div>
+
     <img id="resultImg" alt="切り抜き結果">
 
     <script>
@@ -111,7 +117,11 @@
 
                 if (data.status === "success") {
                     statusBox.textContent = `✨ 完了！ (所要時間: ${seconds}秒)`;
-                    document.getElementById('colorResult').textContent = data.detected_color; // 🌟 判定色を表示
+                    
+                    // 🌟 サーバーから返ってきた1位と2位の色をそれぞれ画面に反映
+                    document.getElementById('colorResult').textContent = data.detected_color;
+                    document.getElementById('secondColorResult').textContent = data.second_color;
+                    
                     resultImg.src = data.image_url + "?t=" + new Date().getTime();
                     resultImg.style.display = 'block';
                 } else {

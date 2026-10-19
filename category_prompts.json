@@ -1,0 +1,1146 @@
+{
+    "Tshirts": {
+        "count": 7070,
+        "prompts": [
+            "a photo of a casual tshirts",
+            "a close-up photo of a tshirts apparel item",
+            "a fashion product photo of a tshirts"
+        ]
+    },
+    "Shirts": {
+        "count": 3217,
+        "prompts": [
+            "a photo of a casual shirts",
+            "a close-up photo of a shirts apparel item",
+            "a fashion product photo of a shirts"
+        ]
+    },
+    "Casual Shoes": {
+        "count": 2846,
+        "prompts": [
+            "a photo of a casual casual shoes",
+            "a close-up photo of a casual shoes apparel item",
+            "a fashion product photo of a casual shoes"
+        ]
+    },
+    "Watches": {
+        "count": 2542,
+        "prompts": [
+            "a photo of a casual watches",
+            "a close-up photo of a watches apparel item",
+            "a fashion product photo of a watches"
+        ]
+    },
+    "Sports Shoes": {
+        "count": 2036,
+        "prompts": [
+            "a photo of a casual sports shoes",
+            "a close-up photo of a sports shoes apparel item",
+            "a fashion product photo of a sports shoes"
+        ]
+    },
+    "Kurtas": {
+        "count": 1844,
+        "prompts": [
+            "a photo of a casual kurtas",
+            "a close-up photo of a kurtas apparel item",
+            "a fashion product photo of a kurtas"
+        ]
+    },
+    "Tops": {
+        "count": 1762,
+        "prompts": [
+            "a photo of a casual tops",
+            "a close-up photo of a tops apparel item",
+            "a fashion product photo of a tops"
+        ]
+    },
+    "Handbags": {
+        "count": 1759,
+        "prompts": [
+            "a photo of a casual handbags",
+            "a close-up photo of a handbags apparel item",
+            "a fashion product photo of a handbags"
+        ]
+    },
+    "Heels": {
+        "count": 1323,
+        "prompts": [
+            "a photo of a casual heels",
+            "a close-up photo of a heels apparel item",
+            "a fashion product photo of a heels"
+        ]
+    },
+    "Sunglasses": {
+        "count": 1073,
+        "prompts": [
+            "a photo of a casual sunglasses",
+            "a close-up photo of a sunglasses apparel item",
+            "a fashion product photo of a sunglasses"
+        ]
+    },
+    "Wallets": {
+        "count": 936,
+        "prompts": [
+            "a photo of a casual wallets",
+            "a close-up photo of a wallets apparel item",
+            "a fashion product photo of a wallets"
+        ]
+    },
+    "Flip Flops": {
+        "count": 916,
+        "prompts": [
+            "a photo of a casual flip flops",
+            "a close-up photo of a flip flops apparel item",
+            "a fashion product photo of a flip flops"
+        ]
+    },
+    "Sandals": {
+        "count": 897,
+        "prompts": [
+            "a photo of a casual sandals",
+            "a close-up photo of a sandals apparel item",
+            "a fashion product photo of a sandals"
+        ]
+    },
+    "Briefs": {
+        "count": 849,
+        "prompts": [
+            "a photo of a casual briefs",
+            "a close-up photo of a briefs apparel item",
+            "a fashion product photo of a briefs"
+        ]
+    },
+    "Belts": {
+        "count": 813,
+        "prompts": [
+            "a photo of a casual belts",
+            "a close-up photo of a belts apparel item",
+            "a fashion product photo of a belts"
+        ]
+    },
+    "Backpacks": {
+        "count": 724,
+        "prompts": [
+            "a photo of a casual backpacks",
+            "a close-up photo of a backpacks apparel item",
+            "a fashion product photo of a backpacks"
+        ]
+    },
+    "Socks": {
+        "count": 686,
+        "prompts": [
+            "a photo of a casual socks",
+            "a close-up photo of a socks apparel item",
+            "a fashion product photo of a socks"
+        ]
+    },
+    "Formal Shoes": {
+        "count": 637,
+        "prompts": [
+            "a photo of a casual formal shoes",
+            "a close-up photo of a formal shoes apparel item",
+            "a fashion product photo of a formal shoes"
+        ]
+    },
+    "Perfume and Body Mist": {
+        "count": 614,
+        "prompts": [
+            "a photo of a casual perfume and body mist",
+            "a close-up photo of a perfume and body mist apparel item",
+            "a fashion product photo of a perfume and body mist"
+        ]
+    },
+    "Jeans": {
+        "count": 609,
+        "prompts": [
+            "a photo of a casual jeans",
+            "a close-up photo of a jeans apparel item",
+            "a fashion product photo of a jeans"
+        ]
+    },
+    "Shorts": {
+        "count": 547,
+        "prompts": [
+            "a photo of a casual shorts",
+            "a close-up photo of a shorts apparel item",
+            "a fashion product photo of a shorts"
+        ]
+    },
+    "Trousers": {
+        "count": 530,
+        "prompts": [
+            "a photo of a casual trousers",
+            "a close-up photo of a trousers apparel item",
+            "a fashion product photo of a trousers"
+        ]
+    },
+    "Flats": {
+        "count": 500,
+        "prompts": [
+            "a photo of a casual flats",
+            "a close-up photo of a flats apparel item",
+            "a fashion product photo of a flats"
+        ]
+    },
+    "Bra": {
+        "count": 477,
+        "prompts": [
+            "a photo of a casual bra",
+            "a close-up photo of a bra apparel item",
+            "a fashion product photo of a bra"
+        ]
+    },
+    "Dresses": {
+        "count": 464,
+        "prompts": [
+            "a photo of a casual dresses",
+            "a close-up photo of a dresses apparel item",
+            "a fashion product photo of a dresses"
+        ]
+    },
+    "Sarees": {
+        "count": 427,
+        "prompts": [
+            "a photo of a casual sarees",
+            "a close-up photo of a sarees apparel item",
+            "a fashion product photo of a sarees"
+        ]
+    },
+    "Earrings": {
+        "count": 417,
+        "prompts": [
+            "a photo of a casual earrings",
+            "a close-up photo of a earrings apparel item",
+            "a fashion product photo of a earrings"
+        ]
+    },
+    "Deodorant": {
+        "count": 347,
+        "prompts": [
+            "a photo of a casual deodorant",
+            "a close-up photo of a deodorant apparel item",
+            "a fashion product photo of a deodorant"
+        ]
+    },
+    "Nail Polish": {
+        "count": 329,
+        "prompts": [
+            "a photo of a casual nail polish",
+            "a close-up photo of a nail polish apparel item",
+            "a fashion product photo of a nail polish"
+        ]
+    },
+    "Lipstick": {
+        "count": 315,
+        "prompts": [
+            "a photo of a casual lipstick",
+            "a close-up photo of a lipstick apparel item",
+            "a fashion product photo of a lipstick"
+        ]
+    },
+    "Track Pants": {
+        "count": 304,
+        "prompts": [
+            "a photo of a casual track pants",
+            "a close-up photo of a track pants apparel item",
+            "a fashion product photo of a track pants"
+        ]
+    },
+    "Clutches": {
+        "count": 290,
+        "prompts": [
+            "a photo of a casual clutches",
+            "a close-up photo of a clutches apparel item",
+            "a fashion product photo of a clutches"
+        ]
+    },
+    "Sweatshirts": {
+        "count": 285,
+        "prompts": [
+            "a photo of a casual sweatshirts",
+            "a close-up photo of a sweatshirts apparel item",
+            "a fashion product photo of a sweatshirts"
+        ]
+    },
+    "Caps": {
+        "count": 283,
+        "prompts": [
+            "a photo of a casual caps",
+            "a close-up photo of a caps apparel item",
+            "a fashion product photo of a caps"
+        ]
+    },
+    "Sweaters": {
+        "count": 277,
+        "prompts": [
+            "a photo of a casual sweaters",
+            "a close-up photo of a sweaters apparel item",
+            "a fashion product photo of a sweaters"
+        ]
+    },
+    "Ties": {
+        "count": 263,
+        "prompts": [
+            "a photo of a casual ties",
+            "a close-up photo of a ties apparel item",
+            "a fashion product photo of a ties"
+        ]
+    },
+    "Jackets": {
+        "count": 258,
+        "prompts": [
+            "a photo of a casual jackets",
+            "a close-up photo of a jackets apparel item",
+            "a fashion product photo of a jackets"
+        ]
+    },
+    "Innerwear Vests": {
+        "count": 242,
+        "prompts": [
+            "a photo of a casual innerwear vests",
+            "a close-up photo of a innerwear vests apparel item",
+            "a fashion product photo of a innerwear vests"
+        ]
+    },
+    "Kurtis": {
+        "count": 234,
+        "prompts": [
+            "a photo of a casual kurtis",
+            "a close-up photo of a kurtis apparel item",
+            "a fashion product photo of a kurtis"
+        ]
+    },
+    "Tunics": {
+        "count": 229,
+        "prompts": [
+            "a photo of a casual tunics",
+            "a close-up photo of a tunics apparel item",
+            "a fashion product photo of a tunics"
+        ]
+    },
+    "Nightdress": {
+        "count": 189,
+        "prompts": [
+            "a photo of a casual nightdress",
+            "a close-up photo of a nightdress apparel item",
+            "a fashion product photo of a nightdress"
+        ]
+    },
+    "Leggings": {
+        "count": 177,
+        "prompts": [
+            "a photo of a casual leggings",
+            "a close-up photo of a leggings apparel item",
+            "a fashion product photo of a leggings"
+        ]
+    },
+    "Pendant": {
+        "count": 176,
+        "prompts": [
+            "a photo of a casual pendant",
+            "a close-up photo of a pendant apparel item",
+            "a fashion product photo of a pendant"
+        ]
+    },
+    "Capris": {
+        "count": 175,
+        "prompts": [
+            "a photo of a casual capris",
+            "a close-up photo of a capris apparel item",
+            "a fashion product photo of a capris"
+        ]
+    },
+    "Necklace and Chains": {
+        "count": 160,
+        "prompts": [
+            "a photo of a casual necklace and chains",
+            "a close-up photo of a necklace and chains apparel item",
+            "a fashion product photo of a necklace and chains"
+        ]
+    },
+    "Lip Gloss": {
+        "count": 144,
+        "prompts": [
+            "a photo of a casual lip gloss",
+            "a close-up photo of a lip gloss apparel item",
+            "a fashion product photo of a lip gloss"
+        ]
+    },
+    "Night suits": {
+        "count": 141,
+        "prompts": [
+            "a photo of a casual night suits",
+            "a close-up photo of a night suits apparel item",
+            "a fashion product photo of a night suits"
+        ]
+    },
+    "Trunk": {
+        "count": 140,
+        "prompts": [
+            "a photo of a casual trunk",
+            "a close-up photo of a trunk apparel item",
+            "a fashion product photo of a trunk"
+        ]
+    },
+    "Skirts": {
+        "count": 128,
+        "prompts": [
+            "a photo of a casual skirts",
+            "a close-up photo of a skirts apparel item",
+            "a fashion product photo of a skirts"
+        ]
+    },
+    "Scarves": {
+        "count": 119,
+        "prompts": [
+            "a photo of a casual scarves",
+            "a close-up photo of a scarves apparel item",
+            "a fashion product photo of a scarves"
+        ]
+    },
+    "Ring": {
+        "count": 118,
+        "prompts": [
+            "a photo of a casual ring",
+            "a close-up photo of a ring apparel item",
+            "a fashion product photo of a ring"
+        ]
+    },
+    "Dupatta": {
+        "count": 116,
+        "prompts": [
+            "a photo of a casual dupatta",
+            "a close-up photo of a dupatta apparel item",
+            "a fashion product photo of a dupatta"
+        ]
+    },
+    "Accessory Gift Set": {
+        "count": 111,
+        "prompts": [
+            "a photo of a casual accessory gift set",
+            "a close-up photo of a accessory gift set apparel item",
+            "a fashion product photo of a accessory gift set"
+        ]
+    },
+    "Cufflinks": {
+        "count": 106,
+        "prompts": [
+            "a photo of a casual cufflinks",
+            "a close-up photo of a cufflinks apparel item",
+            "a fashion product photo of a cufflinks"
+        ]
+    },
+    "Kajal and Eyeliner": {
+        "count": 102,
+        "prompts": [
+            "a photo of a casual kajal and eyeliner",
+            "a close-up photo of a kajal and eyeliner apparel item",
+            "a fashion product photo of a kajal and eyeliner"
+        ]
+    },
+    "Kurta Sets": {
+        "count": 94,
+        "prompts": [
+            "a photo of a casual kurta sets",
+            "a close-up photo of a kurta sets apparel item",
+            "a fashion product photo of a kurta sets"
+        ]
+    },
+    "Free Gifts": {
+        "count": 91,
+        "prompts": [
+            "a photo of a casual free gifts",
+            "a close-up photo of a free gifts apparel item",
+            "a fashion product photo of a free gifts"
+        ]
+    },
+    "Stoles": {
+        "count": 90,
+        "prompts": [
+            "a photo of a casual stoles",
+            "a close-up photo of a stoles apparel item",
+            "a fashion product photo of a stoles"
+        ]
+    },
+    "Duffel Bag": {
+        "count": 88,
+        "prompts": [
+            "a photo of a casual duffel bag",
+            "a close-up photo of a duffel bag apparel item",
+            "a fashion product photo of a duffel bag"
+        ]
+    },
+    "Bangle": {
+        "count": 85,
+        "prompts": [
+            "a photo of a casual bangle",
+            "a close-up photo of a bangle apparel item",
+            "a fashion product photo of a bangle"
+        ]
+    },
+    "Laptop Bag": {
+        "count": 82,
+        "prompts": [
+            "a photo of a casual laptop bag",
+            "a close-up photo of a laptop bag apparel item",
+            "a fashion product photo of a laptop bag"
+        ]
+    },
+    "Foundation and Primer": {
+        "count": 76,
+        "prompts": [
+            "a photo of a casual foundation and primer",
+            "a close-up photo of a foundation and primer apparel item",
+            "a fashion product photo of a foundation and primer"
+        ]
+    },
+    "Sports Sandals": {
+        "count": 67,
+        "prompts": [
+            "a photo of a casual sports sandals",
+            "a close-up photo of a sports sandals apparel item",
+            "a fashion product photo of a sports sandals"
+        ]
+    },
+    "Bracelet": {
+        "count": 66,
+        "prompts": [
+            "a photo of a casual bracelet",
+            "a close-up photo of a bracelet apparel item",
+            "a fashion product photo of a bracelet"
+        ]
+    },
+    "Lounge Pants": {
+        "count": 61,
+        "prompts": [
+            "a photo of a casual lounge pants",
+            "a close-up photo of a lounge pants apparel item",
+            "a fashion product photo of a lounge pants"
+        ]
+    },
+    "Face Moisturisers": {
+        "count": 61,
+        "prompts": [
+            "a photo of a casual face moisturisers",
+            "a close-up photo of a face moisturisers apparel item",
+            "a fashion product photo of a face moisturisers"
+        ]
+    },
+    "Jewellery Set": {
+        "count": 58,
+        "prompts": [
+            "a photo of a casual jewellery set",
+            "a close-up photo of a jewellery set apparel item",
+            "a fashion product photo of a jewellery set"
+        ]
+    },
+    "Fragrance Gift Set": {
+        "count": 57,
+        "prompts": [
+            "a photo of a casual fragrance gift set",
+            "a close-up photo of a fragrance gift set apparel item",
+            "a fashion product photo of a fragrance gift set"
+        ]
+    },
+    "Highlighter and Blush": {
+        "count": 53,
+        "prompts": [
+            "a photo of a casual highlighter and blush",
+            "a close-up photo of a highlighter and blush apparel item",
+            "a fashion product photo of a highlighter and blush"
+        ]
+    },
+    "Boxers": {
+        "count": 52,
+        "prompts": [
+            "a photo of a casual boxers",
+            "a close-up photo of a boxers apparel item",
+            "a fashion product photo of a boxers"
+        ]
+    },
+    "Compact": {
+        "count": 49,
+        "prompts": [
+            "a photo of a casual compact",
+            "a close-up photo of a compact apparel item",
+            "a fashion product photo of a compact"
+        ]
+    },
+    "Lip Liner": {
+        "count": 48,
+        "prompts": [
+            "a photo of a casual lip liner",
+            "a close-up photo of a lip liner apparel item",
+            "a fashion product photo of a lip liner"
+        ]
+    },
+    "Mobile Pouch": {
+        "count": 47,
+        "prompts": [
+            "a photo of a casual mobile pouch",
+            "a close-up photo of a mobile pouch apparel item",
+            "a fashion product photo of a mobile pouch"
+        ]
+    },
+    "Messenger Bag": {
+        "count": 44,
+        "prompts": [
+            "a photo of a casual messenger bag",
+            "a close-up photo of a messenger bag apparel item",
+            "a fashion product photo of a messenger bag"
+        ]
+    },
+    "Eyeshadow": {
+        "count": 42,
+        "prompts": [
+            "a photo of a casual eyeshadow",
+            "a close-up photo of a eyeshadow apparel item",
+            "a fashion product photo of a eyeshadow"
+        ]
+    },
+    "Suspenders": {
+        "count": 40,
+        "prompts": [
+            "a photo of a casual suspenders",
+            "a close-up photo of a suspenders apparel item",
+            "a fashion product photo of a suspenders"
+        ]
+    },
+    "Camisoles": {
+        "count": 39,
+        "prompts": [
+            "a photo of a casual camisoles",
+            "a close-up photo of a camisoles apparel item",
+            "a fashion product photo of a camisoles"
+        ]
+    },
+    "Mufflers": {
+        "count": 38,
+        "prompts": [
+            "a photo of a casual mufflers",
+            "a close-up photo of a mufflers apparel item",
+            "a fashion product photo of a mufflers"
+        ]
+    },
+    "Patiala": {
+        "count": 38,
+        "prompts": [
+            "a photo of a casual patiala",
+            "a close-up photo of a patiala apparel item",
+            "a fashion product photo of a patiala"
+        ]
+    },
+    "Lounge Shorts": {
+        "count": 34,
+        "prompts": [
+            "a photo of a casual lounge shorts",
+            "a close-up photo of a lounge shorts apparel item",
+            "a fashion product photo of a lounge shorts"
+        ]
+    },
+    "Jeggings": {
+        "count": 34,
+        "prompts": [
+            "a photo of a casual jeggings",
+            "a close-up photo of a jeggings apparel item",
+            "a fashion product photo of a jeggings"
+        ]
+    },
+    "Stockings": {
+        "count": 32,
+        "prompts": [
+            "a photo of a casual stockings",
+            "a close-up photo of a stockings apparel item",
+            "a fashion product photo of a stockings"
+        ]
+    },
+    "Salwar": {
+        "count": 32,
+        "prompts": [
+            "a photo of a casual salwar",
+            "a close-up photo of a salwar apparel item",
+            "a fashion product photo of a salwar"
+        ]
+    },
+    "Churidar": {
+        "count": 30,
+        "prompts": [
+            "a photo of a casual churidar",
+            "a close-up photo of a churidar apparel item",
+            "a fashion product photo of a churidar"
+        ]
+    },
+    "Tracksuits": {
+        "count": 29,
+        "prompts": [
+            "a photo of a casual tracksuits",
+            "a close-up photo of a tracksuits apparel item",
+            "a fashion product photo of a tracksuits"
+        ]
+    },
+    "Face Wash and Cleanser": {
+        "count": 28,
+        "prompts": [
+            "a photo of a casual face wash and cleanser",
+            "a close-up photo of a face wash and cleanser apparel item",
+            "a fashion product photo of a face wash and cleanser"
+        ]
+    },
+    "Sunscreen": {
+        "count": 25,
+        "prompts": [
+            "a photo of a casual sunscreen",
+            "a close-up photo of a sunscreen apparel item",
+            "a fashion product photo of a sunscreen"
+        ]
+    },
+    "Shoe Accessories": {
+        "count": 23,
+        "prompts": [
+            "a photo of a casual shoe accessories",
+            "a close-up photo of a shoe accessories apparel item",
+            "a fashion product photo of a shoe accessories"
+        ]
+    },
+    "Bath Robe": {
+        "count": 20,
+        "prompts": [
+            "a photo of a casual bath robe",
+            "a close-up photo of a bath robe apparel item",
+            "a fashion product photo of a bath robe"
+        ]
+    },
+    "Gloves": {
+        "count": 20,
+        "prompts": [
+            "a photo of a casual gloves",
+            "a close-up photo of a gloves apparel item",
+            "a fashion product photo of a gloves"
+        ]
+    },
+    "Hair Colour": {
+        "count": 19,
+        "prompts": [
+            "a photo of a casual hair colour",
+            "a close-up photo of a hair colour apparel item",
+            "a fashion product photo of a hair colour"
+        ]
+    },
+    "Rain Jacket": {
+        "count": 18,
+        "prompts": [
+            "a photo of a casual rain jacket",
+            "a close-up photo of a rain jacket apparel item",
+            "a fashion product photo of a rain jacket"
+        ]
+    },
+    "Swimwear": {
+        "count": 17,
+        "prompts": [
+            "a photo of a casual swimwear",
+            "a close-up photo of a swimwear apparel item",
+            "a fashion product photo of a swimwear"
+        ]
+    },
+    "Waist Pouch": {
+        "count": 17,
+        "prompts": [
+            "a photo of a casual waist pouch",
+            "a close-up photo of a waist pouch apparel item",
+            "a fashion product photo of a waist pouch"
+        ]
+    },
+    "Baby Dolls": {
+        "count": 16,
+        "prompts": [
+            "a photo of a casual baby dolls",
+            "a close-up photo of a baby dolls apparel item",
+            "a fashion product photo of a baby dolls"
+        ]
+    },
+    "Travel Accessory": {
+        "count": 16,
+        "prompts": [
+            "a photo of a casual travel accessory",
+            "a close-up photo of a travel accessory apparel item",
+            "a fashion product photo of a travel accessory"
+        ]
+    },
+    "Lip Care": {
+        "count": 16,
+        "prompts": [
+            "a photo of a casual lip care",
+            "a close-up photo of a lip care apparel item",
+            "a fashion product photo of a lip care"
+        ]
+    },
+    "Jumpsuit": {
+        "count": 16,
+        "prompts": [
+            "a photo of a casual jumpsuit",
+            "a close-up photo of a jumpsuit apparel item",
+            "a fashion product photo of a jumpsuit"
+        ]
+    },
+    "Waistcoat": {
+        "count": 15,
+        "prompts": [
+            "a photo of a casual waistcoat",
+            "a close-up photo of a waistcoat apparel item",
+            "a fashion product photo of a waistcoat"
+        ]
+    },
+    "Basketballs": {
+        "count": 13,
+        "prompts": [
+            "a photo of a casual basketballs",
+            "a close-up photo of a basketballs apparel item",
+            "a fashion product photo of a basketballs"
+        ]
+    },
+    "Mascara": {
+        "count": 13,
+        "prompts": [
+            "a photo of a casual mascara",
+            "a close-up photo of a mascara apparel item",
+            "a fashion product photo of a mascara"
+        ]
+    },
+    "Mask and Peel": {
+        "count": 12,
+        "prompts": [
+            "a photo of a casual mask and peel",
+            "a close-up photo of a mask and peel apparel item",
+            "a fashion product photo of a mask and peel"
+        ]
+    },
+    "Rompers": {
+        "count": 12,
+        "prompts": [
+            "a photo of a casual rompers",
+            "a close-up photo of a rompers apparel item",
+            "a fashion product photo of a rompers"
+        ]
+    },
+    "Booties": {
+        "count": 12,
+        "prompts": [
+            "a photo of a casual booties",
+            "a close-up photo of a booties apparel item",
+            "a fashion product photo of a booties"
+        ]
+    },
+    "Water Bottle": {
+        "count": 11,
+        "prompts": [
+            "a photo of a casual water bottle",
+            "a close-up photo of a water bottle apparel item",
+            "a fashion product photo of a water bottle"
+        ]
+    },
+    "Concealer": {
+        "count": 11,
+        "prompts": [
+            "a photo of a casual concealer",
+            "a close-up photo of a concealer apparel item",
+            "a fashion product photo of a concealer"
+        ]
+    },
+    "Rucksacks": {
+        "count": 11,
+        "prompts": [
+            "a photo of a casual rucksacks",
+            "a close-up photo of a rucksacks apparel item",
+            "a fashion product photo of a rucksacks"
+        ]
+    },
+    "Tights": {
+        "count": 9,
+        "prompts": [
+            "a photo of a casual tights",
+            "a close-up photo of a tights apparel item",
+            "a fashion product photo of a tights"
+        ]
+    },
+    "Shapewear": {
+        "count": 9,
+        "prompts": [
+            "a photo of a casual shapewear",
+            "a close-up photo of a shapewear apparel item",
+            "a fashion product photo of a shapewear"
+        ]
+    },
+    "Blazers": {
+        "count": 8,
+        "prompts": [
+            "a photo of a casual blazers",
+            "a close-up photo of a blazers apparel item",
+            "a fashion product photo of a blazers"
+        ]
+    },
+    "Footballs": {
+        "count": 8,
+        "prompts": [
+            "a photo of a casual footballs",
+            "a close-up photo of a footballs apparel item",
+            "a fashion product photo of a footballs"
+        ]
+    },
+    "Clothing Set": {
+        "count": 8,
+        "prompts": [
+            "a photo of a casual clothing set",
+            "a close-up photo of a clothing set apparel item",
+            "a fashion product photo of a clothing set"
+        ]
+    },
+    "Salwar and Dupatta": {
+        "count": 7,
+        "prompts": [
+            "a photo of a casual salwar and dupatta",
+            "a close-up photo of a salwar and dupatta apparel item",
+            "a fashion product photo of a salwar and dupatta"
+        ]
+    },
+    "Headband": {
+        "count": 7,
+        "prompts": [
+            "a photo of a casual headband",
+            "a close-up photo of a headband apparel item",
+            "a fashion product photo of a headband"
+        ]
+    },
+    "Wristbands": {
+        "count": 7,
+        "prompts": [
+            "a photo of a casual wristbands",
+            "a close-up photo of a wristbands apparel item",
+            "a fashion product photo of a wristbands"
+        ]
+    },
+    "Shrug": {
+        "count": 6,
+        "prompts": [
+            "a photo of a casual shrug",
+            "a close-up photo of a shrug apparel item",
+            "a fashion product photo of a shrug"
+        ]
+    },
+    "Eye Cream": {
+        "count": 6,
+        "prompts": [
+            "a photo of a casual eye cream",
+            "a close-up photo of a eye cream apparel item",
+            "a fashion product photo of a eye cream"
+        ]
+    },
+    "Nail Essentials": {
+        "count": 6,
+        "prompts": [
+            "a photo of a casual nail essentials",
+            "a close-up photo of a nail essentials apparel item",
+            "a fashion product photo of a nail essentials"
+        ]
+    },
+    "Body Lotion": {
+        "count": 6,
+        "prompts": [
+            "a photo of a casual body lotion",
+            "a close-up photo of a body lotion apparel item",
+            "a fashion product photo of a body lotion"
+        ]
+    },
+    "Umbrellas": {
+        "count": 6,
+        "prompts": [
+            "a photo of a casual umbrellas",
+            "a close-up photo of a umbrellas apparel item",
+            "a fashion product photo of a umbrellas"
+        ]
+    },
+    "Face Scrub and Exfoliator": {
+        "count": 5,
+        "prompts": [
+            "a photo of a casual face scrub and exfoliator",
+            "a close-up photo of a face scrub and exfoliator apparel item",
+            "a fashion product photo of a face scrub and exfoliator"
+        ]
+    },
+    "Nehru Jackets": {
+        "count": 5,
+        "prompts": [
+            "a photo of a casual nehru jackets",
+            "a close-up photo of a nehru jackets apparel item",
+            "a fashion product photo of a nehru jackets"
+        ]
+    },
+    "Toner": {
+        "count": 5,
+        "prompts": [
+            "a photo of a casual toner",
+            "a close-up photo of a toner apparel item",
+            "a fashion product photo of a toner"
+        ]
+    },
+    "Beauty Accessory": {
+        "count": 4,
+        "prompts": [
+            "a photo of a casual beauty accessory",
+            "a close-up photo of a beauty accessory apparel item",
+            "a fashion product photo of a beauty accessory"
+        ]
+    },
+    "Robe": {
+        "count": 4,
+        "prompts": [
+            "a photo of a casual robe",
+            "a close-up photo of a robe apparel item",
+            "a fashion product photo of a robe"
+        ]
+    },
+    "Lehenga Choli": {
+        "count": 4,
+        "prompts": [
+            "a photo of a casual lehenga choli",
+            "a close-up photo of a lehenga choli apparel item",
+            "a fashion product photo of a lehenga choli"
+        ]
+    },
+    "Makeup Remover": {
+        "count": 4,
+        "prompts": [
+            "a photo of a casual makeup remover",
+            "a close-up photo of a makeup remover apparel item",
+            "a fashion product photo of a makeup remover"
+        ]
+    },
+    "Lip Plumper": {
+        "count": 4,
+        "prompts": [
+            "a photo of a casual lip plumper",
+            "a close-up photo of a lip plumper apparel item",
+            "a fashion product photo of a lip plumper"
+        ]
+    },
+    "Trolley Bag": {
+        "count": 3,
+        "prompts": [
+            "a photo of a casual trolley bag",
+            "a close-up photo of a trolley bag apparel item",
+            "a fashion product photo of a trolley bag"
+        ]
+    },
+    "Lounge Tshirts": {
+        "count": 3,
+        "prompts": [
+            "a photo of a casual lounge tshirts",
+            "a close-up photo of a lounge tshirts apparel item",
+            "a fashion product photo of a lounge tshirts"
+        ]
+    },
+    "Tablet Sleeve": {
+        "count": 3,
+        "prompts": [
+            "a photo of a casual tablet sleeve",
+            "a close-up photo of a tablet sleeve apparel item",
+            "a fashion product photo of a tablet sleeve"
+        ]
+    },
+    "Hat": {
+        "count": 3,
+        "prompts": [
+            "a photo of a casual hat",
+            "a close-up photo of a hat apparel item",
+            "a fashion product photo of a hat"
+        ]
+    },
+    "Ties and Cufflinks": {
+        "count": 2,
+        "prompts": [
+            "a photo of a casual ties and cufflinks",
+            "a close-up photo of a ties and cufflinks apparel item",
+            "a fashion product photo of a ties and cufflinks"
+        ]
+    },
+    "Key chain": {
+        "count": 2,
+        "prompts": [
+            "a photo of a casual key chain",
+            "a close-up photo of a key chain apparel item",
+            "a fashion product photo of a key chain"
+        ]
+    },
+    "Face Serum and Gel": {
+        "count": 2,
+        "prompts": [
+            "a photo of a casual face serum and gel",
+            "a close-up photo of a face serum and gel apparel item",
+            "a fashion product photo of a face serum and gel"
+        ]
+    },
+    "Rain Trousers": {
+        "count": 2,
+        "prompts": [
+            "a photo of a casual rain trousers",
+            "a close-up photo of a rain trousers apparel item",
+            "a fashion product photo of a rain trousers"
+        ]
+    },
+    "Shoe Laces": {
+        "count": 1,
+        "prompts": [
+            "a photo of a casual shoe laces",
+            "a close-up photo of a shoe laces apparel item",
+            "a fashion product photo of a shoe laces"
+        ]
+    },
+    "Hair Accessory": {
+        "count": 1,
+        "prompts": [
+            "a photo of a casual hair accessory",
+            "a close-up photo of a hair accessory apparel item",
+            "a fashion product photo of a hair accessory"
+        ]
+    },
+    "Cushion Covers": {
+        "count": 1,
+        "prompts": [
+            "a photo of a casual cushion covers",
+            "a close-up photo of a cushion covers apparel item",
+            "a fashion product photo of a cushion covers"
+        ]
+    },
+    "Mens Grooming Kit": {
+        "count": 1,
+        "prompts": [
+            "a photo of a casual mens grooming kit",
+            "a close-up photo of a mens grooming kit apparel item",
+            "a fashion product photo of a mens grooming kit"
+        ]
+    },
+    "Body Wash and Scrub": {
+        "count": 1,
+        "prompts": [
+            "a photo of a casual body wash and scrub",
+            "a close-up photo of a body wash and scrub apparel item",
+            "a fashion product photo of a body wash and scrub"
+        ]
+    },
+    "Suits": {
+        "count": 1,
+        "prompts": [
+            "a photo of a casual suits",
+            "a close-up photo of a suits apparel item",
+            "a fashion product photo of a suits"
+        ]
+    },
+    "Ipad": {
+        "count": 1,
+        "prompts": [
+            "a photo of a casual ipad",
+            "a close-up photo of a ipad apparel item",
+            "a fashion product photo of a ipad"
+        ]
+    }
+}

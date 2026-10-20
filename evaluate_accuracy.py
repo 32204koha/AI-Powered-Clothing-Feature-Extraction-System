@@ -1,274 +1,275 @@
-import os
+import csv
 import json
+import os
 import time
-import re
-import pandas as pd
+import numpy as np
+import cv2
 from PIL import Image
-from dotenv import load_dotenv
-from google import genai
-from google.genai import types
-from pydantic import BaseModel, Field
+from rembg import remove, new_session
+from transformers import pipeline
 
-load_dotenv()
-API_KEY = os.getenv("GCP_API_KEY") or os.getenv("GEMINI_API_KEY")
+# ----------------------------------------------------
+# 1. パス & 設定
+# ----------------------------------------------------
+BASE_DIR = r"C:\Users\Public\Documents\Kenkyu\AI-Powered-Clothing-Feature-Extraction-System"
+CSV_PATH = os.path.join(BASE_DIR, "fashion-dataset", "styles.csv")
+IMAGES_DIR = os.path.join(BASE_DIR, "fashion-dataset", "images")
+PALETTE_FILE = os.path.join(BASE_DIR, "color_palette.json")
+CATEGORY_JSON_FILE = os.path.join(BASE_DIR, "category_prompts.json")
+CATEGORY_MAP_FILE = "category_mapping.json"
 
-if not API_KEY:
-    raise ValueError("APIキーが設定されていません。.envファイルを確認してください。")
+# 評価する画像サンプル数の上限（全件評価する場合は None に設定）
+MAX_EVAL_SAMPLES = 10
 
-# ==========================================
-# 設定情報
-# ==========================================
-# 実在するモデル名に変更（標準的なGemini 2.5 Flashまたは2.0 Flashを推奨）
-MODEL_NAME = "gemini-3.8-flash"
+# 軽量な背景削除モデルを指定 (u2netp: 超軽量・高速)
+REMBG_MODEL = "u2netp"
 
-DATASET_DIR = r"C:\Users\Public\Documents\Kenkyu\AI-Powered-Clothing-Feature-Extraction-System\fashion-dataset"
-CSV_PATH = os.path.join(DATASET_DIR, "styles.csv")
-IMAGES_DIR = os.path.join(DATASET_DIR, "images")
-
-NUM_SAMPLES = 50
-REQUEST_INTERVAL = 4.5  # 15 RPM制限回避用
-
-client = genai.Client(api_key=API_KEY)
-
-
-# ==========================================
-# レスポンス構造の定義 (Pydantic Schema)
-# API側に返却フォーマットを厳密に保証させるため
-# ==========================================
-class FashionItem(BaseModel):
-    category: str = Field(description="Main classification (Apparel / Footwear / Accessories / OR 'not clothes')")
-    sub_category: str = Field(description="Sub-category (e.g., Topwear, Bottomwear, Dress, Shoes, Bags, Headwear, Flip Flops)")
-    article_type: str = Field(description="Specific item name (e.g., Tshirts, Shirts, Jackets, Kurtas, Dresses, Jeans, Trousers, Sneakers, Handbags)")
-    color: str = Field(description="Primary base color identified from the image")
-    secondary_color: str = Field(description="Secondary or accent color if applicable, otherwise 'None'")
-    gender_target: str = Field(description="Target demographic (Men / Women / Unisex / Boys / Girls)")
-    style_taste: str = Field(description="Aesthetic style (e.g., Casual, Streetwear, Formal, Minimalist, Ethnic, Sporty, Preppy)")
-    season: str = Field(description="Best fitting season (Summer / Winter / Spring / Autumn / All Season)")
-    pattern: str = Field(description="Fabric pattern (e.g., Solid, Striped, Graphic Print, Checked, Floral, Polka Dot, Distressed)")
-    scene_usage: str = Field(description="Usage scene (e.g., Casual, Formal, Work, Sports, Party, Loungewear, School)")
-    material_texture: str = Field(description="Perceived material/texture (e.g., Denim, Cotton, Leather, Knit, Canvas, Synthetic, Silk, Mesh)")
-    brand: str = Field(description="Brand name read strictly from visible logos or tags. Set as 'Unknown' if not clearly visible")
-
-
-# ==========================================
-# 英語プロンプトテンプレート
-# ==========================================
-LLM_PROMPT_TEMPLATE = """
-You are an expert AI fashion stylist and automated image analyst specializing in deep clothing attribute extraction.
-Analyze the attached image and the provided dataset metadata to accurately extract detailed fine-grained fashion attributes.
-
-【INPUT METADATA】
-{meta}
-
-【INSTRUCTIONS】
-1. Carefully inspect the image using the provided metadata as additional contextual ground truth.
-2. If the item in the image is NOT wearable clothing, footwear, or fashion accessories (e.g., perfume, deodorant, cosmetics, home decor, electronics), set "category" strictly to "not clothes".
-3. Identify each distinct fashion item present in the image.
-4. Extract detailed fashion attributes including main/secondary color, material/texture, style taste, pattern, scene usage, target demographic, and visible brand.
-
-【STRICT RULES】
-1. Do not omit any fields in the output schema.
-2. Be highly accurate with colors and material textures, carefully accounting for lighting conditions.
-3. NEVER guess brand names based on style or design alone. If a logo or tag text is not clearly readable, strictly output "Unknown".
-"""
-
-
-# ==========================================
-# 解析関数 (リトライロジック・型安全対応)
-# ==========================================
-def analyze_clothing_detailed(image_path: str, meta_str: str, max_retries: int = 5) -> dict:
-    if not os.path.exists(image_path):
-        print(f" ⚠️ 画像ファイルが存在しません: {image_path}")
+# ----------------------------------------------------
+# 2. 外部データの読み込み
+# ----------------------------------------------------
+def load_color_palette():
+    if not os.path.exists(PALETTE_FILE):
         return {}
+    with open(PALETTE_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    palette_dict = {}
+    for k, v in data.items():
+        display_name = v.get("label_jp", k)
+        palette_dict[display_name] = {
+            "bgr": v["bgr"],
+            "en": v.get("en", k)
+        }
+    return palette_dict
 
-    prompt = LLM_PROMPT_TEMPLATE.format(meta=meta_str)
-
-    # 画像の安全なオープンとRGB変換（RGBAやPaletteモードによるエラー防止）
-    try:
-        with Image.open(image_path) as img:
-            img_rgb = img.convert("RGB")
-            
-            for attempt in range(max_retries):
-                try:
-                    # Structured Outputs (Pydantic Schema) を適用
-                    response = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents=[img_rgb, prompt],
-                        config=types.GenerateContentConfig(
-                            response_mime_type="application/json",
-                            response_schema=list[FashionItem]  # 配列形式を保証
-                        )
-                    )
-
-                    if not response.text:
-                        print(" ⚠️ APIからの応答テキストが空です。")
-                        continue
-
-                    # JSONとして安全にロード
-                    parsed_data = json.loads(response.text)
-
-                    if isinstance(parsed_data, list) and len(parsed_data) > 0:
-                        return parsed_data[0]
-                    elif isinstance(parsed_data, dict):
-                        return parsed_data
-                    
-                    return {}
-
-                except Exception as e:
-                    error_str = str(e)
-                    # 429 (Rate Limit / Quota Exceeded) や 503 (Service Unavailable) のリトライ
-                    if "429" in error_str or "RESOURCE_EXHAUSTED" in error_str or "503" in error_str or "UNAVAILABLE" in error_str:
-                        wait_time = (2 ** attempt) * 5
-                        print(f" ⚠️ レート制限または一時エラー ({e})。 {wait_time}秒待機後に再試行... ({attempt+1}/{max_retries})")
-                        time.sleep(wait_time)
-                    else:
-                        print(f" ⚠️ API呼び出しエラー: {e}")
-                        if attempt == max_retries - 1:
-                            return {}
-                        time.sleep(3)
-
-    except Exception as img_err:
-        print(f" ⚠️ 画像処理エラー: {img_err}")
+def load_category_prompts():
+    if not os.path.exists(CATEGORY_JSON_FILE):
         return {}
+    with open(CATEGORY_JSON_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-    return {}
+COLOR_PALETTE = load_color_palette()
+CATEGORY_DATA = load_category_prompts()
 
-
-# ==========================================
-# メイン処理
-# ==========================================
-def main():
-    print(f"Gemini API ('{MODEL_NAME}') を使用して詳細な属性抽出・精度検証を開始します...")
+def load_category_mapping():
+    """
+    細かな articleType を共通の代表グループに変換する逆引き辞書を構築する
+    例: "Kurta Sets" -> "Shirts"
+    """
+    if not os.path.exists(CATEGORY_MAP_FILE):
+        return {}
     
+    with open(CATEGORY_MAP_FILE, "r", encoding="utf-8") as f:
+        group_data = json.load(f)
+    
+    reverse_map = {}
+    for group_name, variants in group_data.items():
+        for v in variants:
+            reverse_map[v.lower()] = group_name
+    return reverse_map
+
+CATEGORY_REVERSE_MAP = load_category_mapping()
+
+def normalize_category(cat_name: str) -> str:
+    """
+    カテゴリ名をマッピング辞書を使って正規化する。
+    辞書にない場合は元の名前をそのまま返す（または小文字化）。
+    """
+    clean_name = cat_name.strip().lower()
+    return CATEGORY_REVERSE_MAP.get(clean_name, cat_name)
+
+# CLIP用のプロンプトリスト構築
+PROMPT_LIST = []
+PROMPT_TO_CAT = {}
+for cat_name, info in CATEGORY_DATA.items():
+    prompts = info.get("prompts", [f"a photo of a {cat_name}"])
+    for p in prompts:
+        PROMPT_LIST.append(p)
+        PROMPT_TO_CAT[p] = cat_name
+
+# ----------------------------------------------------
+# 3. AIモデルの初期化
+# ----------------------------------------------------
+print("==================================================")
+print(" 🚀 ファッション属性抽出・正答率評価システム")
+print("==================================================")
+print(f"⏳ 軽量背景削除AI ({REMBG_MODEL}) をロード中...")
+rembg_sess = new_session(REMBG_MODEL)
+
+print("⏳ CLIP ゼロショット分類モデルをロード中...")
+clip_classifier = pipeline(
+    "zero-shot-image-classification",
+    model="openai/clip-vit-base-patch32"
+)
+print("✨ モデルの初期化が完了しました！\n")
+
+# ----------------------------------------------------
+# 4. 解析ロジック (FastAPIコードベース)
+# ----------------------------------------------------
+def analyze_clothing_color(img_rgb: Image.Image) -> str:
+    np_img = np.array(img_rgb)
+    bgr_img = cv2.cvtColor(np_img, cv2.COLOR_RGB2BGR)
+
+    mask = ~((bgr_img[:, :, 0] > 240) & (bgr_img[:, :, 1] > 240) & (bgr_img[:, :, 2] > 240))
+    valid_pixels = bgr_img[mask]
+    if len(valid_pixels) == 0:
+        return "Unknown"
+
+    valid_hsv = cv2.cvtColor(valid_pixels.reshape(-1, 1, 3), cv2.COLOR_BGR2HSV).reshape(-1, 3)
+    valid_labs = cv2.cvtColor(valid_pixels.reshape(-1, 1, 3), cv2.COLOR_BGR2Lab).reshape(-1, 3).astype(float)
+
+    mean_h = np.mean(valid_hsv[:, 0])
+    mean_s = np.mean(valid_hsv[:, 1])
+    is_monochrome = (mean_s < 30)
+
+    all_names = list(COLOR_PALETTE.keys())
+    allowed_indices = []
+    
+    for i, name in enumerate(all_names):
+        bgr = COLOR_PALETTE[name]["bgr"]
+        p_hsv = cv2.cvtColor(np.array([[bgr]], dtype=np.uint8), cv2.COLOR_BGR2HSV)[0][0]
+        p_h, p_s = p_hsv[0], p_hsv[1]
+
+        if is_monochrome:
+            if p_s < 50 or any(k in name for k in ["白", "黒", "グレー", "White", "Black", "Grey"]):
+                allowed_indices.append(i)
+        else:
+            h_diff = min(abs(mean_h - p_h), 180 - abs(mean_h - p_h))
+            if h_diff <= 35:
+                allowed_indices.append(i)
+
+    if len(allowed_indices) == 0:
+        allowed_indices = list(range(len(all_names)))
+
+    filtered_names = [all_names[idx] for idx in allowed_indices]
+    palette_labs = []
+    for name in filtered_names:
+        bgr_val = COLOR_PALETTE[name]["bgr"]
+        lab_val = cv2.cvtColor(np.array([[bgr_val]], dtype=np.uint8), cv2.COLOR_BGR2Lab)[0][0].astype(float)
+        palette_labs.append(lab_val)
+    
+    palette_array = np.array(palette_labs)
+    distances = np.linalg.norm(valid_labs[:, np.newaxis, :] - palette_array[np.newaxis, :, :], axis=2)
+    min_indices = np.argmin(distances, axis=1)
+
+    counts = np.bincount(min_indices, minlength=len(filtered_names))
+    sorted_indices = np.argsort(counts)[::-1]
+
+    first_color = filtered_names[sorted_indices[0]] if counts[sorted_indices[0]] > 0 else "Unknown"
+    
+    # 🌟 カラーファミリー（基本色）を取得して返す。設定されていない場合は英語名にフォールバック
+    color_info = COLOR_PALETTE.get(first_color, {})
+    color_family = color_info.get("color_family")
+    
+    if not color_family:
+        color_family = color_info.get("en", first_color)
+        
+    return color_family
+
+def predict_best_category(img_rgb: Image.Image) -> str:
+    try:
+        predictions = clip_classifier(img_rgb, candidate_labels=PROMPT_LIST)
+        if not predictions:
+            return "Unknown"
+        top_pred = predictions[0]
+        best_prompt = top_pred["label"]
+        return PROMPT_TO_CAT.get(best_prompt, "Unknown")
+    except Exception:
+        return "Unknown"
+
+# ----------------------------------------------------
+# 5. 評価ループの実行
+# ----------------------------------------------------
+def run_evaluation():
     if not os.path.exists(CSV_PATH):
-        print(f" ❌ CSVファイルが見つかりません: {CSV_PATH}")
+        print(f"❌ エラー: CSVファイルが見つかりません ({CSV_PATH})")
         return
 
-    df = pd.read_csv(CSV_PATH, on_bad_lines='skip')
-    
-    # ランダムサンプリング
-    sample_df = df.sample(n=min(NUM_SAMPLES, len(df)), random_state=42).reset_index(drop=True)
+    eval_targets = []
+    with open(CSV_PATH, mode='r', encoding='utf-8', errors='ignore') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            img_id = row.get("id", "").strip()
+            article_type = row.get("articleType", "").strip()
+            base_color = row.get("baseColour", "").strip()
 
-    results = []
-    category_correct = 0
+            img_file = os.path.join(IMAGES_DIR, f"{img_id}.jpg")
+            if os.path.exists(img_file) and article_type and base_color:
+                eval_targets.append({
+                    "id": img_id,
+                    "file_path": img_file,
+                    "gt_category": article_type,
+                    "gt_color": base_color
+                })
+
+    total_samples = len(eval_targets)
+    if MAX_EVAL_SAMPLES:
+        eval_targets = eval_targets[:MAX_EVAL_SAMPLES]
+        total_eval = len(eval_targets)
+    else:
+        total_eval = total_samples
+
+    print(f"📂 検出対象画像数: {total_samples:,} 件")
+    print(f"🎯 評価実行サンプル数: {total_eval:,} 件\n")
+    print("--------------------------------------------------------------------------------")
+    print(f"{'No.':<5} | {'ID':<8} | {'色 (推論 / 正解)':<25} | {'カテゴリー (推論 / 正解)':<35} | {'処理時間'}")
+    print("--------------------------------------------------------------------------------")
+
+    cat_correct = 0
     color_correct = 0
-    total_samples = 0
-    not_clothes_count = 0
-    clothes_valid_count = 0
-    elapsed_times = []
+    total_time = 0.0
 
-    print(f"--- 評価開始 (全 {len(sample_df)} 件) ---")
-
-    for idx, row in sample_df.iterrows():
-        # image_idがfloat型になる現象を防ぐため、int変換してから文字列化
-        try:
-            image_id = str(int(row['id']))
-        except (ValueError, TypeError):
-            image_id = str(row['id'])
-
-        image_path = os.path.join(IMAGES_DIR, f"{image_id}.jpg")
-
-        # メタデータの構築
-        gt_article_type = str(row.get('articleType', '')).strip().lower()
-        gt_color = str(row.get('baseColour', '')).strip().lower()
-        
-        meta_str = (
-            f"ID: {image_id}, "
-            f"Gender: {row.get('gender', '')}, "
-            f"MasterCategory: {row.get('masterCategory', '')}, "
-            f"SubCategory: {row.get('subCategory', '')}, "
-            f"ArticleType: {gt_article_type}, "
-            f"BaseColour: {gt_color}, "
-            f"Season: {row.get('season', '')}, "
-            f"Usage: {row.get('usage', '')}, "
-            f"ProductDisplayName: {row.get('productDisplayName', '')}"
-        )
-
+    for idx, target in enumerate(eval_targets, 1):
         start_time = time.time()
-        ai_output = analyze_clothing_detailed(image_path, meta_str)
-        elapsed_time = time.time() - start_time
-        elapsed_times.append(elapsed_time)
 
-        ai_category = str(ai_output.get('category', '')).strip().lower()
-        ai_article_type = str(ai_output.get('article_type', '')).strip().lower()
-        ai_color = str(ai_output.get('color', '')).strip().lower()
+        # 画像読み込み ＆ 効率化のためのリサイズ
+        raw_img = Image.open(target["file_path"]).convert("RGB")
+        raw_img.thumbnail((224, 224))
 
-        is_not_clothes = (ai_category == "not clothes")
-        is_cat_match = False
-        is_col_match = False
+        # 背景削除
+        output_image_rgba = remove(raw_img, session=rembg_sess)
+        bg = Image.new("RGB", output_image_rgba.size, (255, 255, 255))
+        bg.paste(output_image_rgba, mask=output_image_rgba.split()[3])
 
-        if is_not_clothes:
-            not_clothes_count += 1
-        else:
-            if ai_article_type and gt_article_type:
-                is_cat_match = (gt_article_type in ai_article_type) or (ai_article_type in gt_article_type)
-            if ai_color and gt_color:
-                is_col_match = (gt_color in ai_color) or (ai_color in gt_color)
+        # 解析実行
+        pred_color = analyze_clothing_color(bg)
+        pred_cat = predict_best_category(bg)
 
-            if is_cat_match: category_correct += 1
-            if is_col_match: color_correct += 1
-            clothes_valid_count += 1
+        proc_time = (time.time() - start_time) * 1000  # ms
+        total_time += proc_time
 
-        total_samples += 1
+        # 一致判定（大文字小文字を無視）
+        # 正規化（グループ化）を通したカテゴリ名で比較
+        norm_pred_cat = normalize_category(pred_cat)
+        norm_gt_cat = normalize_category(target["gt_category"])
 
-        # 解析結果の格納
-        res = {
-            "id": image_id,
-            "gt_article_type": gt_article_type,
-            "ai_article_type": ai_article_type,
-            "cat_match": is_cat_match,
-            "gt_color": gt_color,
-            "ai_color": ai_color,
-            "col_match": is_col_match,
-            "ai_category": ai_category,
-            "sub_category": ai_output.get('sub_category', ''),
-            "secondary_color": ai_output.get('secondary_color', ''),
-            "gender_target": ai_output.get('gender_target', ''),
-            "style_taste": ai_output.get('style_taste', ''),
-            "season": ai_output.get('season', ''),
-            "pattern": ai_output.get('pattern', ''),
-            "scene_usage": ai_output.get('scene_usage', ''),
-            "material_texture": ai_output.get('material_texture', ''),
-            "brand": ai_output.get('brand', 'Unknown'),
-            "processing_time_sec": round(elapsed_time, 2)
-        }
-        results.append(res)
+        is_cat_match = (norm_pred_cat.lower() == norm_gt_cat.lower())
+        is_color_match = (pred_color.lower() == target["gt_color"].lower())
 
-        if is_not_clothes:
-            print(f"[{total_samples}/{len(sample_df)}] ID:{image_id} | 🚫【Not Clothes】(GT: '{gt_article_type}') | Time: {elapsed_time:.2f}s")
-        else:
-            print(f"[{total_samples}/{len(sample_df)}] ID:{image_id} | "
-                  f"Type: GT '{gt_article_type}' vs AI '{ai_article_type}' ({'OK' if is_cat_match else 'NG'}) | "
-                  f"Color: GT '{gt_color}' vs AI '{ai_color}' ({'OK' if is_col_match else 'NG'}) | "
-                  f"Time: {elapsed_time:.2f}s")
+        if is_cat_match:
+            cat_correct += 1
+        if is_color_match:
+            color_correct += 1
 
-        time.sleep(REQUEST_INTERVAL)
+        cat_str = f"{pred_cat} / {target['gt_category']}"
+        color_str = f"{pred_color} / {target['gt_color']}"
 
-    # 最終集計結果
-    if total_samples > 0:
-        cat_acc = (category_correct / clothes_valid_count) * 100 if clothes_valid_count > 0 else 0
-        col_acc = (color_correct / clothes_valid_count) * 100 if clothes_valid_count > 0 else 0
-        avg_time = sum(elapsed_times) / len(elapsed_times) if elapsed_times else 0
+        print(f"{idx:<5} | {target['id']:<8} | {color_str:<25} | {cat_str:<35} | {proc_time:.0f} ms")
 
-        print("\n==========================================")
-        print("     詳細属性評価レポート (Gemini)       ")
-        print("==========================================")
-        print(f"使用モデル         : {MODEL_NAME}")
-        print(f"評価試行数(全体)   : {total_samples} 件")
-        print(f"🚫服以外として除外 : {not_clothes_count} 件")
-        print("------------------------------------------")
-        if clothes_valid_count > 0:
-            print(f"👕服として評価     : {clothes_valid_count} 件")
-            print(f"品目名(Type)正解率 : {cat_acc:.2f}% ({category_correct}/{clothes_valid_count})")
-            print(f"色抽出(Color)正解率: {col_acc:.2f}% ({color_correct}/{clothes_valid_count})")
-        print("------------------------------------------")
-        print(f"平均処理時間       : {avg_time:.2f} 秒 / 件")
-        print("==========================================")
+    # ----------------------------------------------------
+    # 6. 集計結果表示
+    # ----------------------------------------------------
+    avg_time = total_time / total_eval if total_eval > 0 else 0
+    cat_accuracy = (cat_correct / total_eval) * 100 if total_eval > 0 else 0
+    color_accuracy = (color_correct / total_eval) * 100 if total_eval > 0 else 0
 
-        out_csv = "evaluation_results_gemini_detailed.csv"
-        pd.DataFrame(results).to_csv(out_csv, index=False, encoding="utf-8-sig")
-        print(f"詳細属性の解析結果を '{out_csv}' に保存しました。")
-
+    print("==================================================")
+    print(" 📊 正答率・処理パフォーマンス 最終検証結果")
+    print("==================================================")
+    print(f" 評価サンプル数   : {total_eval:,} 件")
+    print(f" ⏱️ 平均処理時間  : {avg_time:.1f} ms / 1枚")
+    print(f" 🏷️ カテゴリー正答率: {cat_accuracy:.2f}% ({cat_correct}/{total_eval})")
+    print(f" 🎨 カラー正答率     : {color_accuracy:.2f}% ({color_correct}/{total_eval})")
+    print("==================================================")
 
 if __name__ == "__main__":
-    main()
+    run_evaluation()

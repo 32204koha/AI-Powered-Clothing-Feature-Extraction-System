@@ -1,0 +1,8 @@
+{
+    "Shirts": ["Shirts", "Formal Shirts", "Casual Shirts", "Kurta Sets", "Tunics"],
+    "Tshirts": ["Tshirts", "Lounge Tshirts", "Active Tshirts"],
+    "Jeans": ["Jeans", "Casual Jeans"],
+    "Trousers": ["Trousers", "Casual Trousers", "Formal Trousers", "Track Pants", "Lounge Pants"],
+    "Watches": ["Watches", "Smart Wearables"],
+    "Socks": ["Socks"]
+}

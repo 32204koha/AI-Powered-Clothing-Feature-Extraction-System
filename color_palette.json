@@ -6,7 +6,8 @@
             20
         ],
         "label_jp": "Navy Blue",
-        "dataset_count": 1791
+        "dataset_count": 1791,
+        "color_family": "Navy Blue"
     },
     "Blue": {
         "bgr": [
@@ -15,7 +16,8 @@
             40
         ],
         "label_jp": "Blue",
-        "dataset_count": 4922
+        "dataset_count": 4922,
+        "color_family": "Blue"
     },
     "Silver": {
         "bgr": [
@@ -24,7 +26,8 @@
             128
         ],
         "label_jp": "Silver",
-        "dataset_count": 1090
+        "dataset_count": 1090,
+        "color_family": "Silver"
     },
     "Black": {
         "bgr": [
@@ -33,7 +36,8 @@
             20
         ],
         "label_jp": "Black",
-        "dataset_count": 9732
+        "dataset_count": 9732,
+        "color_family": "Black"
     },
     "Grey": {
         "bgr": [
@@ -42,7 +46,8 @@
             128
         ],
         "label_jp": "Grey",
-        "dataset_count": 2741
+        "dataset_count": 2741,
+        "color_family": "Grey"
     },
     "Green": {
         "bgr": [
@@ -51,7 +56,8 @@
             60
         ],
         "label_jp": "Green",
-        "dataset_count": 2116
+        "dataset_count": 2116,
+        "color_family": "Green"
     },
     "Purple": {
         "bgr": [
@@ -60,7 +66,8 @@
             100
         ],
         "label_jp": "Purple",
-        "dataset_count": 1643
+        "dataset_count": 1643,
+        "color_family": "Purple"
     },
     "White": {
         "bgr": [
@@ -69,7 +76,8 @@
             245
         ],
         "label_jp": "White",
-        "dataset_count": 5540
+        "dataset_count": 5540,
+        "color_family": "White"
     },
     "Beige": {
         "bgr": [
@@ -78,7 +86,8 @@
             230
         ],
         "label_jp": "Beige",
-        "dataset_count": 749
+        "dataset_count": 749,
+        "color_family": "Beige"
     },
     "Brown": {
         "bgr": [
@@ -87,7 +96,8 @@
             115
         ],
         "label_jp": "Brown",
-        "dataset_count": 3494
+        "dataset_count": 3494,
+        "color_family": "Brown"
     },
     "Bronze": {
         "bgr": [
@@ -96,7 +106,8 @@
             128
         ],
         "label_jp": "Bronze",
-        "dataset_count": 95
+        "dataset_count": 95,
+        "color_family": "Grey"
     },
     "Teal": {
         "bgr": [
@@ -105,7 +116,8 @@
             128
         ],
         "label_jp": "Teal",
-        "dataset_count": 120
+        "dataset_count": 120,
+        "color_family": "Grey"
     },
     "Copper": {
         "bgr": [
@@ -114,7 +126,8 @@
             128
         ],
         "label_jp": "Copper",
-        "dataset_count": 86
+        "dataset_count": 86,
+        "color_family": "Grey"
     },
     "Pink": {
         "bgr": [
@@ -123,7 +136,8 @@
             220
         ],
         "label_jp": "Pink",
-        "dataset_count": 1861
+        "dataset_count": 1861,
+        "color_family": "Pink"
     },
     "Off White": {
         "bgr": [
@@ -132,7 +146,8 @@
             128
         ],
         "label_jp": "Off White",
-        "dataset_count": 182
+        "dataset_count": 182,
+        "color_family": "White"
     },
     "Maroon": {
         "bgr": [
@@ -141,7 +156,8 @@
             120
         ],
         "label_jp": "Maroon",
-        "dataset_count": 581
+        "dataset_count": 581,
+        "color_family": "Red"
     },
     "Red": {
         "bgr": [
@@ -150,7 +166,8 @@
             200
         ],
         "label_jp": "Red",
-        "dataset_count": 2458
+        "dataset_count": 2458,
+        "color_family": "Red"
     },
     "Khaki": {
         "bgr": [
@@ -159,7 +176,8 @@
             95
         ],
         "label_jp": "Khaki",
-        "dataset_count": 139
+        "dataset_count": 139,
+        "color_family": "Yellow"
     },
     "Orange": {
         "bgr": [
@@ -168,7 +186,8 @@
             240
         ],
         "label_jp": "Orange",
-        "dataset_count": 530
+        "dataset_count": 530,
+        "color_family": "Orange"
     },
     "Coffee Brown": {
         "bgr": [
@@ -177,7 +196,8 @@
             128
         ],
         "label_jp": "Coffee Brown",
-        "dataset_count": 31
+        "dataset_count": 31,
+        "color_family": "Grey"
     },
     "Yellow": {
         "bgr": [
@@ -186,7 +206,8 @@
             240
         ],
         "label_jp": "Yellow",
-        "dataset_count": 779
+        "dataset_count": 779,
+        "color_family": "Yellow"
     },
     "Charcoal": {
         "bgr": [
@@ -195,7 +216,8 @@
             50
         ],
         "label_jp": "Charcoal",
-        "dataset_count": 228
+        "dataset_count": 228,
+        "color_family": "Grey"
     },
     "Gold": {
         "bgr": [
@@ -204,7 +226,8 @@
             128
         ],
         "label_jp": "Gold",
-        "dataset_count": 629
+        "dataset_count": 629,
+        "color_family": "Gold"
     },
     "Steel": {
         "bgr": [
@@ -213,7 +236,8 @@
             128
         ],
         "label_jp": "Steel",
-        "dataset_count": 315
+        "dataset_count": 315,
+        "color_family": "Grey"
     },
     "Tan": {
         "bgr": [
@@ -222,7 +246,8 @@
             128
         ],
         "label_jp": "Tan",
-        "dataset_count": 114
+        "dataset_count": 114,
+        "color_family": "Grey"
     },
     "Multi": {
         "bgr": [
@@ -231,7 +256,8 @@
             128
         ],
         "label_jp": "Multi",
-        "dataset_count": 394
+        "dataset_count": 394,
+        "color_family": "Grey"
     },
     "Magenta": {
         "bgr": [
@@ -240,7 +266,8 @@
             128
         ],
         "label_jp": "Magenta",
-        "dataset_count": 129
+        "dataset_count": 129,
+        "color_family": "Grey"
     },
     "Lavender": {
         "bgr": [
@@ -249,7 +276,8 @@
             128
         ],
         "label_jp": "Lavender",
-        "dataset_count": 162
+        "dataset_count": 162,
+        "color_family": "Grey"
     },
     "Sea Green": {
         "bgr": [
@@ -258,7 +286,8 @@
             128
         ],
         "label_jp": "Sea Green",
-        "dataset_count": 22
+        "dataset_count": 22,
+        "color_family": "Grey"
     },
     "Cream": {
         "bgr": [
@@ -267,7 +296,8 @@
             245
         ],
         "label_jp": "Cream",
-        "dataset_count": 390
+        "dataset_count": 390,
+        "color_family": "Yellow"
     },
     "Peach": {
         "bgr": [
@@ -276,7 +306,8 @@
             128
         ],
         "label_jp": "Peach",
-        "dataset_count": 195
+        "dataset_count": 195,
+        "color_family": "Grey"
     },
     "Olive": {
         "bgr": [
@@ -285,7 +316,8 @@
             95
         ],
         "label_jp": "Olive",
-        "dataset_count": 410
+        "dataset_count": 410,
+        "color_family": "Yellow"
     },
     "Skin": {
         "bgr": [
@@ -294,7 +326,8 @@
             128
         ],
         "label_jp": "Skin",
-        "dataset_count": 179
+        "dataset_count": 179,
+        "color_family": "Grey"
     },
     "Burgundy": {
         "bgr": [
@@ -303,7 +336,8 @@
             128
         ],
         "label_jp": "Burgundy",
-        "dataset_count": 45
+        "dataset_count": 45,
+        "color_family": "Grey"
     },
     "Grey Melange": {
         "bgr": [
@@ -312,7 +346,8 @@
             128
         ],
         "label_jp": "Grey Melange",
-        "dataset_count": 146
+        "dataset_count": 146,
+        "color_family": "Grey"
     },
     "Rust": {
         "bgr": [
@@ -321,7 +356,8 @@
             128
         ],
         "label_jp": "Rust",
-        "dataset_count": 66
+        "dataset_count": 66,
+        "color_family": "Grey"
     },
     "Rose": {
         "bgr": [
@@ -330,7 +366,8 @@
             128
         ],
         "label_jp": "Rose",
-        "dataset_count": 28
+        "dataset_count": 28,
+        "color_family": "Grey"
     },
     "Lime Green": {
         "bgr": [
@@ -339,7 +376,8 @@
             128
         ],
         "label_jp": "Lime Green",
-        "dataset_count": 6
+        "dataset_count": 6,
+        "color_family": "Grey"
     },
     "Mauve": {
         "bgr": [
@@ -348,7 +386,8 @@
             128
         ],
         "label_jp": "Mauve",
-        "dataset_count": 29
+        "dataset_count": 29,
+        "color_family": "Grey"
     },
     "Turquoise Blue": {
         "bgr": [
@@ -357,7 +396,8 @@
             128
         ],
         "label_jp": "Turquoise Blue",
-        "dataset_count": 69
+        "dataset_count": 69,
+        "color_family": "Grey"
     },
     "Metallic": {
         "bgr": [
@@ -366,7 +406,8 @@
             128
         ],
         "label_jp": "Metallic",
-        "dataset_count": 43
+        "dataset_count": 43,
+        "color_family": "Grey"
     },
     "Mustard": {
         "bgr": [
@@ -375,7 +416,8 @@
             128
         ],
         "label_jp": "Mustard",
-        "dataset_count": 97
+        "dataset_count": 97,
+        "color_family": "Grey"
     },
     "Taupe": {
         "bgr": [
@@ -384,7 +426,8 @@
             128
         ],
         "label_jp": "Taupe",
-        "dataset_count": 11
+        "dataset_count": 11,
+        "color_family": "Grey"
     },
     "Nude": {
         "bgr": [
@@ -393,7 +436,8 @@
             128
         ],
         "label_jp": "Nude",
-        "dataset_count": 23
+        "dataset_count": 23,
+        "color_family": "Grey"
     },
     "Mushroom Brown": {
         "bgr": [
@@ -402,7 +446,8 @@
             128
         ],
         "label_jp": "Mushroom Brown",
-        "dataset_count": 16
+        "dataset_count": 16,
+        "color_family": "Grey"
     },
     "NA": {
         "bgr": [
@@ -411,7 +456,8 @@
             128
         ],
         "label_jp": "NA",
-        "dataset_count": 15
+        "dataset_count": 15,
+        "color_family": "Grey"
     },
     "Fluorescent Green": {
         "bgr": [
@@ -420,7 +466,8 @@
             128
         ],
         "label_jp": "Fluorescent Green",
-        "dataset_count": 5
+        "dataset_count": 5,
+        "color_family": "Grey"
     },
     "Aliceblue": {
         "bgr": [
@@ -431,7 +478,8 @@
         "label_jp": "Aliceblue",
         "en": "aliceblue",
         "hex": "#f0f8ff",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Antiquewhite": {
         "bgr": [
@@ -442,7 +490,8 @@
         "label_jp": "Antiquewhite",
         "en": "antiquewhite",
         "hex": "#faebd7",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Aqua": {
         "bgr": [
@@ -453,7 +502,8 @@
         "label_jp": "Aqua",
         "en": "aqua",
         "hex": "#00ffff",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Aquamarine": {
         "bgr": [
@@ -464,7 +514,8 @@
         "label_jp": "Aquamarine",
         "en": "aquamarine",
         "hex": "#7fffd4",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Azure": {
         "bgr": [
@@ -475,7 +526,8 @@
         "label_jp": "Azure",
         "en": "azure",
         "hex": "#f0ffff",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Bisque": {
         "bgr": [
@@ -486,7 +538,8 @@
         "label_jp": "Bisque",
         "en": "bisque",
         "hex": "#ffe4c4",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Beige"
     },
     "Blanchedalmond": {
         "bgr": [
@@ -497,7 +550,8 @@
         "label_jp": "Blanchedalmond",
         "en": "blanchedalmond",
         "hex": "#ffebcd",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Beige"
     },
     "Blueviolet": {
         "bgr": [
@@ -508,7 +562,8 @@
         "label_jp": "Blueviolet",
         "en": "blueviolet",
         "hex": "#8a2be2",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Purple"
     },
     "Burlywood": {
         "bgr": [
@@ -519,7 +574,8 @@
         "label_jp": "Burlywood",
         "en": "burlywood",
         "hex": "#deb887",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Beige"
     },
     "Cadetblue": {
         "bgr": [
@@ -530,7 +586,8 @@
         "label_jp": "Cadetblue",
         "en": "cadetblue",
         "hex": "#5f9ea0",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Chartreuse": {
         "bgr": [
@@ -541,7 +598,8 @@
         "label_jp": "Chartreuse",
         "en": "chartreuse",
         "hex": "#7fff00",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Chocolate": {
         "bgr": [
@@ -552,7 +610,8 @@
         "label_jp": "Chocolate",
         "en": "chocolate",
         "hex": "#d2691e",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Orange"
     },
     "Coral": {
         "bgr": [
@@ -563,7 +622,8 @@
         "label_jp": "Coral",
         "en": "coral",
         "hex": "#ff7f50",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Orange"
     },
     "Cornflowerblue": {
         "bgr": [
@@ -574,7 +634,8 @@
         "label_jp": "Cornflowerblue",
         "en": "cornflowerblue",
         "hex": "#6495ed",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Cornsilk": {
         "bgr": [
@@ -585,7 +646,8 @@
         "label_jp": "Cornsilk",
         "en": "cornsilk",
         "hex": "#fff8dc",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Yellow"
     },
     "Crimson": {
         "bgr": [
@@ -596,7 +658,8 @@
         "label_jp": "Crimson",
         "en": "crimson",
         "hex": "#dc143c",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Red"
     },
     "Cyan": {
         "bgr": [
@@ -607,7 +670,8 @@
         "label_jp": "Cyan",
         "en": "cyan",
         "hex": "#00ffff",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Darkblue": {
         "bgr": [
@@ -618,7 +682,8 @@
         "label_jp": "Darkblue",
         "en": "darkblue",
         "hex": "#00008b",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Darkcyan": {
         "bgr": [
@@ -629,7 +694,8 @@
         "label_jp": "Darkcyan",
         "en": "darkcyan",
         "hex": "#008b8b",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Navy Blue"
     },
     "Darkgoldenrod": {
         "bgr": [
@@ -640,7 +706,8 @@
         "label_jp": "Darkgoldenrod",
         "en": "darkgoldenrod",
         "hex": "#b8860b",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Gold"
     },
     "Darkgray": {
         "bgr": [
@@ -651,7 +718,8 @@
         "label_jp": "Darkgray",
         "en": "darkgray",
         "hex": "#a9a9a9",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Silver"
     },
     "Darkgreen": {
         "bgr": [
@@ -662,7 +730,8 @@
         "label_jp": "Darkgreen",
         "en": "darkgreen",
         "hex": "#006400",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Darkgrey": {
         "bgr": [
@@ -673,7 +742,8 @@
         "label_jp": "Darkgrey",
         "en": "darkgrey",
         "hex": "#a9a9a9",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Silver"
     },
     "Darkkhaki": {
         "bgr": [
@@ -684,7 +754,8 @@
         "label_jp": "Darkkhaki",
         "en": "darkkhaki",
         "hex": "#bdb76b",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Yellow"
     },
     "Darkmagenta": {
         "bgr": [
@@ -695,7 +766,8 @@
         "label_jp": "Darkmagenta",
         "en": "darkmagenta",
         "hex": "#8b008b",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Purple"
     },
     "Darkolivegreen": {
         "bgr": [
@@ -706,7 +778,8 @@
         "label_jp": "Darkolivegreen",
         "en": "darkolivegreen",
         "hex": "#556b2f",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Darkorange": {
         "bgr": [
@@ -717,7 +790,8 @@
         "label_jp": "Darkorange",
         "en": "darkorange",
         "hex": "#ff8c00",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Orange"
     },
     "Darkorchid": {
         "bgr": [
@@ -728,7 +802,8 @@
         "label_jp": "Darkorchid",
         "en": "darkorchid",
         "hex": "#9932cc",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Purple"
     },
     "Darkred": {
         "bgr": [
@@ -739,7 +814,8 @@
         "label_jp": "Darkred",
         "en": "darkred",
         "hex": "#8b0000",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Red"
     },
     "Darksalmon": {
         "bgr": [
@@ -750,7 +826,8 @@
         "label_jp": "Darksalmon",
         "en": "darksalmon",
         "hex": "#e9967a",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Orange"
     },
     "Darkseagreen": {
         "bgr": [
@@ -761,7 +838,8 @@
         "label_jp": "Darkseagreen",
         "en": "darkseagreen",
         "hex": "#8fbc8f",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Darkslateblue": {
         "bgr": [
@@ -772,7 +850,8 @@
         "label_jp": "Darkslateblue",
         "en": "darkslateblue",
         "hex": "#483d8b",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Darkslategray": {
         "bgr": [
@@ -783,7 +862,8 @@
         "label_jp": "Darkslategray",
         "en": "darkslategray",
         "hex": "#2f4f4f",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Grey"
     },
     "Darkslategrey": {
         "bgr": [
@@ -794,7 +874,8 @@
         "label_jp": "Darkslategrey",
         "en": "darkslategrey",
         "hex": "#2f4f4f",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Navy Blue"
     },
     "Darkturquoise": {
         "bgr": [
@@ -805,7 +886,8 @@
         "label_jp": "Darkturquoise",
         "en": "darkturquoise",
         "hex": "#00ced1",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Darkviolet": {
         "bgr": [
@@ -816,7 +898,8 @@
         "label_jp": "Darkviolet",
         "en": "darkviolet",
         "hex": "#9400d3",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Purple"
     },
     "Deeppink": {
         "bgr": [
@@ -827,7 +910,8 @@
         "label_jp": "Deeppink",
         "en": "deeppink",
         "hex": "#ff1493",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Pink"
     },
     "Deepskyblue": {
         "bgr": [
@@ -838,7 +922,8 @@
         "label_jp": "Deepskyblue",
         "en": "deepskyblue",
         "hex": "#00bfff",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Dimgray": {
         "bgr": [
@@ -849,7 +934,8 @@
         "label_jp": "Dimgray",
         "en": "dimgray",
         "hex": "#696969",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Grey"
     },
     "Dimgrey": {
         "bgr": [
@@ -860,7 +946,8 @@
         "label_jp": "Dimgrey",
         "en": "dimgrey",
         "hex": "#696969",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Grey"
     },
     "Dodgerblue": {
         "bgr": [
@@ -871,7 +958,8 @@
         "label_jp": "Dodgerblue",
         "en": "dodgerblue",
         "hex": "#1e90ff",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Firebrick": {
         "bgr": [
@@ -882,7 +970,8 @@
         "label_jp": "Firebrick",
         "en": "firebrick",
         "hex": "#b22222",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Red"
     },
     "Floralwhite": {
         "bgr": [
@@ -893,7 +982,8 @@
         "label_jp": "Floralwhite",
         "en": "floralwhite",
         "hex": "#fffaf0",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Forestgreen": {
         "bgr": [
@@ -904,7 +994,8 @@
         "label_jp": "Forestgreen",
         "en": "forestgreen",
         "hex": "#228b22",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Fuchsia": {
         "bgr": [
@@ -915,7 +1006,8 @@
         "label_jp": "Fuchsia",
         "en": "fuchsia",
         "hex": "#ff00ff",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Purple"
     },
     "Gainsboro": {
         "bgr": [
@@ -926,7 +1018,8 @@
         "label_jp": "Gainsboro",
         "en": "gainsboro",
         "hex": "#dcdcdc",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Ghostwhite": {
         "bgr": [
@@ -937,7 +1030,8 @@
         "label_jp": "Ghostwhite",
         "en": "ghostwhite",
         "hex": "#f8f8ff",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Goldenrod": {
         "bgr": [
@@ -948,7 +1042,8 @@
         "label_jp": "Goldenrod",
         "en": "goldenrod",
         "hex": "#daa520",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Gold"
     },
     "Gray": {
         "bgr": [
@@ -959,7 +1054,8 @@
         "label_jp": "Gray",
         "en": "gray",
         "hex": "#808080",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Grey"
     },
     "Greenyellow": {
         "bgr": [
@@ -970,7 +1066,8 @@
         "label_jp": "Greenyellow",
         "en": "greenyellow",
         "hex": "#adff2f",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Honeydew": {
         "bgr": [
@@ -981,7 +1078,8 @@
         "label_jp": "Honeydew",
         "en": "honeydew",
         "hex": "#f0fff0",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Hotpink": {
         "bgr": [
@@ -992,7 +1090,8 @@
         "label_jp": "Hotpink",
         "en": "hotpink",
         "hex": "#ff69b4",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Pink"
     },
     "Indianred": {
         "bgr": [
@@ -1003,7 +1102,8 @@
         "label_jp": "Indianred",
         "en": "indianred",
         "hex": "#cd5c5c",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Red"
     },
     "Indigo": {
         "bgr": [
@@ -1014,7 +1114,8 @@
         "label_jp": "Indigo",
         "en": "indigo",
         "hex": "#4b0082",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Purple"
     },
     "Ivory": {
         "bgr": [
@@ -1025,7 +1126,8 @@
         "label_jp": "Ivory",
         "en": "ivory",
         "hex": "#fffff0",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Lavenderblush": {
         "bgr": [
@@ -1036,7 +1138,8 @@
         "label_jp": "Lavenderblush",
         "en": "lavenderblush",
         "hex": "#fff0f5",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Lawngreen": {
         "bgr": [
@@ -1047,7 +1150,8 @@
         "label_jp": "Lawngreen",
         "en": "lawngreen",
         "hex": "#7cfc00",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Lemonchiffon": {
         "bgr": [
@@ -1058,7 +1162,8 @@
         "label_jp": "Lemonchiffon",
         "en": "lemonchiffon",
         "hex": "#fffacd",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Yellow"
     },
     "Lightblue": {
         "bgr": [
@@ -1069,7 +1174,8 @@
         "label_jp": "Lightblue",
         "en": "lightblue",
         "hex": "#add8e6",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Lightcoral": {
         "bgr": [
@@ -1080,7 +1186,8 @@
         "label_jp": "Lightcoral",
         "en": "lightcoral",
         "hex": "#f08080",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Red"
     },
     "Lightcyan": {
         "bgr": [
@@ -1091,7 +1198,8 @@
         "label_jp": "Lightcyan",
         "en": "lightcyan",
         "hex": "#e0ffff",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Lightgoldenrodyellow": {
         "bgr": [
@@ -1102,7 +1210,8 @@
         "label_jp": "Lightgoldenrodyellow",
         "en": "lightgoldenrodyellow",
         "hex": "#fafad2",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Gold"
     },
     "Lightgray": {
         "bgr": [
@@ -1113,7 +1222,8 @@
         "label_jp": "Lightgray",
         "en": "lightgray",
         "hex": "#d3d3d3",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Silver"
     },
     "Lightgreen": {
         "bgr": [
@@ -1124,7 +1234,8 @@
         "label_jp": "Lightgreen",
         "en": "lightgreen",
         "hex": "#90ee90",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Lightgrey": {
         "bgr": [
@@ -1135,7 +1246,8 @@
         "label_jp": "Lightgrey",
         "en": "lightgrey",
         "hex": "#d3d3d3",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Silver"
     },
     "Lightpink": {
         "bgr": [
@@ -1146,7 +1258,8 @@
         "label_jp": "Lightpink",
         "en": "lightpink",
         "hex": "#ffb6c1",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Red"
     },
     "Lightsalmon": {
         "bgr": [
@@ -1157,7 +1270,8 @@
         "label_jp": "Lightsalmon",
         "en": "lightsalmon",
         "hex": "#ffa07a",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Orange"
     },
     "Lightseagreen": {
         "bgr": [
@@ -1168,7 +1282,8 @@
         "label_jp": "Lightseagreen",
         "en": "lightseagreen",
         "hex": "#20b2aa",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Lightskyblue": {
         "bgr": [
@@ -1179,7 +1294,8 @@
         "label_jp": "Lightskyblue",
         "en": "lightskyblue",
         "hex": "#87cefa",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Lightslategray": {
         "bgr": [
@@ -1190,7 +1306,8 @@
         "label_jp": "Lightslategray",
         "en": "lightslategray",
         "hex": "#778899",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Lightslategrey": {
         "bgr": [
@@ -1201,7 +1318,8 @@
         "label_jp": "Lightslategrey",
         "en": "lightslategrey",
         "hex": "#778899",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Lightsteelblue": {
         "bgr": [
@@ -1212,7 +1330,8 @@
         "label_jp": "Lightsteelblue",
         "en": "lightsteelblue",
         "hex": "#b0c4de",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Lightyellow": {
         "bgr": [
@@ -1223,7 +1342,8 @@
         "label_jp": "Lightyellow",
         "en": "lightyellow",
         "hex": "#ffffe0",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Yellow"
     },
     "Lime": {
         "bgr": [
@@ -1234,7 +1354,8 @@
         "label_jp": "Lime",
         "en": "lime",
         "hex": "#00ff00",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Limegreen": {
         "bgr": [
@@ -1245,7 +1366,8 @@
         "label_jp": "Limegreen",
         "en": "limegreen",
         "hex": "#32cd32",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Linen": {
         "bgr": [
@@ -1256,7 +1378,8 @@
         "label_jp": "Linen",
         "en": "linen",
         "hex": "#faf0e6",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Mediumaquamarine": {
         "bgr": [
@@ -1267,7 +1390,8 @@
         "label_jp": "Mediumaquamarine",
         "en": "mediumaquamarine",
         "hex": "#66cdaa",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Mediumblue": {
         "bgr": [
@@ -1278,7 +1402,8 @@
         "label_jp": "Mediumblue",
         "en": "mediumblue",
         "hex": "#0000cd",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Mediumorchid": {
         "bgr": [
@@ -1289,7 +1414,8 @@
         "label_jp": "Mediumorchid",
         "en": "mediumorchid",
         "hex": "#ba55d3",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Purple"
     },
     "Mediumpurple": {
         "bgr": [
@@ -1300,7 +1426,8 @@
         "label_jp": "Mediumpurple",
         "en": "mediumpurple",
         "hex": "#9370db",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Mediumseagreen": {
         "bgr": [
@@ -1311,7 +1438,8 @@
         "label_jp": "Mediumseagreen",
         "en": "mediumseagreen",
         "hex": "#3cb371",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Mediumslateblue": {
         "bgr": [
@@ -1322,7 +1450,8 @@
         "label_jp": "Mediumslateblue",
         "en": "mediumslateblue",
         "hex": "#7b68ee",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Mediumspringgreen": {
         "bgr": [
@@ -1333,7 +1462,8 @@
         "label_jp": "Mediumspringgreen",
         "en": "mediumspringgreen",
         "hex": "#00fa9a",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Mediumturquoise": {
         "bgr": [
@@ -1344,7 +1474,8 @@
         "label_jp": "Mediumturquoise",
         "en": "mediumturquoise",
         "hex": "#48d1cc",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Mediumvioletred": {
         "bgr": [
@@ -1355,7 +1486,8 @@
         "label_jp": "Mediumvioletred",
         "en": "mediumvioletred",
         "hex": "#c71585",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Pink"
     },
     "Midnightblue": {
         "bgr": [
@@ -1366,7 +1498,8 @@
         "label_jp": "Midnightblue",
         "en": "midnightblue",
         "hex": "#191970",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Navy Blue"
     },
     "Mintcream": {
         "bgr": [
@@ -1377,7 +1510,8 @@
         "label_jp": "Mintcream",
         "en": "mintcream",
         "hex": "#f5fffa",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Mistyrose": {
         "bgr": [
@@ -1388,7 +1522,8 @@
         "label_jp": "Mistyrose",
         "en": "mistyrose",
         "hex": "#ffe4e1",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Moccasin": {
         "bgr": [
@@ -1399,7 +1534,8 @@
         "label_jp": "Moccasin",
         "en": "moccasin",
         "hex": "#ffe4b5",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Beige"
     },
     "Navajowhite": {
         "bgr": [
@@ -1410,7 +1546,8 @@
         "label_jp": "Navajowhite",
         "en": "navajowhite",
         "hex": "#ffdead",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Navy": {
         "bgr": [
@@ -1421,7 +1558,8 @@
         "label_jp": "Navy",
         "en": "navy",
         "hex": "#000080",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Navy Blue"
     },
     "Oldlace": {
         "bgr": [
@@ -1432,7 +1570,8 @@
         "label_jp": "Oldlace",
         "en": "oldlace",
         "hex": "#fdf5e6",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Olivedrab": {
         "bgr": [
@@ -1443,7 +1582,8 @@
         "label_jp": "Olivedrab",
         "en": "olivedrab",
         "hex": "#6b8e23",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Orangered": {
         "bgr": [
@@ -1454,7 +1594,8 @@
         "label_jp": "Orangered",
         "en": "orangered",
         "hex": "#ff4500",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Orange"
     },
     "Orchid": {
         "bgr": [
@@ -1465,7 +1606,8 @@
         "label_jp": "Orchid",
         "en": "orchid",
         "hex": "#da70d6",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Purple"
     },
     "Palegoldenrod": {
         "bgr": [
@@ -1476,7 +1618,8 @@
         "label_jp": "Palegoldenrod",
         "en": "palegoldenrod",
         "hex": "#eee8aa",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Gold"
     },
     "Palegreen": {
         "bgr": [
@@ -1487,7 +1630,8 @@
         "label_jp": "Palegreen",
         "en": "palegreen",
         "hex": "#98fb98",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Paleturquoise": {
         "bgr": [
@@ -1498,7 +1642,8 @@
         "label_jp": "Paleturquoise",
         "en": "paleturquoise",
         "hex": "#afeeee",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Palevioletred": {
         "bgr": [
@@ -1509,7 +1654,8 @@
         "label_jp": "Palevioletred",
         "en": "palevioletred",
         "hex": "#db7093",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Pink"
     },
     "Papayawhip": {
         "bgr": [
@@ -1520,7 +1666,8 @@
         "label_jp": "Papayawhip",
         "en": "papayawhip",
         "hex": "#ffefd5",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Beige"
     },
     "Peachpuff": {
         "bgr": [
@@ -1531,7 +1678,8 @@
         "label_jp": "Peachpuff",
         "en": "peachpuff",
         "hex": "#ffdab9",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Beige"
     },
     "Peru": {
         "bgr": [
@@ -1542,7 +1690,8 @@
         "label_jp": "Peru",
         "en": "peru",
         "hex": "#cd853f",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Orange"
     },
     "Plum": {
         "bgr": [
@@ -1553,7 +1702,8 @@
         "label_jp": "Plum",
         "en": "plum",
         "hex": "#dda0dd",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Purple"
     },
     "Powderblue": {
         "bgr": [
@@ -1564,7 +1714,8 @@
         "label_jp": "Powderblue",
         "en": "powderblue",
         "hex": "#b0e0e6",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Rosybrown": {
         "bgr": [
@@ -1575,7 +1726,8 @@
         "label_jp": "Rosybrown",
         "en": "rosybrown",
         "hex": "#bc8f8f",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Red"
     },
     "Royalblue": {
         "bgr": [
@@ -1586,7 +1738,8 @@
         "label_jp": "Royalblue",
         "en": "royalblue",
         "hex": "#4169e1",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Saddlebrown": {
         "bgr": [
@@ -1597,7 +1750,8 @@
         "label_jp": "Saddlebrown",
         "en": "saddlebrown",
         "hex": "#8b4513",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Brown"
     },
     "Salmon": {
         "bgr": [
@@ -1608,7 +1762,8 @@
         "label_jp": "Salmon",
         "en": "salmon",
         "hex": "#fa8072",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Red"
     },
     "Sandybrown": {
         "bgr": [
@@ -1619,7 +1774,8 @@
         "label_jp": "Sandybrown",
         "en": "sandybrown",
         "hex": "#f4a460",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Orange"
     },
     "Seagreen": {
         "bgr": [
@@ -1630,7 +1786,8 @@
         "label_jp": "Seagreen",
         "en": "seagreen",
         "hex": "#2e8b57",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Seashell": {
         "bgr": [
@@ -1641,7 +1798,8 @@
         "label_jp": "Seashell",
         "en": "seashell",
         "hex": "#fff5ee",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Sienna": {
         "bgr": [
@@ -1652,7 +1810,8 @@
         "label_jp": "Sienna",
         "en": "sienna",
         "hex": "#a0522d",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Orange"
     },
     "Skyblue": {
         "bgr": [
@@ -1663,7 +1822,8 @@
         "label_jp": "Skyblue",
         "en": "skyblue",
         "hex": "#87ceeb",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Slateblue": {
         "bgr": [
@@ -1674,7 +1834,8 @@
         "label_jp": "Slateblue",
         "en": "slateblue",
         "hex": "#6a5acd",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Slategray": {
         "bgr": [
@@ -1685,7 +1846,8 @@
         "label_jp": "Slategray",
         "en": "slategray",
         "hex": "#708090",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Slategrey": {
         "bgr": [
@@ -1696,7 +1858,8 @@
         "label_jp": "Slategrey",
         "en": "slategrey",
         "hex": "#708090",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Snow": {
         "bgr": [
@@ -1707,7 +1870,8 @@
         "label_jp": "Snow",
         "en": "snow",
         "hex": "#fffafa",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Springgreen": {
         "bgr": [
@@ -1718,7 +1882,8 @@
         "label_jp": "Springgreen",
         "en": "springgreen",
         "hex": "#00ff7f",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     },
     "Steelblue": {
         "bgr": [
@@ -1729,7 +1894,8 @@
         "label_jp": "Steelblue",
         "en": "steelblue",
         "hex": "#4682b4",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Thistle": {
         "bgr": [
@@ -1740,7 +1906,8 @@
         "label_jp": "Thistle",
         "en": "thistle",
         "hex": "#d8bfd8",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Silver"
     },
     "Tomato": {
         "bgr": [
@@ -1751,7 +1918,8 @@
         "label_jp": "Tomato",
         "en": "tomato",
         "hex": "#ff6347",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Red"
     },
     "Turquoise": {
         "bgr": [
@@ -1762,7 +1930,8 @@
         "label_jp": "Turquoise",
         "en": "turquoise",
         "hex": "#40e0d0",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Blue"
     },
     "Violet": {
         "bgr": [
@@ -1773,7 +1942,8 @@
         "label_jp": "Violet",
         "en": "violet",
         "hex": "#ee82ee",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Purple"
     },
     "Wheat": {
         "bgr": [
@@ -1784,7 +1954,8 @@
         "label_jp": "Wheat",
         "en": "wheat",
         "hex": "#f5deb3",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Beige"
     },
     "Whitesmoke": {
         "bgr": [
@@ -1795,7 +1966,8 @@
         "label_jp": "Whitesmoke",
         "en": "whitesmoke",
         "hex": "#f5f5f5",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "White"
     },
     "Yellowgreen": {
         "bgr": [
@@ -1806,6 +1978,7 @@
         "label_jp": "Yellowgreen",
         "en": "yellowgreen",
         "hex": "#9acd32",
-        "dataset_count": 0
+        "dataset_count": 0,
+        "color_family": "Green"
     }
 }

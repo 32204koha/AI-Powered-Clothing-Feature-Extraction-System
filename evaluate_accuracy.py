@@ -19,7 +19,7 @@ CATEGORY_JSON_FILE = os.path.join(BASE_DIR, "category_prompts.json")
 CATEGORY_MAP_FILE = "category_mapping.json"
 
 # 評価する画像サンプル数の上限（全件評価する場合は None に設定）
-MAX_EVAL_SAMPLES = 10
+MAX_EVAL_SAMPLES = 1000
 
 # 軽量な背景削除モデルを指定 (u2netp: 超軽量・高速)
 REMBG_MODEL = "u2netp"
@@ -33,11 +33,12 @@ def load_color_palette():
     with open(PALETTE_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
     palette_dict = {}
-    for k, v in data.items():
+    for k, v  in data.items():
         display_name = v.get("label_jp", k)
         palette_dict[display_name] = {
             "bgr": v["bgr"],
-            "en": v.get("en", k)
+            "en": v.get("en", k),
+            "color_family": v.get("color_family", k)
         }
     return palette_dict
 

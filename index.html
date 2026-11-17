@@ -5,103 +5,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>クローゼット管理＆断捨離AI</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; }
+        body { font-family: sans-serif; padding: 20px; max-width: 680px; margin: 0 auto; background-color: #f9f9f9; color: #333; }
         .card { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .upload-area { border: 2px dashed #ccc; padding: 20px; text-align: center; margin-bottom: 20px; border-radius: 8px; }
-        img#preview { max-width: 100%; max-height: 300px; margin-top: 10px; display: none; border-radius: 4px; margin-left: auto; margin-right: auto; }
-        button { padding: 10px 20px; color: white; border: none; cursor: pointer; font-size: 16px; border-radius: 4px; width: 100%; margin-bottom: 10px; }
+        .upload-area { border: 2px dashed #ccc; padding: 20px; text-align: center; margin-bottom: 15px; border-radius: 8px; }
+        img#preview, img#processedPreview { max-width: 100%; max-height: 240px; margin-top: 10px; display: none; border-radius: 4px; margin-left: auto; margin-right: auto; }
+        button { padding: 12px 20px; color: white; border: none; cursor: pointer; font-size: 16px; border-radius: 4px; width: 100%; margin-bottom: 10px; font-weight: bold; }
+        button:disabled { background-color: #aaa !important; cursor: not-allowed; }
         .btn-blue { background-color: #007BFF; }
         .btn-blue:hover { background-color: #0056b3; }
         .btn-green { background-color: #28a745; }
         .btn-green:hover { background-color: #1e7e34; }
-        .result-box { background-color: #f4f4f4; padding: 15px; white-space: pre-wrap; word-wrap: break-word; border-radius: 5px; font-size: 14px; }
-        /* 🌟 進捗・ダウンロード状況を見せるためのスタイル */
+        .btn-gray { background-color: #6c757d; }
+        .btn-gray:hover { background-color: #545b62; }
+        .result-box { background-color: #f4f4f4; padding: 15px; white-space: pre-wrap; word-wrap: break-word; border-radius: 5px; font-size: 14px; line-height: 1.5; }
         .status-badge { background: #e8f0fe; color: #1967d2; padding: 8px 12px; border-radius: 6px; font-weight: bold; margin-bottom: 10px; display: none; text-align: center; }
+        
+        /* 質問フォーム用スタイル */
+        #questionSection { display: none; border-top: 2px solid #eee; margin-top: 20px; padding-top: 15px; }
+        .detected-info { background: #eef7ff; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 15px; }
+        .question-group { margin-bottom: 15px; padding: 12px; background: #fafafa; border: 1px solid #e5e5e5; border-radius: 6px; }
+        .question-group label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 14px; }
+        .question-group select { width: 100%; padding: 8px; font-size: 15px; border-radius: 4px; border: 1px solid #ccc; }
+        
+        /* 判定バッジ色分け */
+        .badge-discard { background: #dc3545; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-consider { background: #ffc107; color: #222; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-keep { background: #28a745; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <h2 style="text-align: center;">👗 クローゼット管理＆断捨離支援</h2>
 
-    <!-- 1着登録セクション -->
+    <!-- 1. 服を登録する（連続フロー：画像解析 → 質問回答・スコア診断） -->
     <div class="card">
-        <h3>1. 服を登録する</h3>
+        <h3>1. 服を登録・診断する</h3>
+        
+        <!-- Step 1: 画像アップロード -->
         <div class="upload-area">
             <input type="file" id="imageInput" accept="image/*">
-            <img id="preview" alt="画像プレビュー">
+            <img id="preview" alt="選択画像プレビュー">
         </div>
 
-        <div style="margin-bottom: 20px; text-align: center;">
-            <label for="surveySelect" style="font-weight: bold;">この服の好み：</label>
-            <select id="surveySelect" style="padding: 5px; font-size: 16px; border-radius: 4px;">
-                <option value="好き">好き</option>
-                <option value="普通">普通</option>
-                <option value="保留">保留（迷っている）</option>
-                <option value="嫌い">嫌い</option>
-            </select>
-        </div>
-
-        <div style="margin-bottom: 15px; text-align: center; background: #eee; padding: 10px; border-radius: 5px;">
-            <label style="font-weight: bold; margin-right: 15px; cursor: pointer;">
-                <input type="radio" name="entryType" value="worn_today" checked> 今日着る服として記録
-            </label>
-            <label style="font-weight: bold; cursor: pointer;">
-                <input type="radio" name="entryType" value="inventory"> 持っている服として登録
-            </label>
-            
-            <div id="wornOptions" style="margin-top: 10px;">
-                <label for="daysWornSelect">何日ぶりに着る？：</label>
-                <select id="daysWornSelect" style="padding: 5px; border-radius: 4px;">
-                    <option value="数日ぶり">数日ぶり</option>
-                    <option value="1週間ぶり">1週間ぶり</option>
-                    <option value="1ヶ月以上ぶり">1ヶ月以上ぶり</option>
-                    <option value="覚えていない">覚えていない</option>
-                    <option value="初めて（新品）">初めて（新品）</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- 🌟 ウェブ上にリアルタイムの処理状況を表示するバッジ -->
         <div id="statusBadge" class="status-badge">🔄 処理中...</div>
 
-        <button id="sendButton" class="btn-blue">解析してクローゼットに保存</button>
-        
+        <button id="analyzeImageButton" class="btn-blue">Step 1: 画像を解析して属性を抽出</button>
+
+        <!-- Step 2: AI解析結果と質問フォーム（解析後に表示） -->
+        <div id="questionSection">
+            <div class="detected-info">
+                <strong>AI解析結果（自動取得）:</strong><br>
+                カテゴリー: <span id="detectedCategory" style="font-weight: bold;">-</span> ／ 
+                色: <span id="detectedColor" style="font-weight: bold;">-</span><br>
+                <span id="duplicateInfoText" style="font-size: 13px; color: #555;"></span>
+                <img id="processedPreview" alt="背景除去後プレビュー">
+            </div>
+
+            <h4>Step 2: 断捨離スコア診断の質問に回答</h4>
+
+            <!-- Q1: 必須 -->
+            <div class="question-group">
+                <label for="q1Select">Q1. この服をいつぶりに着用しましたか？【必須】</label>
+                <select id="q1Select">
+                    <option value="1週間以内">1週間以内</option>
+                    <option value="1か月以内">1か月以内</option>
+                    <option value="半年以内">半年以内</option>
+                    <option value="1年以内">1年以内</option>
+                    <option value="覚えていない">覚えていない</option>
+                </select>
+            </div>
+
+            <!-- Q3: 条件分岐（Q1が「1年以内」または「覚えていない」の時のみ表示） -->
+            <div class="question-group" id="q3Group" style="display: none;">
+                <label for="q3Select">Q3. 着用時の思い出が蘇りますか？</label>
+                <select id="q3Select">
+                    <option value="はい">はい</option>
+                    <option value="なんとなく">なんとなく</option>
+                    <option value="思い出せない">思い出せない</option>
+                </select>
+            </div>
+
+            <!-- Q4: 条件分岐（重複3着以上 または Q1が「半年以内」「1年以内」「覚えていない」の時のみ表示） -->
+            <div class="question-group" id="q4Group" style="display: none;">
+                <label for="q4Select">Q4. もしこの服を持っていなかったら、もう一度購入しますか？</label>
+                <select id="q4Select">
+                    <option value="はい">はい</option>
+                    <option value="迷う">迷う</option>
+                    <option value="いいえ">いいえ</option>
+                </select>
+            </div>
+
+            <!-- Q5: 必須 -->
+            <div class="question-group">
+                <label for="q5Select">Q5. この服を使ったコーデの組み合わせが想像できますか？【必須】</label>
+                <select id="q5Select">
+                    <option value="何通りか想像できる">何通りか想像できる</option>
+                    <option value="いつも決まったパターンで着ている">いつも決まったパターンで着ている</option>
+                    <option value="着用イメージが湧かない">着用イメージが湧かない</option>
+                </select>
+            </div>
+
+            <button id="registerButton" class="btn-green">診断してクローゼットに保存</button>
+        </div>
+
         <div style="margin-top: 15px;">
-            <strong>最新の解析結果:</strong>
-            <pre id="result" class="result-box">ここに解析結果が表示されます。</pre>
+            <strong>最新の診断結果:</strong>
+            <pre id="result" class="result-box">ここに診断結果が表示されます。</pre>
         </div>
     </div>
 
-    <!-- 全体診断セクション -->
+    <!-- 2. クローゼット全体を診断する（集計表示） -->
     <div class="card">
-        <h3>2. クローゼットを診断する</h3>
-        <button id="diagnoseButton" class="btn-green">全体を診断する</button>
+        <h3>2. クローゼット全体の診断集計</h3>
+        <button id="diagnoseButton" class="btn-green">最新の状況で全体を集計する</button>
         <div style="margin-top: 15px;">
-            <strong>診断結果:</strong>
-            <pre id="diagnosisResult" class="result-box">ここに診断結果が表示されます。</pre>
+            <strong>全体集計結果:</strong>
+            <pre id="diagnosisResult" class="result-box">ここに全体の平均スコアと判定内訳が表示されます。</pre>
         </div>
     </div>
 
-    <!-- 登録リスト一覧セクション -->
+    <!-- 3. クローゼットの登録一覧 -->
     <div class="card">
         <h3>3. クローゼットの登録一覧</h3>
-        <button id="loadClosetButton" class="btn-blue" style="background-color: #6c757d;">一覧を更新・表示する</button>
-        <div id="closetListContainer" style="margin-top: 15px; display: grid; gap: 10px;">
+        <button id="loadClosetButton" class="btn-gray">一覧を更新・表示する</button>
+        <div id="closetListContainer" style="margin-top: 15px;">
             <p style="color: #777; font-size: 14px;">まだ読み込まれていません。</p>
         </div>
     </div>
 
     <script>
+        const API_BASE = 'http://localhost:8000';
         const imageInput = document.getElementById('imageInput');
         const preview = document.getElementById('preview');
         const statusBadge = document.getElementById('statusBadge');
 
-        // ステータス表示を切り替えるヘルパー関数
+        // Step 1 で取得した一時データを保持する変数
+        let currentAnalyzedItem = null;
+
         function setStatus(text, isVisible = true) {
             statusBadge.textContent = text;
             statusBadge.style.display = isVisible ? 'block' : 'none';
         }
 
+        // 画像選択時のプレビュー表示
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -109,11 +155,12 @@
                 reader.onload = function(e) {
                     preview.src = e.target.result;
                     preview.style.display = 'block';
-                }
+                };
                 reader.readAsDataURL(file);
             }
         });
 
+        // クライアント側での画像圧縮
         function compressImage(file, maxWidth, maxHeight, quality) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -154,96 +201,214 @@
             });
         }
 
-        // 解析ボタン押下時の処理
-        document.getElementById('sendButton').addEventListener('click', async () => {
+        // Q1と重複状況に応じた質問（Q3, Q4）の動的表示切り替え
+        function updateConditionalQuestions() {
+            if (!currentAnalyzedItem) return;
+
+            const q1Val = document.getElementById('q1Select').value;
+            const dup = currentAnalyzedItem.dup_status;
+
+            // Q3条件: Q1が「1年以内」または「覚えていない」
+            const needQ3 = (q1Val === '1年以内' || q1Val === '覚えていない');
+            document.getElementById('q3Group').style.display = needQ3 ? 'block' : 'none';
+
+            // Q4条件: 色・カテゴリのどちらかが3着以上 または Q1が「半年以内」「1年以内」「覚えていない」
+            const isDup = dup.has_duplicate_color || dup.has_duplicate_category;
+            const isLongUnused = (q1Val === '半年以内' || q1Val === '1年以内' || q1Val === '覚えていない');
+            const needQ4 = (isDup || isLongUnused);
+            document.getElementById('q4Group').style.display = needQ4 ? 'block' : 'none';
+        }
+
+        document.getElementById('q1Select').addEventListener('change', updateConditionalQuestions);
+
+        // Step 1: 画像解析ボタン押下時の処理
+        document.getElementById('analyzeImageButton').addEventListener('click', async () => {
             const originalFile = imageInput.files[0];
             if (!originalFile) {
                 alert("画像を選択してください！");
                 return;
             }
 
-            const sendButton = document.getElementById('sendButton');
-            sendButton.disabled = true;
+            const btn = document.getElementById('analyzeImageButton');
+            btn.disabled = true;
 
             try {
-                // 1. クライアント側での圧縮中
-                setStatus("📥 ステータス: 画像をブラウザで圧縮中...");
-                document.getElementById('result').textContent = "前処理を進行中...";
-
+                setStatus("📥 ステータス: 画像を圧縮中...");
                 const compressedFile = await compressImage(originalFile, 800, 800, 0.7);
 
-                // 2. サーバーへ通信・背景削除中
-                setStatus("🧠 ステータス: ローカルサーバーで背景削除＆AI解析中...");
-
+                setStatus("🧠 ステータス: 背景削除＆AI属性抽出中...");
                 const formData = new FormData();
                 formData.append('file', compressedFile);
-                formData.append('survey_result', document.getElementById('surveySelect').value); 
-                formData.append('entry_type', document.querySelector('input[name="entryType"]:checked').value);
-                formData.append('days_since_last_worn', document.getElementById('daysWornSelect').value);
 
-                const response = await fetch('http://localhost:8000/analyze', {
+                const response = await fetch(`${API_BASE}/analyze-image`, {
                     method: 'POST',
                     body: formData
                 });
-                
                 const data = await response.json();
-                
-                if (data.status === "success" && data.extracted_items) {
-                    setStatus("✨ ステータス: 解析・保存が完了しました！", true);
-                    setTimeout(() => setStatus("", false), 4000); // 4秒後にステータスを隠す
 
-                    let resultText = `✅ ${data.message}\n\n`;
-                    data.extracted_items.forEach((item, index) => {
-                        resultText += `【アイテム ${index + 1}】\n`;
-                        resultText += `種類: ${item.category || '不明'}\n`;
-                        resultText += `色: ${item.color || '不明'}\n`;
-                        resultText += `スコア: ${item.score}点\n\n`;
-                    });
-                    document.getElementById('result').textContent = resultText;
+                if (data.status === "success") {
+                    currentAnalyzedItem = data;
+
+                    document.getElementById('detectedCategory').textContent = data.category;
+                    document.getElementById('detectedColor').textContent = data.color;
+
+                    const dupColorText = data.dup_status.has_duplicate_color ? "あり（3着以上）" : "なし";
+                    const dupCatText = data.dup_status.has_duplicate_category ? "あり（3着以上）" : "なし";
+                    document.getElementById('duplicateInfoText').textContent = 
+                        `重複状況（登録後）: 同色 ${dupColorText} ／ 同カテゴリ ${dupCatText}`;
+
+                    const processedImg = document.getElementById('processedPreview');
+                    processedImg.src = `${API_BASE}${data.image_url}`;
+                    processedImg.style.display = 'block';
+
+                    // 質問フォームを表示し、条件分岐を反映
+                    document.getElementById('q1Select').value = "1週間以内";
+                    updateConditionalQuestions();
+                    document.getElementById('questionSection').style.display = 'block';
+
+                    setStatus("✨ 属性抽出完了！下の質問に回答してください。", true);
                 } else {
-                    setStatus("⚠️ エラーが発生しました", true);
+                    setStatus("⚠️ 解析エラーが発生しました", true);
                     document.getElementById('result').textContent = JSON.stringify(data, null, 2);
                 }
             } catch (error) {
                 setStatus("❌ 通信エラー", true);
-                document.getElementById('result').textContent = "エラーが発生しました。\n" + error.message;
+                document.getElementById('result').textContent = "エラーが発生しました:\n" + error.message;
             } finally {
-                sendButton.disabled = false;
+                btn.disabled = false;
             }
         });
 
-        // 診断ボタン
+        // Step 2: 診断してクローゼットに保存ボタン押下時の処理
+        document.getElementById('registerButton').addEventListener('click', async () => {
+            if (!currentAnalyzedItem) return;
+
+            const btn = document.getElementById('registerButton');
+            btn.disabled = true;
+
+            try {
+                setStatus("🔄 スコア算出＆クローゼット全体の再計算中...");
+
+                // 表示されている質問の回答だけを収集
+                const answers = {
+                    Q1: document.getElementById('q1Select').value,
+                    Q5: document.getElementById('q5Select').value
+                };
+                if (document.getElementById('q3Group').style.display !== 'none') {
+                    answers.Q3 = document.getElementById('q3Select').value;
+                }
+                if (document.getElementById('q4Group').style.display !== 'none') {
+                    answers.Q4 = document.getElementById('q4Select').value;
+                }
+
+                const payload = {
+                    item_id: currentAnalyzedItem.item_id,
+                    image_url: currentAnalyzedItem.image_url,
+                    color: currentAnalyzedItem.color,
+                    category: currentAnalyzedItem.category,
+                    answers: answers
+                };
+
+                const response = await fetch(`${API_BASE}/register-item`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    const item = data.item;
+                    let text = `✅ クローゼットに登録し、全 ${data.summary.total_count} 着のスコアを再計算しました！\n\n`;
+                    text += `【今回の診断結果】\n`;
+                    text += `・判定: 【 ${item.judgment} 】\n`;
+                    text += `・断捨離スコア: ${item.final_score_percent}% (${item.total_score}点 / 最大${item.max_possible_score}点)\n`;
+                    text += `・カテゴリー / 色: ${item.category} / ${item.color}\n\n`;
+                    text += `【スコア内訳】\n`;
+                    for (const [k, v] of Object.entries(item.breakdown)) {
+                        text += `  ${k}: ${v}\n`;
+                    }
+                    document.getElementById('result').textContent = text;
+
+                    // フォームをリセット
+                    document.getElementById('questionSection').style.display = 'none';
+                    imageInput.value = "";
+                    preview.style.display = "none";
+                    currentAnalyzedItem = null;
+
+                    setStatus("✨ 保存・再計算が完了しました！", true);
+                    setTimeout(() => setStatus("", false), 4000);
+                } else {
+                    setStatus("⚠️ 保存エラー", true);
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                setStatus("❌ 通信エラー", true);
+                document.getElementById('result').textContent = "エラー: " + error.message;
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // 2. クローゼット全体の診断集計ボタン
         document.getElementById('diagnoseButton').addEventListener('click', async () => {
             try {
-                const response = await fetch('http://localhost:8000/diagnose');
+                const response = await fetch(`${API_BASE}/diagnose`);
                 const data = await response.json();
-                document.getElementById('diagnosisResult').textContent = `【クローゼット健康度】: ${data.score}点\n\n${data.diagnosis}`;
+                const s = data.summary;
+
+                if (s.total_count === 0) {
+                    document.getElementById('diagnosisResult').textContent = "登録されている服がまだありません。";
+                    return;
+                }
+
+                let text = `【クローゼット全体集計】（全 ${s.total_count} 着・最新再計算済み）\n\n`;
+                text += `■ 平均断捨離スコア : ${s.average_score}%\n\n`;
+                text += `■ 判定内訳:\n`;
+                text += `  ・断捨離推奨 (70%〜)   : ${s.counts["断捨離推奨"]} 着\n`;
+                text += `  ・要検討     (50〜69%) : ${s.counts["要検討"]} 着\n`;
+                text += `  ・キープ     (〜49%)   : ${s.counts["キープ"]} 着\n`;
+
+                document.getElementById('diagnosisResult').textContent = text;
             } catch (error) {
                 document.getElementById('diagnosisResult').textContent = "エラー: " + error.message;
             }
         });
 
-        // 一覧表示ボタン
+        // 3. クローゼットの登録一覧表示ボタン
         document.getElementById('loadClosetButton').addEventListener('click', async () => {
             const container = document.getElementById('closetListContainer');
-            container.innerHTML = "<p>読み込み中...</p>";
+            container.innerHTML = "<p>最新のスコアを再計算して読み込み中...</p>";
             try {
-                const response = await fetch('http://localhost:8000/closet');
+                const response = await fetch(`${API_BASE}/closet`);
                 const data = await response.json();
                 const items = data.closet_items;
+
                 if (!items || items.length === 0) {
                     container.innerHTML = "<p>登録されている服はありません。</p>";
                     return;
                 }
-                let html = `<p><strong>登録総数: ${data.total_count} 着</strong></p><div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px;">`;
+
+                let html = `<p><strong>登録総数: ${data.total_count} 着</strong>（全件最新スコアに再計算済み）</p>`;
+                html += `<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 15px;">`;
+
                 items.forEach((item, index) => {
+                    let badgeClass = "badge-keep";
+                    if (item.judgment === "断捨離推奨") badgeClass = "badge-discard";
+                    else if (item.judgment === "要検討") badgeClass = "badge-consider";
+
                     html += `
-                        <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; background: #fff;">
-                            <img src="http://localhost:8000${item.image_url}" style="width: 100%; height: 130px; object-fit: cover; border-radius: 4px; margin-bottom: 5px;">
-                            <p style="margin: 0; font-size: 13px; font-weight: bold;">#${index+1} ${item.category}</p>
-                            <p style="margin: 0; font-size: 11px; color: #555;">好み: ${item.survey_result}</p>
+                        <div style="border: 1px solid #ddd; padding: 10px; border-radius: 6px; background: #fff;">
+                            <img src="${API_BASE}${item.image_url}" style="width: 100%; height: 140px; object-fit: contain; background: #f8f8f8; border-radius: 4px; margin-bottom: 8px;">
+                            <div style="margin-bottom: 4px;">
+                                <span class="${badgeClass}">${item.judgment}</span>
+                                <strong style="font-size: 14px; margin-left: 4px;">${item.final_score_percent}%</strong>
+                            </div>
+                            <p style="margin: 2px 0; font-size: 13px; font-weight: bold;">#${index + 1} ${item.category}</p>
+                            <p style="margin: 2px 0; font-size: 12px; color: #555;">色: ${item.color}</p>
+                            <p style="margin: 2px 0; font-size: 11px; color: #777;">最終着用: ${item.answers.Q1}</p>
                         </div>`;
                 });
+
                 container.innerHTML = html + "</div>";
             } catch (error) {
                 container.innerHTML = "<p style='color: red;'>一覧の取得に失敗しました。</p>";

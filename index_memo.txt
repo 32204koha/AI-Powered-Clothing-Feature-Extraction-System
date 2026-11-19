@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クローゼット管理＆断捨離AI</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 680px; margin: 0 auto; background-color: #f9f9f9; color: #333; }
+        .card { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .upload-area { border: 2px dashed #ccc; padding: 20px; text-align: center; margin-bottom: 15px; border-radius: 8px; }
+        img#preview, img#processedPreview { max-width: 100%; max-height: 240px; margin-top: 10px; display: none; border-radius: 4px; margin-left: auto; margin-right: auto; }
+        button { padding: 12px 20px; color: white; border: none; cursor: pointer; font-size: 16px; border-radius: 4px; width: 100%; margin-bottom: 10px; font-weight: bold; }
+        button:disabled { background-color: #aaa !important; cursor: not-allowed; }
+        .btn-blue { background-color: #007BFF; }
+        .btn-blue:hover { background-color: #0056b3; }
+        .btn-green { background-color: #28a745; }
+        .btn-green:hover { background-color: #1e7e34; }
+        .btn-gray { background-color: #6c757d; }
+        .btn-gray:hover { background-color: #545b62; }
+        .result-box { background-color: #f4f4f4; padding: 15px; white-space: pre-wrap; word-wrap: break-word; border-radius: 5px; font-size: 14px; line-height: 1.5; }
+        .status-badge { background: #e8f0fe; color: #1967d2; padding: 8px 12px; border-radius: 6px; font-weight: bold; margin-bottom: 10px; display: none; text-align: center; }
+        
+        /* 質問フォーム用スタイル */
+        #questionSection { display: none; border-top: 2px solid #eee; margin-top: 20px; padding-top: 15px; }
+        .detected-info { background: #eef7ff; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 15px; }
+        .question-group { margin-bottom: 15px; padding: 12px; background: #fafafa; border: 1px solid #e5e5e5; border-radius: 6px; }
+        .question-group label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 14px; }
+        .question-group select { width: 100%; padding: 8px; font-size: 15px; border-radius: 4px; border: 1px solid #ccc; }
+        
+        /* 判定バッジ色分け */
+        .badge-discard { background: #dc3545; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-consider { background: #ffc107; color: #222; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-keep { background: #28a745; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2 style="text-align: center;">👗 クローゼット管理＆断捨離支援</h2>
+
+    <!-- 1. 服を登録する（連続フロー：画像解析 → 質問回答・スコア診断） -->
+    <div class="card">
+        <h3>1. 服を登録・診断する</h3>
+        
+        <!-- Step 1: 画像アップロード -->
+        <div class="upload-area">
+            <input type="file" id="imageInput" accept="image/*">
+            <img id="preview" alt="選択画像プレビュー">
+        </div>
+
+        <div id="statusBadge" class="status-badge">🔄 処理中...</div>
+
+        <button id="analyzeImageButton" class="btn-blue">Step 1: 画像を解析して属性を抽出</button>
+
+        <!-- Step 2: AI解析結果と質問フォーム（解析後に表示） -->
+        <div id="questionSection">
+            <div class="detected-info">
+                <strong>AI解析結果（自動取得）:</strong><br>
+                カテゴリー: <span id="detectedCategory" style="font-weight: bold;">-</span> ／ 
+                色: <span id="detectedColor" style="font-weight: bold;">-</span><br>
+                <span id="duplicateInfoText" style="font-size: 13px; color: #555;"></span>
+                <img id="processedPreview" alt="背景除去後プレビュー">
+            </div>
+
+            <h4>Step 2: 断捨離スコア診断の質問に回答</h4>
+
+            <!-- Q1: 必須 -->
+            <div class="question-group">
+                <label for="q1Select">Q1. この服をいつぶりに着用しましたか？【必須】</label>
+                <select id="q1Select">
+                    <option value="1週間以内">1週間以内</option>
+                    <option value="1か月以内">1か月以内</option>
+                    <option value="半年以内">半年以内</option>
+                    <option value="1年以内">1年以内</option>
+                    <option value="覚えていない">覚えていない</option>
+                </select>
+            </div>
+
+            <!-- Q3: 条件分岐（Q1が「1年以内」または「覚えていない」の時のみ表示） -->
+            <div class="question-group" id="q3Group" style="display: none;">
+                <label for="q3Select">Q3. 着用時の思い出が蘇りますか？</label>
+                <select id="q3Select">
+                    <option value="はい">はい</option>
+                    <option value="なんとなく">なんとなく</option>
+                    <option value="思い出せない">思い出せない</option>
+                </select>
+            </div>
+
+            <!-- Q4: 条件分岐（重複3着以上 または Q1が「半年以内」「1年以内」「覚えていない」の時のみ表示） -->
+            <div class="question-group" id="q4Group" style="display: none;">
+                <label for="q4Select">Q4. もしこの服を持っていなかったら、もう一度購入しますか？</label>
+                <select id="q4Select">
+                    <option value="はい">はい</option>
+                    <option value="迷う">迷う</option>
+                    <option value="いいえ">いいえ</option>
+                </select>
+            </div>
+
+            <!-- Q5: 必須 -->
+            <div class="question-group">
+                <label for="q5Select">Q5. この服を使ったコーデの組み合わせが想像できますか？【必須】</label>
+                <select id="q5Select">
+                    <option value="何通りか想像できる">何通りか想像できる</option>
+                    <option value="いつも決まったパターンで着ている">いつも決まったパターンで着ている</option>
+                    <option value="着用イメージが湧かない">着用イメージが湧かない</option>
+                </select>
+            </div>
+
+            <button id="registerButton" class="btn-green">診断してクローゼットに保存</button>
+        </div>
+
+        <div style="margin-top: 15px;">
+            <strong>最新の診断結果:</strong>
+            <pre id="result" class="result-box">ここに診断結果が表示されます。</pre>
+        </div>
+    </div>
+
+    <!-- 2. クローゼット全体を診断する（集計表示） -->
+    <div class="card">
+        <h3>2. クローゼット全体の診断集計</h3>
+        <button id="diagnoseButton" class="btn-green">最新の状況で全体を集計する</button>
+        <div style="margin-top: 15px;">
+            <strong>全体集計結果:</strong>
+            <pre id="diagnosisResult" class="result-box">ここに全体の平均スコアと判定内訳が表示されます。</pre>
+        </div>
+    </div>
+
+    <!-- 3. クローゼットの登録一覧 -->
+    <div class="card">
+        <h3>3. クローゼットの登録一覧</h3>
+        <button id="loadClosetButton" class="btn-gray">一覧を更新・表示する</button>
+        <div id="closetListContainer" style="margin-top: 15px;">
+            <p style="color: #777; font-size: 14px;">まだ読み込まれていません。</p>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        const imageInput = document.getElementById('imageInput');
+        const preview = document.getElementById('preview');
+        const statusBadge = document.getElementById('statusBadge');
+
+        // Step 1 で取得した一時データを保持する変数
+        let currentAnalyzedItem = null;
+
+        function setStatus(text, isVisible = true) {
+            statusBadge.textContent = text;
+            statusBadge.style.display = isVisible ? 'block' : 'none';
+        }
+
+        // 画像選択時のプレビュー表示
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // クライアント側での画像圧縮
+        function compressImage(file, maxWidth, maxHeight, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round(height * (maxWidth / width));
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round(width * (maxHeight / height));
+                                height = maxHeight;
+                            }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                resolve(new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() }));
+                            } else {
+                                reject(new Error('画像の圧縮に失敗しました'));
+                            }
+                        }, 'image/jpeg', quality);
+                    };
+                    img.onerror = (error) => reject(error);
+                };
+                reader.onerror = (error) => reject(error);
+            });
+        }
+
+        // Q1と重複状況に応じた質問（Q3, Q4）の動的表示切り替え
+        function updateConditionalQuestions() {
+            if (!currentAnalyzedItem) return;
+
+            const q1Val = document.getElementById('q1Select').value;
+            const dup = currentAnalyzedItem.dup_status;
+
+            // Q3条件: Q1が「1年以内」または「覚えていない」
+            const needQ3 = (q1Val === '1年以内' || q1Val === '覚えていない');
+            document.getElementById('q3Group').style.display = needQ3 ? 'block' : 'none';
+
+            // Q4条件: 色・カテゴリのどちらかが3着以上 または Q1が「半年以内」「1年以内」「覚えていない」
+            const isDup = dup.has_duplicate_color || dup.has_duplicate_category;
+            const isLongUnused = (q1Val === '半年以内' || q1Val === '1年以内' || q1Val === '覚えていない');
+            const needQ4 = (isDup || isLongUnused);
+            document.getElementById('q4Group').style.display = needQ4 ? 'block' : 'none';
+        }
+
+        document.getElementById('q1Select').addEventListener('change', updateConditionalQuestions);
+
+        // Step 1: 画像解析ボタン押下時の処理
+        document.getElementById('analyzeImageButton').addEventListener('click', async () => {
+            const originalFile = imageInput.files[0];
+            if (!originalFile) {
+                alert("画像を選択してください！");
+                return;
+            }
+
+            const btn = document.getElementById('analyzeImageButton');
+            btn.disabled = true;
+
+            try {
+                setStatus("📥 ステータス: 画像を圧縮中...");
+                const compressedFile = await compressImage(originalFile, 800, 800, 0.7);
+
+                setStatus("🧠 ステータス: 背景削除＆AI属性抽出中...");
+                const formData = new FormData();
+                formData.append('file', compressedFile);
+
+                const response = await fetch(`${API_BASE}/analyze-image`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    currentAnalyzedItem = data;
+
+                    document.getElementById('detectedCategory').textContent = data.category;
+                    document.getElementById('detectedColor').textContent = data.color;
+
+                    const dupColorText = data.dup_status.has_duplicate_color ? "あり（3着以上）" : "なし";
+                    const dupCatText = data.dup_status.has_duplicate_category ? "あり（3着以上）" : "なし";
+                    document.getElementById('duplicateInfoText').textContent = 
+                        `重複状況（登録後）: 同色 ${dupColorText} ／ 同カテゴリ ${dupCatText}`;
+
+                    const processedImg = document.getElementById('processedPreview');
+                    processedImg.src = `${API_BASE}${data.image_url}`;
+                    processedImg.style.display = 'block';
+
+                    // 質問フォームを表示し、条件分岐を反映
+                    document.getElementById('q1Select').value = "1週間以内";
+                    updateConditionalQuestions();
+                    document.getElementById('questionSection').style.display = 'block';
+
+                    setStatus("✨ 属性抽出完了！下の質問に回答してください。", true);
+                } else {
+                    setStatus("⚠️ 解析エラーが発生しました", true);
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                setStatus("❌ 通信エラー", true);
+                document.getElementById('result').textContent = "エラーが発生しました:\n" + error.message;
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // Step 2: 診断してクローゼットに保存ボタン押下時の処理
+        document.getElementById('registerButton').addEventListener('click', async () => {
+            if (!currentAnalyzedItem) return;
+
+            const btn = document.getElementById('registerButton');
+            btn.disabled = true;
+
+            try {
+                setStatus("🔄 スコア算出＆クローゼット全体の再計算中...");
+
+                // 表示されている質問の回答だけを収集
+                const answers = {
+                    Q1: document.getElementById('q1Select').value,
+                    Q5: document.getElementById('q5Select').value
+                };
+                if (document.getElementById('q3Group').style.display !== 'none') {
+                    answers.Q3 = document.getElementById('q3Select').value;
+                }
+                if (document.getElementById('q4Group').style.display !== 'none') {
+                    answers.Q4 = document.getElementById('q4Select').value;
+                }
+
+                const payload = {
+                    item_id: currentAnalyzedItem.item_id,
+                    image_url: currentAnalyzedItem.image_url,
+                    color: currentAnalyzedItem.color,
+                    category: currentAnalyzedItem.category,
+                    answers: answers
+                };
+
+                const response = await fetch(`${API_BASE}/register-item`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    const item = data.item;
+                    let text = `✅ クローゼットに登録し、全 ${data.summary.total_count} 着のスコアを再計算しました！\n\n`;
+                    text += `【今回の診断結果】\n`;
+                    text += `・判定: 【 ${item.judgment} 】\n`;
+                    text += `・断捨離スコア: ${item.final_score_percent}% (${item.total_score}点 / 最大${item.max_possible_score}点)\n`;
+                    text += `・カテゴリー / 色: ${item.category} / ${item.color}\n\n`;
+                    text += `【スコア内訳】\n`;
+                    for (const [k, v] of Object.entries(item.breakdown)) {
+                        text += `  ${k}: ${v}\n`;
+                    }
+                    document.getElementById('result').textContent = text;
+
+                    // フォームをリセット
+                    document.getElementById('questionSection').style.display = 'none';
+                    imageInput.value = "";
+                    preview.style.display = "none";
+                    currentAnalyzedItem = null;
+
+                    setStatus("✨ 保存・再計算が完了しました！", true);
+                    setTimeout(() => setStatus("", false), 4000);
+                } else {
+                    setStatus("⚠️ 保存エラー", true);
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                setStatus("❌ 通信エラー", true);
+                document.getElementById('result').textContent = "エラー: " + error.message;
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // 2. クローゼット全体の診断集計ボタン
+        document.getElementById('diagnoseButton').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${API_BASE}/diagnose`);
+                const data = await response.json();
+                const s = data.summary;
+
+                if (s.total_count === 0) {
+                    document.getElementById('diagnosisResult').textContent = "登録されている服がまだありません。";
+                    return;
+                }
+
+                let text = `【クローゼット全体集計】（全 ${s.total_count} 着・最新再計算済み）\n\n`;
+                text += `■ 平均断捨離スコア : ${s.average_score}%\n\n`;
+                text += `■ 判定内訳:\n`;
+                text += `  ・断捨離推奨 (70%〜)   : ${s.counts["断捨離推奨"]} 着\n`;
+                text += `  ・要検討     (50〜69%) : ${s.counts["要検討"]} 着\n`;
+                text += `  ・キープ     (〜49%)   : ${s.counts["キープ"]} 着\n`;
+
+                document.getElementById('diagnosisResult').textContent = text;
+            } catch (error) {
+                document.getElementById('diagnosisResult').textContent = "エラー: " + error.message;
+            }
+        });
+
+        // 3. クローゼットの登録一覧表示ボタン
+        document.getElementById('loadClosetButton').addEventListener('click', async () => {
+            const container = document.getElementById('closetListContainer');
+            container.innerHTML = "<p>最新のスコアを再計算して読み込み中...</p>";
+            try {
+                const response = await fetch(`${API_BASE}/closet`);
+                const data = await response.json();
+                const items = data.closet_items;
+
+                if (!items || items.length === 0) {
+                    container.innerHTML = "<p>登録されている服はありません。</p>";
+                    return;
+                }
+
+                let html = `<p><strong>登録総数: ${data.total_count} 着</strong>（全件最新スコアに再計算済み）</p>`;
+                html += `<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 15px;">`;
+
+                items.forEach((item, index) => {
+                    let badgeClass = "badge-keep";
+                    if (item.judgment === "断捨離推奨") badgeClass = "badge-discard";
+                    else if (item.judgment === "要検討") badgeClass = "badge-consider";
+
+                    html += `
+                        <div style="border: 1px solid #ddd; padding: 10px; border-radius: 6px; background: #fff;">
+                            <img src="${API_BASE}${item.image_url}" style="width: 100%; height: 140px; object-fit: contain; background: #f8f8f8; border-radius: 4px; margin-bottom: 8px;">
+                            <div style="margin-bottom: 4px;">
+                                <span class="${badgeClass}">${item.judgment}</span>
+                                <strong style="font-size: 14px; margin-left: 4px;">${item.final_score_percent}%</strong>
+                            </div>
+                            <p style="margin: 2px 0; font-size: 13px; font-weight: bold;">#${index + 1} ${item.category}</p>
+                            <p style="margin: 2px 0; font-size: 12px; color: #555;">色: ${item.color}</p>
+                            <p style="margin: 2px 0; font-size: 11px; color: #777;">最終着用: ${item.answers.Q1}</p>
+                        </div>`;
+                });
+
+                container.innerHTML = html + "</div>";
+            } catch (error) {
+                container.innerHTML = "<p style='color: red;'>一覧の取得に失敗しました。</p>";
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クローゼット管理＆断捨離AI（デバッグ機能付き）</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 720px; margin: 0 auto; background-color: #f9f9f9; color: #333; }
+        .card { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .upload-area { border: 2px dashed #ccc; padding: 20px; text-align: center; margin-bottom: 15px; border-radius: 8px; }
+        img#preview, img#processedPreview { max-width: 100%; max-height: 240px; margin-top: 10px; display: none; border-radius: 4px; margin-left: auto; margin-right: auto; }
+        button { padding: 12px 20px; color: white; border: none; cursor: pointer; font-size: 16px; border-radius: 4px; width: 100%; margin-bottom: 10px; font-weight: bold; }
+        button:disabled { background-color: #aaa !important; cursor: not-allowed; }
+        .btn-blue { background-color: #007BFF; }
+        .btn-blue:hover { background-color: #0056b3; }
+        .btn-green { background-color: #28a745; }
+        .btn-green:hover { background-color: #1e7e34; }
+        .btn-gray { background-color: #6c757d; }
+        .btn-gray:hover { background-color: #545b62; }
+        .btn-purple { background-color: #6f42c1; }
+        .btn-purple:hover { background-color: #59339d; }
+        .btn-red { background-color: #dc3545; }
+        .btn-red:hover { background-color: #b02a37; }
+        .result-box { background-color: #f4f4f4; padding: 15px; white-space: pre-wrap; word-wrap: break-word; border-radius: 5px; font-size: 14px; line-height: 1.5; }
+        .status-badge { background: #e8f0fe; color: #1967d2; padding: 8px 12px; border-radius: 6px; font-weight: bold; margin-bottom: 10px; display: none; text-align: center; }
+
+        /* デバッグパネル用スタイル */
+        .debug-card { border: 2px dashed #6f42c1; background-color: #fcfaff; }
+        .debug-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .debug-controls label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; }
+        .debug-controls input, .debug-controls select { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .debug-btn-row { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; }
+        .progress-bar-bg { width: 100%; height: 14px; background-color: #e9ecef; border-radius: 7px; overflow: hidden; margin: 10px 0; }
+        .progress-bar-fill { height: 100%; width: 0%; background-color: #6f42c1; transition: width 0.2s; }
+        .debug-log { max-height: 160px; overflow-y: auto; background: #222; color: #0f0; font-family: monospace; font-size: 12px; padding: 10px; border-radius: 4px; white-space: pre-wrap; }
+
+        /* 質問フォーム用スタイル */
+        #questionSection { display: none; border-top: 2px solid #eee; margin-top: 20px; padding-top: 15px; }
+        .detected-info { background: #eef7ff; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 15px; }
+        .question-group { margin-bottom: 15px; padding: 12px; background: #fafafa; border: 1px solid #e5e5e5; border-radius: 6px; }
+        .question-group label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 14px; }
+        .question-group select { width: 100%; padding: 8px; font-size: 15px; border-radius: 4px; border: 1px solid #ccc; }
+
+        /* 判定バッジ色分け */
+        .badge-discard { background: #dc3545; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-consider { background: #ffc107; color: #222; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-keep { background: #28a745; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2 style="text-align: center;">👗 クローゼット管理＆断捨離支援</h2>
+
+    <!-- ▼▼▼ デバッグ用セクション（実験時は削除可能） ▼▼▼ -->
+    <div class="card debug-card">
+        <h3 style="margin-top: 0; color: #6f42c1;">🛠️ デバッグ用：データセット自動連続登録</h3>
+        <p style="font-size: 13px; color: #555; margin-top: 0;">
+            データセットのフォルダ（または複数画像）を選択すると、1枚ずつ自動でAI解析・質問回答・クローゼット登録を連続実行します。
+        </p>
+
+        <div class="debug-controls">
+            <div>
+                <label for="debugFolderInput">① フォルダごと選択（一括読み込み）</label>
+                <input type="file" id="debugFolderInput" webkitdirectory multiple accept="image/*">
+            </div>
+            <div>
+                <label for="debugFilesInput">または 複数画像を選択</label>
+                <input type="file" id="debugFilesInput" multiple accept="image/*">
+            </div>
+            <div>
+                <label for="debugMaxCount">最大登録枚数（暴走防止）</label>
+                <input type="number" id="debugMaxCount" value="15" min="1" max="500">
+            </div>
+            <div>
+                <label for="debugPersonaMode">自動回答の傾向</label>
+                <select id="debugPersonaMode">
+                    <option value="random">ランダム（均等）</option>
+                    <option value="hoarder">溜め込み型（未着用・手放し寄り）</option>
+                    <option value="minimalist">厳選型（直近着用・キープ寄り）</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="font-size: 13px; font-weight: bold; margin-bottom: 6px;">
+            選択中の画像ファイル数: <span id="debugFileCount" style="color: #6f42c1;">0</span> 枚
+        </div>
+
+        <div class="debug-btn-row">
+            <button id="debugStartBtn" class="btn-purple">▶ 自動連続登録スタート</button>
+            <button id="debugStopBtn" class="btn-red" disabled>⏹ 停止</button>
+        </div>
+
+        <div class="progress-bar-bg">
+            <div id="debugProgressBar" class="progress-bar-fill"></div>
+        </div>
+        <div id="debugStatusText" style="font-size: 13px; font-weight: bold; margin-bottom: 6px;">待機中</div>
+        <div id="debugLog" class="debug-log">デバッグログがここに表示されます...</div>
+    </div>
+    <!-- ▲▲▲ デバッグ用セクションここまで ▲▲▲ -->
+
+    <!-- 1. 服を登録する（連続フロー：画像解析 → 質問回答・スコア診断） -->
+    <div class="card">
+        <h3>1. 服を登録・診断する</h3>
+
+        <div class="upload-area">
+            <input type="file" id="imageInput" accept="image/*">
+            <img id="preview" alt="選択画像プレビュー">
+        </div>
+
+        <div id="statusBadge" class="status-badge">🔄 処理中...</div>
+
+        <button id="analyzeImageButton" class="btn-blue">Step 1: 画像を解析して属性を抽出</button>
+
+        <div id="questionSection">
+            <div class="detected-info">
+                <strong>AI解析結果（自動取得）:</strong><br>
+                カテゴリー: <span id="detectedCategory" style="font-weight: bold;">-</span> ／ 
+                色: <span id="detectedColor" style="font-weight: bold;">-</span><br>
+                <span id="duplicateInfoText" style="font-size: 13px; color: #555;"></span>
+                <img id="processedPreview" alt="背景除去後プレビュー">
+            </div>
+
+            <h4>Step 2: 断捨離スコア診断の質問に回答</h4>
+
+            <div class="question-group">
+                <label for="q1Select">Q1. この服をいつぶりに着用しましたか？【必須】</label>
+                <select id="q1Select">
+                    <option value="1週間以内">1週間以内</option>
+                    <option value="1か月以内">1か月以内</option>
+                    <option value="半年以内">半年以内</option>
+                    <option value="1年以内">1年以内</option>
+                    <option value="覚えていない">覚えていない</option>
+                </select>
+            </div>
+
+            <div class="question-group" id="q3Group" style="display: none;">
+                <label for="q3Select">Q3. 着用時の思い出が蘇りますか？</label>
+                <select id="q3Select">
+                    <option value="はい">はい</option>
+                    <option value="なんとなく">なんとなく</option>
+                    <option value="思い出せない">思い出せない</option>
+                </select>
+            </div>
+
+            <div class="question-group" id="q4Group" style="display: none;">
+                <label for="q4Select">Q4. もしこの服を持っていなかったら、もう一度購入しますか？</label>
+                <select id="q4Select">
+                    <option value="はい">はい</option>
+                    <option value="迷う">迷う</option>
+                    <option value="いいえ">いいえ</option>
+                </select>
+            </div>
+
+            <div class="question-group">
+                <label for="q5Select">Q5. この服を使ったコーデの組み合わせが想像できますか？【必須】</label>
+                <select id="q5Select">
+                    <option value="何通りか想像できる">何通りか想像できる</option>
+                    <option value="いつも決まったパターンで着ている">いつも決まったパターンで着ている</option>
+                    <option value="着用イメージが湧かない">着用イメージが湧かない</option>
+                </select>
+            </div>
+
+            <button id="registerButton" class="btn-green">診断してクローゼットに保存</button>
+        </div>
+
+        <div style="margin-top: 15px;">
+            <strong>最新の診断結果:</strong>
+            <pre id="result" class="result-box">ここに診断結果が表示されます。</pre>
+        </div>
+    </div>
+
+    <!-- 2. クローゼット全体を診断する（集計表示） -->
+    <div class="card">
+        <h3>2. クローゼット全体の診断集計</h3>
+        <button id="diagnoseButton" class="btn-green">最新の状況で全体を集計する</button>
+        <div style="margin-top: 15px;">
+            <strong>全体集計結果:</strong>
+            <pre id="diagnosisResult" class="result-box">ここに全体の平均スコアと判定内訳が表示されます。</pre>
+        </div>
+    </div>
+
+    <!-- 3. クローゼットの登録一覧 -->
+    <div class="card">
+        <h3>3. クローゼットの登録一覧</h3>
+        <button id="loadClosetButton" class="btn-gray">一覧を更新・表示する</button>
+        <div id="closetListContainer" style="margin-top: 15px;">
+            <p style="color: #777; font-size: 14px;">まだ読み込まれていません。</p>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        const imageInput = document.getElementById('imageInput');
+        const preview = document.getElementById('preview');
+        const statusBadge = document.getElementById('statusBadge');
+
+        let currentAnalyzedItem = null;
+
+        function setStatus(text, isVisible = true) {
+            statusBadge.textContent = text;
+            statusBadge.style.display = isVisible ? 'block' : 'none';
+        }
+
+        // 画像選択時のプレビュー表示
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // クライアント側での画像圧縮
+        function compressImage(file, maxWidth, maxHeight, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round(height * (maxWidth / width));
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round(width * (maxHeight / height));
+                                height = maxHeight;
+                            }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                resolve(new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() }));
+                            } else {
+                                reject(new Error('画像の圧縮に失敗しました'));
+                            }
+                        }, 'image/jpeg', quality);
+                    };
+                    img.onerror = (error) => reject(error);
+                };
+                reader.onerror = (error) => reject(error);
+            });
+        }
+
+        // Q1と重複状況に応じた質問（Q3, Q4）の動的表示切り替え
+        function updateConditionalQuestions() {
+            if (!currentAnalyzedItem) return;
+
+            const q1Val = document.getElementById('q1Select').value;
+            const dup = currentAnalyzedItem.dup_status;
+
+            const needQ3 = (q1Val === '1年以内' || q1Val === '覚えていない');
+            document.getElementById('q3Group').style.display = needQ3 ? 'block' : 'none';
+
+            const isDup = dup.has_duplicate_color || dup.has_duplicate_category;
+            const isLongUnused = (q1Val === '半年以内' || q1Val === '1年以内' || q1Val === '覚えていない');
+            const needQ4 = (isDup || isLongUnused);
+            document.getElementById('q4Group').style.display = needQ4 ? 'block' : 'none';
+        }
+
+        document.getElementById('q1Select').addEventListener('change', updateConditionalQuestions);
+
+        // Step 1: 画像解析ボタン押下時の処理
+        document.getElementById('analyzeImageButton').addEventListener('click', async () => {
+            const originalFile = imageInput.files[0];
+            if (!originalFile) {
+                alert("画像を選択してください！");
+                return;
+            }
+
+            const btn = document.getElementById('analyzeImageButton');
+            btn.disabled = true;
+
+            try {
+                setStatus("📥 ステータス: 画像を圧縮中...");
+                const compressedFile = await compressImage(originalFile, 800, 800, 0.7);
+
+                setStatus("🧠 ステータス: 背景削除＆AI属性抽出中...");
+                const formData = new FormData();
+                formData.append('file', compressedFile);
+
+                const response = await fetch(`${API_BASE}/analyze-image`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    currentAnalyzedItem = data;
+
+                    document.getElementById('detectedCategory').textContent = data.category;
+                    document.getElementById('detectedColor').textContent = data.color;
+
+                    const dupColorText = data.dup_status.has_duplicate_color ? "あり（3着以上）" : "なし";
+                    const dupCatText = data.dup_status.has_duplicate_category ? "あり（3着以上）" : "なし";
+                    document.getElementById('duplicateInfoText').textContent = 
+                        `重複状況（登録後）: 同色 ${dupColorText} ／ 同カテゴリ ${dupCatText}`;
+
+                    const processedImg = document.getElementById('processedPreview');
+                    processedImg.src = `${API_BASE}${data.image_url}`;
+                    processedImg.style.display = 'block';
+
+                    document.getElementById('q1Select').value = "1週間以内";
+                    updateConditionalQuestions();
+                    document.getElementById('questionSection').style.display = 'block';
+
+                    setStatus("✨ 属性抽出完了！下の質問に回答してください。", true);
+                } else {
+                    setStatus("⚠️ 解析エラーが発生しました", true);
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                setStatus("❌ 通信エラー", true);
+                document.getElementById('result').textContent = "エラーが発生しました:\n" + error.message;
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // Step 2: 診断してクローゼットに保存ボタン押下時の処理
+        document.getElementById('registerButton').addEventListener('click', async () => {
+            if (!currentAnalyzedItem) return;
+
+            const btn = document.getElementById('registerButton');
+            btn.disabled = true;
+
+            try {
+                setStatus("🔄 スコア算出＆クローゼット全体の再計算中...");
+
+                const answers = {
+                    Q1: document.getElementById('q1Select').value,
+                    Q5: document.getElementById('q5Select').value
+                };
+                if (document.getElementById('q3Group').style.display !== 'none') {
+                    answers.Q3 = document.getElementById('q3Select').value;
+                }
+                if (document.getElementById('q4Group').style.display !== 'none') {
+                    answers.Q4 = document.getElementById('q4Select').value;
+                }
+
+                const payload = {
+                    item_id: currentAnalyzedItem.item_id,
+                    image_url: currentAnalyzedItem.image_url,
+                    color: currentAnalyzedItem.color,
+                    category: currentAnalyzedItem.category,
+                    answers: answers
+                };
+
+                const response = await fetch(`${API_BASE}/register-item`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    const item = data.item;
+                    let text = `✅ クローゼットに登録し、全 ${data.summary.total_count} 着のスコアを再計算しました！\n\n`;
+                    text += `【今回の診断結果】\n`;
+                    text += `・判定: 【 ${item.judgment} 】\n`;
+                    text += `・断捨離スコア: ${item.final_score_percent}% (${item.total_score}点 / 最大${item.max_possible_score}点)\n`;
+                    text += `・カテゴリー / 色: ${item.category} / ${item.color}\n\n`;
+                    text += `【スコア内訳】\n`;
+                    for (const [k, v] of Object.entries(item.breakdown)) {
+                        text += `  ${k}: ${v}\n`;
+                    }
+                    document.getElementById('result').textContent = text;
+
+                    document.getElementById('questionSection').style.display = 'none';
+                    imageInput.value = "";
+                    preview.style.display = "none";
+                    currentAnalyzedItem = null;
+
+                    setStatus("✨ 保存・再計算が完了しました！", true);
+                    setTimeout(() => setStatus("", false), 4000);
+                } else {
+                    setStatus("⚠️ 保存エラー", true);
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                setStatus("❌ 通信エラー", true);
+                document.getElementById('result').textContent = "エラー: " + error.message;
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // 全体集計の取得・描画関数
+        async function refreshDiagnosis() {
+            try {
+                const response = await fetch(`${API_BASE}/diagnose`);
+                const data = await response.json();
+                const s = data.summary;
+
+                if (s.total_count === 0) {
+                    document.getElementById('diagnosisResult').textContent = "登録されている服がまだありません。";
+                    return;
+                }
+
+                let text = `【クローゼット全体集計】（全 ${s.total_count} 着・最新再計算済み）\n\n`;
+                text += `■ 平均断捨離スコア : ${s.average_score}%\n\n`;
+                text += `■ 判定内訳:\n`;
+                text += `  ・断捨離推奨 (70%〜)   : ${s.counts["断捨離推奨"]} 着\n`;
+                text += `  ・要検討     (50〜69%) : ${s.counts["要検討"]} 着\n`;
+                text += `  ・キープ     (〜49%)   : ${s.counts["キープ"]} 着\n`;
+
+                document.getElementById('diagnosisResult').textContent = text;
+            } catch (error) {
+                document.getElementById('diagnosisResult').textContent = "エラー: " + error.message;
+            }
+        }
+
+        // クローゼット一覧の取得・描画関数
+        async function refreshClosetList() {
+            const container = document.getElementById('closetListContainer');
+            try {
+                const response = await fetch(`${API_BASE}/closet`);
+                const data = await response.json();
+                const items = data.closet_items;
+
+                if (!items || items.length === 0) {
+                    container.innerHTML = "<p>登録されている服はありません。</p>";
+                    return;
+                }
+
+                let html = `<p><strong>登録総数: ${data.total_count} 着</strong>（全件最新スコアに再計算済み）</p>`;
+                html += `<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 15px;">`;
+
+                items.forEach((item, index) => {
+                    let badgeClass = "badge-keep";
+                    if (item.judgment === "断捨離推奨") badgeClass = "badge-discard";
+                    else if (item.judgment === "要検討") badgeClass = "badge-consider";
+
+                    html += `
+                        <div style="border: 1px solid #ddd; padding: 10px; border-radius: 6px; background: #fff;">
+                            <img src="${API_BASE}${item.image_url}" style="width: 100%; height: 140px; object-fit: contain; background: #f8f8f8; border-radius: 4px; margin-bottom: 8px;">
+                            <div style="margin-bottom: 4px;">
+                                <span class="${badgeClass}">${item.judgment}</span>
+                                <strong style="font-size: 14px; margin-left: 4px;">${item.final_score_percent}%</strong>
+                            </div>
+                            <p style="margin: 2px 0; font-size: 13px; font-weight: bold;">#${index + 1} ${item.category}</p>
+                            <p style="margin: 2px 0; font-size: 12px; color: #555;">色: ${item.color}</p>
+                            <p style="margin: 2px 0; font-size: 11px; color: #777;">最終着用: ${item.answers.Q1}</p>
+                        </div>`;
+                });
+
+                container.innerHTML = html + "</div>";
+            } catch (error) {
+                container.innerHTML = "<p style='color: red;'>一覧の取得に失敗しました。</p>";
+            }
+        }
+
+        document.getElementById('diagnoseButton').addEventListener('click', refreshDiagnosis);
+        document.getElementById('loadClosetButton').addEventListener('click', () => {
+            document.getElementById('closetListContainer').innerHTML = "<p>最新のスコアを再計算して読み込み中...</p>";
+            refreshClosetList();
+        });
+
+        // =========================================================
+        // ▼▼▼ デバッグ用：データセット自動連続登録スクリプト ▼▼▼
+        // =========================================================
+        let debugSelectedFiles = [];
+        let isDebugRunning = false;
+
+        function appendDebugLog(msg) {
+            const logEl = document.getElementById('debugLog');
+            const time = new Date().toLocaleTimeString();
+            logEl.textContent += `\n[${time}] ${msg}`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function handleDebugFileSelection(fileList) {
+            // 画像ファイルのみ抽出
+            debugSelectedFiles = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+            document.getElementById('debugFileCount').textContent = debugSelectedFiles.length;
+            document.getElementById('debugLog').textContent = `準備完了: ${debugSelectedFiles.length} 枚の画像ファイルを検出しました。`;
+        }
+
+        document.getElementById('debugFolderInput').addEventListener('change', (e) => {
+            handleDebugFileSelection(e.target.files);
+        });
+        document.getElementById('debugFilesInput').addEventListener('change', (e) => {
+            handleDebugFileSelection(e.target.files);
+        });
+
+        // 重み付きランダム選択ヘルパー
+        function weightedPick(choices, weights) {
+            const total = weights.reduce((a, b) => a + b, 0);
+            let r = Math.random() * total;
+            for (let i = 0; i < choices.length; i++) {
+                if (r < weights[i]) return choices[i];
+                r -= weights[i];
+            }
+            return choices[choices.length - 1];
+        }
+
+        // 条件分岐ルールに従ってQ1〜Q5の回答を自動生成
+        function generateDebugAnswers(dupStatus, mode) {
+            const q1Choices = ["1週間以内", "1か月以内", "半年以内", "1年以内", "覚えていない"];
+            const q3Choices = ["はい", "なんとなく", "思い出せない"];
+            const q4Choices = ["はい", "迷う", "いいえ"];
+            const q5Choices = ["何通りか想像できる", "いつも決まったパターンで着ている", "着用イメージが湧かない"];
+
+            let w1, w3, w4, w5;
+            if (mode === "hoarder") {
+                w1 = [5, 10, 20, 30, 35];
+                w3 = [15, 35, 50];
+                w4 = [10, 30, 60];
+                w5 = [20, 30, 50];
+            } else if (mode === "minimalist") {
+                w1 = [50, 35, 10, 5, 0];
+                w3 = [70, 25, 5];
+                w4 = [70, 25, 5];
+                w5 = [50, 45, 5];
+            } else {
+                w1 = [20, 20, 20, 20, 20];
+                w3 = [33, 34, 33];
+                w4 = [33, 34, 33];
+                w5 = [33, 34, 33];
+            }
+
+            const q1 = weightedPick(q1Choices, w1);
+            const answers = {
+                Q1: q1,
+                Q5: weightedPick(q5Choices, w5)
+            };
+
+            // Q3条件: Q1が「1年以内」または「覚えていない」
+            if (q1 === "1年以内" || q1 === "覚えていない") {
+                answers.Q3 = weightedPick(q3Choices, w3);
+            }
+
+            // Q4条件: 色・カテゴリの重複（3着以上）または Q1が半年以上未着用
+            const isDup = dupStatus.has_duplicate_color || dupStatus.has_duplicate_category;
+            const isLongUnused = (q1 === "半年以内" || q1 === "1年以内" || q1 === "覚えていない");
+            if (isDup || isLongUnused) {
+                answers.Q4 = weightedPick(q4Choices, w4);
+            }
+
+            return answers;
+        }
+
+        document.getElementById('debugStopBtn').addEventListener('click', () => {
+            if (isDebugRunning) {
+                isDebugRunning = false;
+                appendDebugLog("⏹ 停止リクエストを受け付けました。現在の処理が完了次第停止します...");
+                document.getElementById('debugStopBtn').disabled = true;
+            }
+        });
+
+        document.getElementById('debugStartBtn').addEventListener('click', async () => {
+            if (debugSelectedFiles.length === 0) {
+                alert("先にデータセットのフォルダまたは画像を選択してください！");
+                return;
+            }
+
+            const maxCount = parseInt(document.getElementById('debugMaxCount').value, 10) || 15;
+            const personaMode = document.getElementById('debugPersonaMode').value;
+            const targetFiles = debugSelectedFiles.slice(0, maxCount);
+
+            isDebugRunning = true;
+            document.getElementById('debugStartBtn').disabled = true;
+            document.getElementById('debugStopBtn').disabled = false;
+            document.getElementById('debugLog').textContent = `🚀 自動登録開始（対象: ${targetFiles.length} 枚 / モード: ${personaMode}）`;
+
+            let successCount = 0;
+
+            for (let i = 0; i < targetFiles.length; i++) {
+                if (!isDebugRunning) break;
+
+                const file = targetFiles[i];
+                const progressPct = Math.round(((i) / targetFiles.length) * 100);
+                document.getElementById('debugProgressBar').style.width = `${progressPct}%`;
+                document.getElementById('debugStatusText').textContent = `処理中 (${i + 1} / ${targetFiles.length}): ${file.name}`;
+
+                try {
+                    // 1. 圧縮
+                    const compressedFile = await compressImage(file, 800, 800, 0.7);
+
+                    // 2. Step 1 API (/analyze-image)
+                    const formData = new FormData();
+                    formData.append('file', compressedFile);
+
+                    const analyzeRes = await fetch(`${API_BASE}/analyze-image`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const analyzeData = await analyzeRes.json();
+
+                    if (analyzeData.status !== "success") {
+                        appendDebugLog(`❌ [${i + 1}] ${file.name} 解析失敗: ${analyzeData.message}`);
+                        continue;
+                    }
+
+                    // 3. 回答の自動生成
+                    const answers = generateDebugAnswers(analyzeData.dup_status, personaMode);
+
+                    // 4. Step 2 API (/register-item)
+                    const registerRes = await fetch(`${API_BASE}/register-item`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            item_id: analyzeData.item_id,
+                            image_url: analyzeData.image_url,
+                            color: analyzeData.color,
+                            category: analyzeData.category,
+                            answers: answers
+                        })
+                    });
+                    const registerData = await registerRes.json();
+
+                    if (registerData.status === "success") {
+                        successCount++;
+                        const item = registerData.item;
+                        appendDebugLog(
+                            `✅ [${i + 1}/${targetFiles.length}] ${file.name} -> ${item.category}(${item.color}) | Q1:${answers.Q1} | ${item.final_score_percent}% [${item.judgment}]`
+                        );
+
+                        // 画面下の全体集計とクローゼット一覧をリアルタイム更新
+                        await refreshDiagnosis();
+                        await refreshClosetList();
+                    } else {
+                        appendDebugLog(`❌ [${i + 1}] ${file.name} 登録失敗: ${registerData.message}`);
+                    }
+                } catch (err) {
+                    appendDebugLog(`❌ [${i + 1}] ${file.name} 通信エラー: ${err.message}`);
+                }
+            }
+
+            document.getElementById('debugProgressBar').style.width = "100%";
+            document.getElementById('debugStatusText').textContent = isDebugRunning
+                ? `✨ 完了！（${successCount} / ${targetFiles.length} 枚を自動登録しました）`
+                : `⏹ 途中停止しました（${successCount} 枚登録済み）`;
+            appendDebugLog(`🏁 処理終了（成功: ${successCount} 件）`);
+
+            isDebugRunning = false;
+            document.getElementById('debugStartBtn').disabled = false;
+            document.getElementById('debugStopBtn').disabled = true;
+        });
+        // ▲▲▲ デバッグ用スクリプトここまで ▲▲▲
+    </script>
+</body>
+</html>

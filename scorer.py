@@ -5,20 +5,31 @@ from typing import Dict, Any, List
 class DeclutterScorer:
     """
     断捨離支援AI ルールベース・スコア算出クラス
+    （色・カテゴリーグループ化、同一服の重複除外、類似服の追加スコア加算に対応）
     """
 
     def __init__(self, wardrobe_items: List[Dict[str, Any]]):
         """
-        クローゼット全体の衣類データを受け取り、色とカテゴリーの所持数を集計する
-        :param wardrobe_items: [{"id": "item_1", "color": "ブラック", "category": "Shirts", ...}, ...]
+        クローゼット全体の衣類データを受け取り、色とカテゴリーの所持数を集計する。
+        ※「同じ服（is_same_item=True）」として登録されたアイテムは重複カウントの母数から除外する。
         """
-        self.color_counts = Counter(item["color"] for item in wardrobe_items)
-        self.category_counts = Counter(item["category"] for item in wardrobe_items)
+        unique_items = [
+            item for item in wardrobe_items
+            if not item.get("is_same_item", False)
+        ]
+        self.color_counts = Counter(item["color"] for item in unique_items)
+        self.category_counts = Counter(item["category"] for item in unique_items)
 
-    def check_duplicates(self, color: str, category: str) -> Dict[str, bool]:
+    def check_duplicates(self, color: str, category: str, is_same_item: bool = False) -> Dict[str, bool]:
         """
         Q2: 自動取得データから同じ色・カテゴリーが3着以上あるかを判定
+        ※同一服として登録されたアイテム自身は重複カウントしない
         """
+        if is_same_item:
+            return {
+                "has_duplicate_color": False,
+                "has_duplicate_category": False,
+            }
         return {
             "has_duplicate_color": self.color_counts[color] >= 3,
             "has_duplicate_category": self.category_counts[category] >= 3,
@@ -28,13 +39,11 @@ class DeclutterScorer:
         """
         条件分岐に基づき、ユーザーに追加で出題すべき質問（Q3, Q4）を判定する
         """
-        questions = ["Q1", "Q5"]  # Q1とQ5は必須
+        questions = ["Q1", "Q5"]
 
-        # Q3の発生条件: Q1で「1年以内」または「覚えていない」を選択
         if q1_answer in ["1年以内", "覚えていない"]:
             questions.append("Q3")
 
-        # Q4の発生条件: 同じ色・カテゴリーが3着以上 または Q1が「半年以内」「1年以内」「覚えていない」
         is_dup = dup_status["has_duplicate_color"] or dup_status["has_duplicate_category"]
         is_long_unused = q1_answer in ["半年以内", "1年以内", "覚えていない"]
         if is_dup or is_long_unused:
@@ -56,11 +65,14 @@ class DeclutterScorer:
 
     def calculate_score(self, item_info: Dict[str, Any], answers: Dict[str, str]) -> Dict[str, Any]:
         """
-        最終スコア（%）、判定ラベル、内訳を算出する
+        最終スコア（%）、判定ラベル、内訳を算出する（動的正規化）
         """
         total_score = 0
         max_possible_score = 0
         breakdown = {}
+
+        is_same_item = item_info.get("is_same_item", False)
+        has_similar_candidate = item_info.get("has_similar_candidate", False)
 
         # ---------------------------------------------------------
         # 1. 一年使っていない（時間軸）【必須】
@@ -81,7 +93,11 @@ class DeclutterScorer:
         # ---------------------------------------------------------
         # 2. 代用品があるか（自動取得）【必須】
         # ---------------------------------------------------------
-        dup_status = self.check_duplicates(item_info["color"], item_info["category"])
+        dup_status = self.check_duplicates(
+            item_info["color"],
+            item_info["category"],
+            is_same_item=is_same_item,
+        )
         q2_pt = 0
         if dup_status["has_duplicate_color"]:
             q2_pt += 15
@@ -89,11 +105,24 @@ class DeclutterScorer:
             q2_pt += 15
 
         total_score += q2_pt
-        max_possible_score += 30  # 色(15点) + カテゴリー(15点)
-        breakdown["Q2_重複状況"] = (
-            f"{q2_pt}/30点 (色重複:{'あり' if dup_status['has_duplicate_color'] else 'なし'}, "
-            f"カテゴリ重複:{'あり' if dup_status['has_duplicate_category'] else 'なし'})"
-        )
+        max_possible_score += 30
+        if is_same_item:
+            breakdown["Q2_重複状況"] = "0/30点 (同一服登録のため重複カウント除外)"
+        else:
+            breakdown["Q2_重複状況"] = (
+                f"{q2_pt}/30点 (同色3着以上:{'あり' if dup_status['has_duplicate_color'] else 'なし'}, "
+                f"同カテゴリ3着以上:{'あり' if dup_status['has_duplicate_category'] else 'なし'})"
+            )
+
+        # ---------------------------------------------------------
+        # 2.5 視覚的類似ボーナス（似た服があるが「別の服」と回答した場合）
+        # ---------------------------------------------------------
+        if has_similar_candidate and not is_same_item:
+            total_score += 15
+            max_possible_score += 15
+            breakdown["Q_視覚的類似"] = "15/15点 (似たデザインの別の服を所持)"
+        elif has_similar_candidate and is_same_item:
+            breakdown["Q_視覚的類似"] = "スキップ (既登録の同一服として紐づけ)"
 
         # ---------------------------------------------------------
         # 3. 見て心が動くか（思い出）【条件分岐】
@@ -118,7 +147,6 @@ class DeclutterScorer:
         is_dup = dup_status["has_duplicate_color"] or dup_status["has_duplicate_category"]
         is_long_unused = q1_ans in ["半年以内", "1年以内", "覚えていない"]
 
-        # ※登録時に重複がなくQ4をスキップした服が、後から重複対象になった場合は未回答のためスキップ扱いとする
         if (is_dup or is_long_unused) and "Q4" in answers:
             q4_weights = {
                 "はい": 0,
